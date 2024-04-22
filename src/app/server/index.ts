@@ -2,18 +2,17 @@ import express from 'express';
 import next from 'next';
 import { config } from 'dotenv';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { AppConfigEnv } from '@/utils/get-config';
 import https from 'https';
 import fs from 'fs'; // 引入文件系统模块
 import path from 'path';
+import AppConfigEnv from '@/utils/get-config';
 
 config({ path: '.env' });
 const devProxy = {
-  '/restApi': {
-    target:
-      'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/ai-love/restApi',
+  '/ai-love-web': {
+    target: AppConfigEnv.HOST,
     pathRewrite: {
-      '^/restApi': '',
+      '^/ai-love-web': '',
     },
     changeOrigin: true,
   },
