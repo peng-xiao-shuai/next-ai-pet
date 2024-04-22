@@ -7,7 +7,7 @@ import Script from 'next/script';
 
 export const TGInitScript = () => {
   const router = useRouter();
-  const setData = useUserStore.getState().setData;
+  const setData = useUserStore.getState().setDataLocal;
   let initData = '';
 
   const TGWebAppReady = () => {
@@ -23,14 +23,6 @@ export const TGInitScript = () => {
     if (params.url && params.uid && params.sn) {
       router.replace(`/${params.url}?uid=${params.uid}&sn=${params.sn}`);
     }
-
-    window.localStorage.setItem(
-      'auth-cache-url',
-      JSON.stringify({
-        pathname: '/' + params.url,
-        search: `?uid=${params.uid}&sn=${params.sn}`,
-      })
-    );
 
     /**
      * 存储邀请码
@@ -63,6 +55,10 @@ export const TGInitScript = () => {
 
         const { token, isRegister, memberDetail = {} } = result;
         Cookies.set('token', token, { expires: 365 * 20 });
+        Cookies.set('isPet', memberDetail.currentFriendCount, {
+          expires: 365 * 20,
+        });
+
         if (isRegister) fbq('track', 'CompleteRegistration');
         setData();
       };
