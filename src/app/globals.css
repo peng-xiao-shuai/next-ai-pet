@@ -30,6 +30,13 @@
   .loading {
     @apply pointer-events-none inline-block bg-current w-6 h-6 transition-all duration-300;
   }
+
+  .chat-record > .self + .self {
+    @apply mb-1;
+  }
+  .chat-record > .ai + .ai {
+    @apply mb-1;
+  }
 }
 
 div[role='dialog'] {
