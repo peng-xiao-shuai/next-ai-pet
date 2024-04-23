@@ -91,7 +91,7 @@ export const Navbar: FC<{
           </div>
           <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
             <Image
-              src="/icons/food.png"
+              src="/icons/feed.png"
               width={14}
               height={14}
               alt="food"
