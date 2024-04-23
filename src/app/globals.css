@@ -78,11 +78,12 @@ div[role='dialog']:focus-visible {
   opacity: 0;
   width: 0;
   height: 0;
-  margin-right: 10px;
+  margin-right: 0;
 }
 
 .btn-loading[disabled] .loading {
   opacity: 1;
   width: 1.5rem;
   height: 1.5rem;
+  margin-right: 10px;
 }
