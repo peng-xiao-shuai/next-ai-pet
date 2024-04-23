@@ -43,8 +43,8 @@ export const getAppConfigEnv = (
       TG_BOT_NAME: 'pxs_test_bot',
       TG_APP_NAME: 'test',
       origin,
-      HOST: 'https://127.0.0.1:3000',
-      WSS: 'wss://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/',
+      HOST: 'https://doujiwrzdg1dh.cloudfront.net',
+      WSS: 'wss://doujiwrzdg1dh.cloudfront.net/',
       OSS: 'https://static.ailov3.com/',
       DOWNLOADAPI:
         'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/util/file/download/',

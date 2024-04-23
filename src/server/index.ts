@@ -10,8 +10,7 @@ import path from 'path';
 config({ path: '.env' });
 const devProxy = {
   '/restApi': {
-    target:
-      'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/ai-love/restApi',
+    target: 'https://doujiwrzdg1dh.cloudfront.net/restApi',
     pathRewrite: {
       '^/restApi': '',
     },
