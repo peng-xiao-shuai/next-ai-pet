@@ -1,5 +1,7 @@
 'use client';
 import { Button } from '@/components/Button';
+import AppConfigEnv from '@/utils/get-config';
+import { fetchRequest } from '@/utils/request';
 import {
   AnimationPlaybackControls,
   AnimationSequence,
@@ -10,15 +12,23 @@ import {
   useTransform,
 } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 
-export const ClientCreatePet = () => {
+export const ClientCreatePet: FC<{
+  setFriendId: Dispatch<SetStateAction<string | undefined>>;
+}> = ({ setFriendId }) => {
   const [scope, animate] = useAnimate();
   const [isGift, setIsGift] = useState(true);
   const [loading, setLoading] = useState(false);
   const [countDown, setCountDown] = useState(3);
 
   useEffect(() => {
+    fetchRequest(`${AppConfigEnv.HOST}/restApi/friend/generate`, {
+      styleId: 1,
+    }).then(({ result }) => {
+      setFriendId(result.id);
+    });
+
     const animation = (
       animate as (
         sequence: AnimationSequence,
