@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import { PiShareFat } from 'react-icons/pi';
 import { Progress } from '@/components/ui/progress';
+import { ClientTips } from './ClientTips';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -52,8 +53,13 @@ export const Navbar: FC<{
               </div>
             </div>
           </div>
-          <div>
+          <div className="relative">
             <PiShareFat className="size-6 text-white" />
+            <ClientTips
+              className="right-0 translate-y-[20%] w-64"
+              cornerClassName="top-0 -translate-y-2/4 right-3 bg-[#F5B5CF]"
+              text={'If you invite a new user you will get 200 food'}
+            ></ClientTips>
           </div>
         </div>
       </div>
