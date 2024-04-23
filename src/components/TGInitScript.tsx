@@ -4,6 +4,7 @@ import { useUserStore } from '@/hooks/use-user';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
+import { toast } from 'sonner';
 
 export const TGInitScript = () => {
   const router = useRouter();
@@ -46,21 +47,30 @@ export const TGInitScript = () => {
       }`;
 
       const sendRequest = async () => {
-        const { result } = await (
-          await fetch('/api/tg-login', {
-            method: 'POST',
-            body: JSON.stringify({ initData }),
-          })
-        ).json();
+        try {
+          const { result, code, message } = await (
+            await fetch('/api/tg-login', {
+              method: 'POST',
+              body: JSON.stringify({ initData }),
+            })
+          ).json();
 
-        const { token, isRegister, memberDetail = {} } = result;
-        Cookies.set('token', token, { expires: 365 * 20 });
-        Cookies.set('isPet', memberDetail.currentFriendCount, {
-          expires: 365 * 20,
-        });
+          if (code != '200') {
+            throw new Error(message);
+          }
 
-        if (isRegister) fbq('track', 'CompleteRegistration');
-        setData();
+          const { token, isRegister, memberDetail = {} } = result;
+          Cookies.set('token', token, { expires: 365 * 20 });
+          Cookies.set('isPet', memberDetail.currentFriendCount, {
+            expires: 365 * 20,
+          });
+
+          if (isRegister) fbq('track', 'CompleteRegistration');
+          setData();
+        } catch (err: any) {
+          toast(err.message);
+          console.log(err);
+        }
       };
 
       sendRequest();
