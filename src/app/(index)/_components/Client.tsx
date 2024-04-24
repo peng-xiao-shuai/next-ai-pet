@@ -136,19 +136,20 @@ export const Client: FC<{
 
     state.entering = true;
 
+    const isDefineName =
+      list[list.length - 1]?.specialEventTrigger ===
+      'REQUIRE_MODIFY_FRIEND_NAME';
+
     chat.current?.sendMsg(
       JSON.stringify({
         friendId: state.friendId,
         type: 'TEXT',
         message: copyMessage,
         source: 'MEMBER',
-        handlerType:
-          list[list.length - 1]?.specialEventTrigger ===
-          'REQUIRE_MODIFY_FRIEND_NAME'
-            ? 'MODIFY_FRIEND_NAME'
-            : 'CHAT',
+        handlerType: isDefineName ? 'MODIFY_FRIEND_NAME' : 'CHAT',
       }),
-      'message'
+
+      isDefineName ? 'defineName' : 'message'
     );
   };
 
@@ -479,7 +480,18 @@ export const Client: FC<{
     return false;
   };
 
+  const sendMsgFail = () => {
+    toast.warning(`waiting for connection...`);
+    state.entering = false;
+    state.aiThinking = false;
+
+    setTimeout(() => {
+      getList();
+    }, 500);
+  };
+
   useBusWatch('onSocketMessage', onSocketMessage);
+  useBusWatch('sendMsgFail', sendMsgFail);
 
   useEffect(() => {
     if (friendId) {

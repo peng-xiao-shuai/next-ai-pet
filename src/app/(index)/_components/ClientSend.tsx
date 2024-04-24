@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { ClientFoodDrawer } from './ClientFoodDrawer';
 import { ClientTaskDrawer } from './ClientTaskDrawer';
+import { useBusWatch } from '@/hooks/use-bus-watch';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
@@ -54,6 +55,22 @@ export const ClientSendMsg: FC<{
       state!.tempStep = map.step;
     }
   };
+
+  const sendMsgSuc = (type?: unknown) => {
+    /**
+     * 定义宠物名称
+     */
+    if (type === 'defineName') {
+      setDetail?.((state) => ({
+        ...state,
+        name: message.trim(),
+      }));
+    }
+
+    setMessage('');
+  };
+
+  useBusWatch('sendMsgSuc', sendMsgSuc);
 
   useEffect(() => {
     if (detail.isInitialized) {
@@ -102,8 +119,6 @@ export const ClientSendMsg: FC<{
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 right-4 rtl:right-[unset] rtl:left-4">
           <Image
             onClick={() => {
-              console.log(detail.isInitialized, 'detail.isInitialized');
-
               if (detail.isInitialized) {
                 setDetail?.((state) => ({
                   ...state,
@@ -236,7 +251,7 @@ export const ClientTools = () => {
   return (
     <>
       <div
-        className="tools-bar grid grid-cols-6 px-4 overflow-x-auto"
+        className="tools-bar grid grid-cols-6 px-4 overflow-x-auto pt-3"
         style={{
           unicodeBidi: 'normal',
         }}
