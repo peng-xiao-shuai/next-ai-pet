@@ -2,7 +2,6 @@
 import { filterImage } from '@/utils/business';
 import Image from 'next/image';
 import { FC, useContext, useEffect, useState } from 'react';
-import { toast } from 'sonner';
 import { ClientTips } from './ClientTips';
 import { fetchRequest } from '@/utils/request';
 import { ChatContext } from './Client';
@@ -10,16 +9,14 @@ import { useUserStore } from '@/hooks/use-user';
 import AppConfigEnv from '@/utils/get-config';
 import { CenterPopup } from '@/components/CenterPopup';
 import { cn } from '@/lib/utils';
-import { IoCloseCircle } from 'react-icons/io5';
-import { AiFillQuestionCircle } from 'react-icons/ai';
-import { Button } from '@/components/Button';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { ClientFoodDrawer } from './ClientFoodDrawer';
+import { ClientTaskDrawer } from './ClientTaskDrawer';
 
 export const ClientSendMsg: FC<{
-  sendMsg: () => void;
+  sendMsg: (val: string) => void;
 }> = ({ sendMsg }) => {
-  const { state, detail } = useContext(ChatContext);
+  const { state, detail, setDetail } = useContext(ChatContext);
   const { userState } = useUserStore();
   const [message, setMessage] = useState('');
 
@@ -52,16 +49,24 @@ export const ClientSendMsg: FC<{
     }
   };
 
+  useEffect(() => {
+    if (detail.isInitialized) {
+      setMessage('Hi,my good pet');
+    }
+  }, [detail.isInitialized]);
+
   return (
     <>
       <ClientTools></ClientTools>
 
       <div className="input-container relative m-3 leading-none text-white">
-        {/* <ClientTips
-          className="right-0 -translate-y-[120%] w-56"
-          cornerClassName="bottom-0 translate-y-2/4 right-6"
-          text={'Send messages to earn growth points!'}
-        ></ClientTips> */}
+        {detail.isInitialized && (
+          <ClientTips
+            className="right-0 -translate-y-[120%] w-56"
+            cornerClassName="bottom-0 translate-y-2/4 right-6"
+            text={'Send messages to earn growth points!'}
+          ></ClientTips>
+        )}
 
         <textarea
           value={message}
@@ -79,14 +84,23 @@ export const ClientSendMsg: FC<{
           }}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
-              sendMsg();
+              sendMsg(message);
             }
           }}
         />
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 right-4 rtl:right-[unset] rtl:left-4">
           <Image
             onClick={() => {
-              sendMsg();
+              console.log(detail.isInitialized, 'detail.isInitialized');
+
+              if (detail.isInitialized) {
+                setDetail?.((state) => ({
+                  ...state,
+                  isInitialized: false,
+                }));
+                setMessage('');
+              }
+              sendMsg(message);
             }}
             width={30}
             height={30}
@@ -110,6 +124,7 @@ export const ClientTools = () => {
   const [actionDialogVisible, setActionDialogVisible] = useState(false);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
   const [foodDrawerVisible, setFoodDrawerVisible] = useState(false);
+  const [taskDrawerVisible, setTaskDrawerVisible] = useState(false);
 
   const getTools = () => {
     fetchRequest(
@@ -133,11 +148,15 @@ export const ClientTools = () => {
             )
             .concat([
               {
-                url: '/icons/feed.png',
+                url: '/icons/food.png',
                 name: 'feed',
               },
               {
-                url: '/icons/food.png',
+                url: '/icons/task.png',
+                name: 'task',
+              },
+              {
+                url: '/icons/shop.png',
                 name: 'food',
               },
             ] as never[])
@@ -153,6 +172,9 @@ export const ClientTools = () => {
         break;
       case 'food':
         setFoodDrawerVisible(true);
+        break;
+      case 'task':
+        setTaskDrawerVisible(true);
         break;
       case 'Kiss on':
       case 'Touch':
@@ -203,7 +225,7 @@ export const ClientTools = () => {
   return (
     <>
       <div
-        className="tools-bar grid grid-cols-5 px-4 overflow-x-auto"
+        className="tools-bar grid grid-cols-6 px-4 overflow-x-auto"
         style={{
           unicodeBidi: 'normal',
         }}
@@ -238,6 +260,11 @@ export const ClientTools = () => {
         drawerVisible={foodDrawerVisible}
         setDrawerVisible={setFoodDrawerVisible}
       ></ClientFoodDrawer>
+
+      <ClientTaskDrawer
+        drawerVisible={taskDrawerVisible}
+        setDrawerVisible={setTaskDrawerVisible}
+      ></ClientTaskDrawer>
 
       <CenterPopup
         title={actionMap.mainTitle}
