@@ -8,6 +8,7 @@ import { ClientTips } from './ClientTips';
 import { ChatContext } from './Client';
 import { filterImage } from '@/utils/business';
 import { useUserStore } from '@/hooks/use-user';
+import { AiFillQuestionCircle } from 'react-icons/ai';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -37,13 +38,15 @@ export const Navbar: FC<{
           </div> */}
 
           <div className="flex">
-            <Image
-              src={filterImage(detail.head)}
-              alt="avatar"
-              width={44}
-              height={44}
-              className="rounded-full overflow-hidden"
-            ></Image>
+            {Boolean(detail.head) && (
+              <Image
+                src={filterImage(detail.head)}
+                alt="avatar"
+                width={44}
+                height={44}
+                className="rounded-full overflow-hidden"
+              ></Image>
+            )}
             <div className="pl-2 text-white">
               <div className="normal-case">{detail.name || 'Your TonPet'}</div>
               <div className="w-12 h-4 py-[2px] inline-flex items-center justify-center gap-1 rounded-full bg-[#4D4D4D]">
@@ -54,13 +57,18 @@ export const Navbar: FC<{
                   alt="level"
                 ></Image>
                 <span className="text-xs leading-none">
-                  Lv{detail.friendPointDetail.level}
+                  Lv{detail.friendPointDetail?.level}
                 </span>
               </div>
             </div>
           </div>
           <div className="relative">
-            <PiShareFat className="size-6 text-white" />
+            <Image
+              src="/icons/share-gold.png"
+              width={28}
+              height={28}
+              alt="share gold"
+            ></Image>
             <ClientTips
               className="right-0 translate-y-[20%] w-64"
               cornerClassName="top-0 -translate-y-2/4 right-3 bg-[#F5B5CF]"
@@ -72,7 +80,10 @@ export const Navbar: FC<{
 
       <div className="flex justify-between items-center text-white pr-4">
         <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D]">
-          <div className="text-xs">Next leverl need</div>
+          <div className="text-xs flex items-center">
+            <span>Next level need</span>
+            <AiFillQuestionCircle className="size-[13px] ml-1 text-[#737373]"></AiFillQuestionCircle>
+          </div>
           <div className="flex items-center gap-[2px]">
             <Image
               src="/icons/gold-coin.png"
@@ -80,10 +91,11 @@ export const Navbar: FC<{
               height={10}
               alt="gold coin"
             ></Image>
-            <span className="text-xs">{detail.friendPointDetail.point}</span>
+            <span className="text-xs">{detail.friendPointDetail?.point}</span>
             <Progress
               className="h-1 w-16 bg-[#947782]"
-              value={detail.friendPointDetail.point}
+              value={detail.friendPointDetail?.point}
+              max={detail.friendPointDetail?.upgradeRequiredPoint}
             />
           </div>
         </div>
@@ -97,7 +109,7 @@ export const Navbar: FC<{
               alt="gold coin"
             ></Image>
             <span className="text-sm font-bold">
-              {detail.friendPointDetail.point}
+              {detail.friendPointDetail?.point}
             </span>
           </div>
           <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
