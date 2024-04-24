@@ -20,6 +20,7 @@ const state = {
   hasComment: '',
   inviteMemberId: '',
   inviteCode: '',
+  walletAble: 0,
 };
 
 export interface UserStore {

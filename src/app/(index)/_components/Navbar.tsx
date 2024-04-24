@@ -1,17 +1,21 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { PiShareFat } from 'react-icons/pi';
 import { Progress } from '@/components/ui/progress';
 import { ClientTips } from './ClientTips';
+import { ChatContext } from './Client';
+import { filterImage } from '@/utils/business';
+import { useUserStore } from '@/hooks/use-user';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
   title?: string;
   back?: () => void;
 }> = ({ children, title, back }) => {
-  const router = useRouter();
+  const { detail } = useContext(ChatContext);
+  const { userState } = useUserStore();
   return (
     <>
       <div className={`px-4 w-full mb-3`}>
@@ -34,14 +38,14 @@ export const Navbar: FC<{
 
           <div className="flex">
             <Image
-              src="/images/pet.png"
+              src={filterImage(detail.head)}
               alt="avatar"
               width={44}
               height={44}
               className="rounded-full overflow-hidden"
             ></Image>
             <div className="pl-2 text-white">
-              <div className="normal-case">{title || 'Your TonPet'}</div>
+              <div className="normal-case">{detail.name || 'Your TonPet'}</div>
               <div className="w-12 h-4 py-[2px] inline-flex items-center justify-center gap-1 rounded-full bg-[#4D4D4D]">
                 <Image
                   width={10}
@@ -49,7 +53,9 @@ export const Navbar: FC<{
                   src="/icons/level.png"
                   alt="level"
                 ></Image>
-                <span className="text-xs leading-none">Lv1</span>
+                <span className="text-xs leading-none">
+                  Lv{detail.friendPointDetail.level}
+                </span>
               </div>
             </div>
           </div>
@@ -74,8 +80,11 @@ export const Navbar: FC<{
               height={10}
               alt="gold coin"
             ></Image>
-            <span className="text-xs">{0}</span>
-            <Progress className="h-1 w-16 bg-[#947782]" value={33} />
+            <span className="text-xs">{detail.friendPointDetail.point}</span>
+            <Progress
+              className="h-1 w-16 bg-[#947782]"
+              value={detail.friendPointDetail.point}
+            />
           </div>
         </div>
 
@@ -87,7 +96,9 @@ export const Navbar: FC<{
               height={14}
               alt="gold coin"
             ></Image>
-            <span className="text-sm font-bold">0</span>
+            <span className="text-sm font-bold">
+              {detail.friendPointDetail.point}
+            </span>
           </div>
           <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
             <Image
@@ -96,7 +107,7 @@ export const Navbar: FC<{
               height={14}
               alt="food"
             ></Image>
-            <span className="text-sm font-bold">0</span>
+            <span className="text-sm font-bold">{userState.walletAble}</span>
           </div>
         </div>
       </div>
