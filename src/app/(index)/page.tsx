@@ -27,11 +27,14 @@ export default function Home() {
       }
     }
   }, [userState]);
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
+
   return (
     <>
-      {loading ? (
-        <Loading></Loading>
-      ) : !isPet ? (
+      {!isPet ? (
         <ClientCreatePet
           setIsPet={setIsPet}
           setFriendId={setFriendId}

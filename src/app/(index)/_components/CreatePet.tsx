@@ -14,13 +14,17 @@ import {
 import Image from 'next/image';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 
+let state = {
+  countDown: 3,
+};
 export const ClientCreatePet: FC<{
   setFriendId: Dispatch<SetStateAction<string | undefined>>;
-}> = ({ setFriendId }) => {
+  setIsPet: Dispatch<SetStateAction<boolean>>;
+}> = ({ setFriendId, setIsPet }) => {
   const [scope, animate] = useAnimate();
   const [isGift, setIsGift] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [countDown, setCountDown] = useState(3);
+  const [countDown, setCountDown] = useState(state.countDown);
 
   useEffect(() => {
     fetchRequest(`${AppConfigEnv.HOST}/restApi/friend/generate`, {
@@ -54,9 +58,11 @@ export const ClientCreatePet: FC<{
       setIsGift(false);
 
       const time = setInterval(() => {
-        if (countDown < 0) {
+        if (state.countDown < 0) {
+          setIsPet(true);
           clearInterval(time);
         } else {
+          state.countDown -= 1;
           setCountDown((val) => val - 1);
         }
       }, 1000);
@@ -107,6 +113,7 @@ export const ClientCreatePet: FC<{
             click={() => {
               setLoading(true);
               setCountDown(-1);
+              setIsPet(true);
             }}
             title="Adopt a pet"
             className="bg-[#515151] text-xl w-2/3 mx-auto text-white border-white border-2"
