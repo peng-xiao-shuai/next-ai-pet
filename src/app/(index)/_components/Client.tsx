@@ -52,6 +52,7 @@ type ChatContextState = {
     listLoading: boolean;
   };
   detail: any;
+  setDetail: Dispatch<SetStateAction<Indexes<any>>>;
   scrollDom: MutableRefObject<HTMLDivElement | null>;
   onSocketMessage: (e: any, isSocket?: boolean) => void;
   list: any[];
@@ -126,7 +127,30 @@ export const Client: FC<{
     return item.id;
   }, [list]);
 
-  const sendMsg = () => {};
+  const sendMsg = (message: string) => {
+    if (checkEntering()) return;
+
+    let copyMessage = message.trim();
+
+    if (!copyMessage) return;
+
+    state.entering = true;
+
+    chat.current?.sendMsg(
+      JSON.stringify({
+        friendId: state.friendId,
+        type: 'TEXT',
+        message: copyMessage,
+        source: 'MEMBER',
+        handlerType:
+          list[list.length - 1]?.specialEventTrigger ===
+          'REQUIRE_MODIFY_FRIEND_NAME'
+            ? 'MODIFY_FRIEND_NAME'
+            : 'CHAT',
+      }),
+      'message'
+    );
+  };
 
   const filterMessage = (item: any, isSocket = false) => {
     const index = list.indexOf(item);
@@ -471,6 +495,7 @@ export const Client: FC<{
       value={{
         state,
         detail,
+        setDetail,
         onSocketMessage,
         list,
         setList,
