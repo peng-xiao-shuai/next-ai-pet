@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { Client } from './_components/Client';
 import { ClientCreatePet } from './_components/CreatePet';
-import { Navbar } from './_components/Navbar';
 import Cookies from 'js-cookie';
 import { Loading } from '@/components/Loading';
 import { useUserStore } from '@/hooks/use-user';
@@ -19,11 +18,13 @@ export default function Home() {
       setIsPet(isPet > 0);
       setLoading(false);
 
-      fetchRequest('/restApi/friend/list/v2').then(({ result }) => {
-        if (result.conversations.rows.length) {
-          setFriendId(result.conversations.rows[0].id);
-        }
-      });
+      if (isPet > 0) {
+        fetchRequest('/restApi/friend/list/v2').then(({ result }) => {
+          if (result.conversations.rows.length) {
+            setFriendId(result.conversations.rows[0].id);
+          }
+        });
+      }
     }
   }, [userState]);
   return (
@@ -31,13 +32,12 @@ export default function Home() {
       {loading ? (
         <Loading></Loading>
       ) : !isPet ? (
-        <ClientCreatePet setFriendId={setFriendId}></ClientCreatePet>
+        <ClientCreatePet
+          setIsPet={setIsPet}
+          setFriendId={setFriendId}
+        ></ClientCreatePet>
       ) : (
-        <div className="bg-black h-full flex flex-col">
-          <Navbar></Navbar>
-
-          <Client friendId={friendId}></Client>
-        </div>
+        <Client friendId={friendId}></Client>
       )}
     </>
   );

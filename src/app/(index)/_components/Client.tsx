@@ -17,6 +17,7 @@ import { fetchRequest } from '@/utils/request';
 import { filterAbbrTime, filterImage } from '@/utils/business';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { toast } from 'sonner';
+import { Navbar } from './Navbar';
 const MAX_LEN = 80;
 
 type ChatContextState = {
@@ -485,10 +486,14 @@ export const Client: FC<{
         checkEntering,
       }}
     >
-      <div className="overflow-hidden flex-1 flex flex-col relative">
-        <ClientChatRecord></ClientChatRecord>
+      <div className="bg-black h-full flex flex-col">
+        <Navbar></Navbar>
 
-        <ClientSendMsg sendMsg={sendMsg}></ClientSendMsg>
+        <div className="overflow-hidden flex-1 flex flex-col relative">
+          <ClientChatRecord></ClientChatRecord>
+
+          <ClientSendMsg sendMsg={sendMsg}></ClientSendMsg>
+        </div>
       </div>
     </ChatContext.Provider>
   );
