@@ -1,7 +1,7 @@
 'use client';
 import { filterImage } from '@/utils/business';
 import Image from 'next/image';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { ClientTips } from './ClientTips';
 import { fetchRequest } from '@/utils/request';
 import { ChatContext } from './Client';
@@ -16,9 +16,15 @@ import { ClientTaskDrawer } from './ClientTaskDrawer';
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
 }> = ({ sendMsg }) => {
-  const { state, detail, setDetail } = useContext(ChatContext);
+  const { state, detail, setDetail, list } = useContext(ChatContext);
   const { userState } = useUserStore();
   const [message, setMessage] = useState('');
+  const isDefineName = useMemo(
+    () =>
+      list![list!.length - 1]?.specialEventTrigger ===
+      'REQUIRE_MODIFY_FRIEND_NAME',
+    [list]
+  );
 
   const setGuideData = (map: any, label: string, guideStep?: number) => {
     if (!(!map.reviewHide && !(map.ugcHide && detail.styleType === 'USER')))
@@ -62,17 +68,22 @@ export const ClientSendMsg: FC<{
       <div className="input-container relative m-3 leading-none text-white">
         {detail.isInitialized && (
           <ClientTips
+            visible={detail.isInitialized}
             className="right-0 -translate-y-[120%] w-56"
             cornerClassName="bottom-0 translate-y-2/4 right-6"
             text={'Send messages to earn growth points!'}
           ></ClientTips>
         )}
 
-        <textarea
+        <input
           value={message}
           className="textarea-dom pr-[72px] pl-4 w-full h-12 rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-4 rtl:pl-[72px]"
-          placeholder={`Message`}
-          maxLength={200}
+          placeholder={
+            isDefineName
+              ? 'Please directly type the name of your pet'
+              : `Message`
+          }
+          maxLength={isDefineName ? 20 : 200}
           onChange={({ target }) => {
             setMessage(target.value);
           }}
