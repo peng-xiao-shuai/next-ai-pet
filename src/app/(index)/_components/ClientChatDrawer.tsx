@@ -20,7 +20,12 @@ export const ClientChatDrawer: FC<{
         <DrawerHeader className="!p-0">
           <DrawerTitle className="text-white text-left flex justify-between items-center">
             <span className="text-lg font-bold text-[#F0F0F2]">{title}</span>
-            <IoCloseCircle className="text-[#3B3B3D] size-6" />
+            <IoCloseCircle
+              className="text-[#3B3B3D] size-6"
+              onClick={() => {
+                setDrawerVisible(false);
+              }}
+            />
           </DrawerTitle>
         </DrawerHeader>
 
