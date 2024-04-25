@@ -18,6 +18,7 @@ import { filterAbbrTime, filterImage } from '@/utils/business';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { toast } from 'sonner';
 import { Navbar } from './Navbar';
+import { useUserStore } from '@/hooks/use-user';
 const MAX_LEN = 80;
 
 type ChatContextState = {
@@ -107,7 +108,9 @@ export const Client: FC<{
   friendId: undefined | string;
 }> = ({ friendId }) => {
   const chat = useRef(new ChatWebSocket());
+  const { userState, setDataLocal } = useUserStore();
   const scrollDom = useRef<HTMLDivElement | null>(null);
+  const recordListLength = useRef(0);
   const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [queryingPast, setQueryingPast] = useState(false);
@@ -311,6 +314,7 @@ export const Client: FC<{
       extObj,
       isLastMessage,
       plotRound,
+      friendPointChange,
       isPlotStage: itemIsPlotStage,
     } = item;
     if (extObj) {
@@ -336,6 +340,12 @@ export const Client: FC<{
     }
     filterMessage(item, !isFormList);
     setList((state) => state.concat(item));
+
+    if (friendPointChange) {
+      setDataLocal({
+        point: Number(userState.point) + Number(friendPointChange),
+      });
+    }
 
     const time = setTimeout(() => {
       scrollToBottom();
@@ -368,6 +378,8 @@ export const Client: FC<{
           state.firstId = id;
         }
         rows.forEach((item: any) => {
+          item.friendPointChange = 0;
+
           const { length } = list;
           if (length >= MAX_LEN) {
             const startIdx = length - Math.floor(MAX_LEN / 2);
@@ -434,6 +446,7 @@ export const Client: FC<{
       .then(({ result }) => {
         const list = result.rows?.reverse() || [];
         list.forEach((item: any) => {
+          item.friendPointChange = 0;
           onSocketMessage?.(item);
         });
       })
@@ -502,10 +515,19 @@ export const Client: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [friendId]);
 
+  useEffect(() => {
+    if (recordListLength.current < list!.length) {
+      scrollToBottom();
+    }
+    recordListLength.current = list!.length;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list]);
+
   return (
     <ChatContext.Provider
       value={{
         state,
+        scrollDom,
         detail,
         setDetail,
         onSocketMessage,
