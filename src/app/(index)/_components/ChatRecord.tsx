@@ -2,11 +2,12 @@
 
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { FC, SyntheticEvent, useContext } from 'react';
+import { FC, SyntheticEvent, useContext, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { debounce } from '@/utils/debounce-throttle';
 import { filterFormatDate, filterImage } from '@/utils/business';
 import { ChatContext } from './Client';
+import { m } from 'framer-motion';
 
 type Record<T = any> = FC<
   {
@@ -43,8 +44,32 @@ type TextRecord = {
 export const TextRecord: TextRecord = {
   // me
   TextMe: ({ item }) => {
+    const [isAnimationComplete, setAnimationComplete] = useState(false);
     return (
-      <div className="flex items-center relative" dir="ltr">
+      <div className="flex items-center relative gap-2" dir="ltr">
+        {Boolean(item.friendPointChange) && (
+          <m.div
+            className="flex items-center"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            transition={{ type: 'spring', delay: 0.3, duration: 0.5 }}
+          >
+            <Image
+              src="/icons/gold-coin.png"
+              alt="add Gold coin"
+              width={16}
+              height={16}
+              className="mx-[2px]"
+            ></Image>
+            <span className="text-[#FDCD62] text-sm">
+              +{item.friendPointChange}
+            </span>
+          </m.div>
+        )}
+
         <div
           className={cn(
             ClassName.text__inner,
@@ -207,21 +232,19 @@ export const ClientChatRecord = () => {
   const {
     state,
     list,
-    detail,
     queryingPast,
     scrollDom,
     setQueryingPast,
     getList,
     getPast,
-    newestId,
   } = useContext(ChatContext);
 
   const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
-
-    if (scrollTop === 0 && state?.listLoading) {
+    if (scrollTop === 0 && !state!.listLoading) {
       getPast?.();
     }
+
     if (
       scrollTop + clientHeight >= scrollHeight - 1 &&
       scrollTop > state?.lastScrollTop!
