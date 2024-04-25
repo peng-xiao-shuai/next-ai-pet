@@ -21,6 +21,9 @@ const state = {
   inviteMemberId: '',
   inviteCode: '',
   walletAble: 0,
+  point: 0,
+  level: 1,
+  upgradeRequiredPoint: 0,
 };
 
 export interface UserStore {

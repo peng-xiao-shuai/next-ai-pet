@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { PiShareFat } from 'react-icons/pi';
 import { Progress } from '@/components/ui/progress';
 import { ClientTips } from './ClientTips';
@@ -16,7 +16,12 @@ export const Navbar: FC<{
   back?: () => void;
 }> = ({ children, title, back }) => {
   const { detail } = useContext(ChatContext);
-  const { userState } = useUserStore();
+  const { userState, setData } = useUserStore();
+  useEffect(() => {
+    if (userState.point >= userState.upgradeRequiredPoint) {
+      setData();
+    }
+  }, [setData, userState.point, userState.upgradeRequiredPoint]);
   return (
     <>
       <div className={`px-4 w-full mb-3`}>
@@ -57,7 +62,7 @@ export const Navbar: FC<{
                   alt="level"
                 ></Image>
                 <span className="text-xs leading-none">
-                  Lv{detail.friendPointDetail?.level}
+                  Lv{userState.level}
                 </span>
               </div>
             </div>
@@ -70,6 +75,7 @@ export const Navbar: FC<{
               alt="share gold"
             ></Image>
             <ClientTips
+              visible={false}
               className="right-0 translate-y-[20%] w-64"
               cornerClassName="top-0 -translate-y-2/4 right-3 bg-[#F5B5CF]"
               text={'If you invite a new user you will get 200 food'}
@@ -91,11 +97,11 @@ export const Navbar: FC<{
               height={10}
               alt="gold coin"
             ></Image>
-            <span className="text-xs">{detail.friendPointDetail?.point}</span>
+            <span className="text-xs">{userState.point}</span>
             <Progress
               className="h-1 w-16 bg-[#947782]"
-              value={detail.friendPointDetail?.point}
-              max={detail.friendPointDetail?.upgradeRequiredPoint}
+              value={userState.point}
+              max={userState.upgradeRequiredPoint}
             />
           </div>
         </div>
@@ -108,9 +114,7 @@ export const Navbar: FC<{
               height={14}
               alt="gold coin"
             ></Image>
-            <span className="text-sm font-bold">
-              {detail.friendPointDetail?.point}
-            </span>
+            <span className="text-sm font-bold">{userState.point}</span>
           </div>
           <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
             <Image
