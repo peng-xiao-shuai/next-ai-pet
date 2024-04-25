@@ -18,7 +18,7 @@ export default function Home() {
       setIsPet(isPet > 0);
       setLoading(false);
 
-      if (isPet > 0) {
+      if (isPet > 0 && !friendId) {
         fetchRequest('/restApi/friend/list/v2').then(({ result }) => {
           if (result.conversations.rows.length) {
             setFriendId(result.conversations.rows[0].id);
@@ -26,6 +26,7 @@ export default function Home() {
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userState]);
 
   if (loading) {
