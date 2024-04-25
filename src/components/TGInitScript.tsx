@@ -65,8 +65,9 @@ export const TGInitScript = () => {
             expires: 365 * 20,
           });
 
-          if (isRegister) fbq('track', 'CompleteRegistration');
-          setData();
+          if (isRegister && typeof fbq != 'undefined')
+            fbq('track', 'CompleteRegistration');
+          setData(memberDetail);
         } catch (err: any) {
           toast(err.message);
           console.log(err);
