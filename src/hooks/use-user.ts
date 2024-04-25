@@ -24,6 +24,7 @@ const state = {
   point: 0,
   level: 1,
   upgradeRequiredPoint: 0,
+  currentFriendCount: 0,
 };
 
 export interface UserStore {
