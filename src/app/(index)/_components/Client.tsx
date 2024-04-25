@@ -552,8 +552,6 @@ export const Client: FC<{
       <div className="bg-black h-full flex flex-col">
         <Navbar></Navbar>
 
-        <div className="text-white">{readyState}</div>
-
         <div className="overflow-hidden flex-1 flex flex-col relative">
           <ClientChatRecord></ClientChatRecord>
 
