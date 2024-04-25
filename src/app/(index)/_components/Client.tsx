@@ -10,7 +10,7 @@ import {
   FC,
   useEffect,
 } from 'react';
-import ChatWebSocket from '../Chat';
+import ChatWebSocket from '../wsRequest';
 import { ClientSendMsg } from './ClientSend';
 import { ClientChatRecord } from './ChatRecord';
 import { fetchRequest } from '@/utils/request';
@@ -74,6 +74,7 @@ type ChatContextState = {
   getPast: () => void;
   getList: () => void;
   newestId: string | '';
+  readyState: 0 | 1 | 2 | 3;
   checkEntering: () => void;
 };
 
@@ -124,6 +125,7 @@ export const Client: FC<{
     poster: '',
   });
   const [videoVisible, setVideoVisible] = useState(false);
+  const [readyState, setReadyState] = useState<0 | 1 | 2 | 3>(0);
   const newestId = useMemo(() => {
     const [item] = list?.slice(-1) || [];
     if (!item) return '';
@@ -481,7 +483,7 @@ export const Client: FC<{
       toast.warning('waiting for connection');
       console.log('客户端发送失败，重置重连', chat.current);
 
-      chat.current?.reconnect(true);
+      // chat.current?.reconnect();
       return true;
     }
 
@@ -505,6 +507,7 @@ export const Client: FC<{
 
   useBusWatch('onSocketMessage', onSocketMessage);
   useBusWatch('sendMsgFail', sendMsgFail);
+  useBusWatch('onSocketReadyState', setReadyState);
 
   useEffect(() => {
     if (friendId) {
@@ -542,11 +545,14 @@ export const Client: FC<{
         getPast,
         getList,
         newestId,
+        readyState,
         checkEntering,
       }}
     >
       <div className="bg-black h-full flex flex-col">
         <Navbar></Navbar>
+
+        <div className="text-white">{readyState}</div>
 
         <div className="overflow-hidden flex-1 flex flex-col relative">
           <ClientChatRecord></ClientChatRecord>

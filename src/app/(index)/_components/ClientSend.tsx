@@ -17,7 +17,7 @@ import { m, AnimatePresence } from 'framer-motion';
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
 }> = ({ sendMsg }) => {
-  const { detail, setDetail, list } = useContext(ChatContext);
+  const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
   const isDefineName = useMemo(
     () =>
@@ -87,23 +87,29 @@ export const ClientSendMsg: FC<{
           }}
         />
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 right-4 rtl:right-[unset] rtl:left-4">
-          <Image
-            onClick={() => {
-              if (detail.isInitialized) {
-                setDetail?.((state) => ({
-                  ...state,
-                  isInitialized: false,
-                }));
-                setMessage('');
-              }
-              sendMsg(message);
-            }}
-            width={30}
-            height={30}
-            className="send-icon"
-            alt="send"
-            src="/icons/send.png"
-          ></Image>
+          {readyState === 1 ? (
+            <Image
+              onClick={() => {
+                if (detail.isInitialized) {
+                  setDetail?.((state) => ({
+                    ...state,
+                    isInitialized: false,
+                  }));
+                  setMessage('');
+                }
+                sendMsg(message);
+              }}
+              width={30}
+              height={30}
+              className="send-icon"
+              alt="send"
+              src="/icons/send.png"
+            ></Image>
+          ) : (
+            <div className="size-[30px] bg-[#fd2c54] flex items-center justify-center rounded-full overflow-hidden">
+              <span className="loading loading-spinner"></span>
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -135,9 +141,9 @@ export const ClientTools = () => {
 
       setTimeout(() => {
         setIsAnimateEnd(true);
-      }, 2000);
+      }, 3000);
     }
-    return list![list!.length - 1]?.specialEventTrigger;
+    return list![list!.length - 1]?.specialEventTrigger || 'none';
   }, [list]);
 
   const getTools = () => {
@@ -267,7 +273,9 @@ export const ClientTools = () => {
               src={filterImage(tool.url)}
               alt={tool.name}
               className={cn(
-                tipsStatus === tool.step && !isAnimateEnd ? 'relative z-50' : ''
+                tipsStatus === tool.highlight && !isAnimateEnd
+                  ? 'relative z-50'
+                  : ''
               )}
             />
             <AnimatePresence>
@@ -275,9 +283,11 @@ export const ClientTools = () => {
                 <m.div
                   animate={{
                     opacity: 1,
+                    zIndex: 40,
                   }}
                   exit={{
                     opacity: 0,
+                    zIndex: 40,
                   }}
                 >
                   <GuideStep tool={tool}></GuideStep>
