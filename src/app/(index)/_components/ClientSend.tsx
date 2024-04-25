@@ -1,11 +1,10 @@
 'use client';
 import { filterImage } from '@/utils/business';
 import Image from 'next/image';
-import { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useContext, useEffect, useMemo, useState, useRef } from 'react';
 import { ClientTips } from './ClientTips';
 import { fetchRequest } from '@/utils/request';
 import { ChatContext } from './Client';
-import { useUserStore } from '@/hooks/use-user';
 import AppConfigEnv from '@/utils/get-config';
 import { CenterPopup } from '@/components/CenterPopup';
 import { cn } from '@/lib/utils';
@@ -13,12 +12,12 @@ import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { ClientFoodDrawer } from './ClientFoodDrawer';
 import { ClientTaskDrawer } from './ClientTaskDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
+import { m, AnimatePresence } from 'framer-motion';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
 }> = ({ sendMsg }) => {
-  const { state, detail, setDetail, list } = useContext(ChatContext);
-  const { userState } = useUserStore();
+  const { detail, setDetail, list } = useContext(ChatContext);
   const [message, setMessage] = useState('');
   const isDefineName = useMemo(
     () =>
@@ -26,35 +25,6 @@ export const ClientSendMsg: FC<{
       'REQUIRE_MODIFY_FRIEND_NAME',
     [list]
   );
-
-  const setGuideData = (map: any, label: string, guideStep?: number) => {
-    if (!(!map.reviewHide && !(map.ugcHide && detail.styleType === 'USER')))
-      return;
-    const temp = JSON.parse(JSON.stringify(map));
-    if (['ROLE_PLAY', 'HOT_DATE', 'ASMR'].includes(map.name)) {
-      if (!state!.guideMapTemp) {
-        state!.guideMapTemp = map;
-        map.step = 3;
-        map.guideTip = 'chat.guideTip3' + label;
-        state!.guideMapTemp.guides = [temp];
-      } else {
-        state!.guideMapTemp.guideTip += `, ${label}`;
-        state!.guideMapTemp.guides.push(temp);
-      }
-    } else if (map.name === 'LET_ME_SEE_U') {
-      map.guides = [temp];
-      map.step = 1;
-      map.guideTip = 'chat.guideTip1';
-    } else if (map.name === 'TAKE_ACTION') {
-      map.guides = [temp];
-      map.step = 2;
-      map.guideTip = 'chat.guideTip2';
-    }
-
-    if (map.step && (!guideStep || map.step < guideStep)) {
-      state!.tempStep = map.step;
-    }
-  };
 
   const sendMsgSuc = (type?: unknown) => {
     /**
@@ -142,7 +112,7 @@ export const ClientSendMsg: FC<{
 
 let actionMapCopy: Indexes = {};
 export const ClientTools = () => {
-  const { state, checkEntering } = useContext(ChatContext);
+  const { state, checkEntering, list } = useContext(ChatContext);
   const [tools, setTools] = useState([]);
   const [actionMap, setActionMap] = useState<Indexes>({});
   const [inp1, setInp1] = useState('');
@@ -151,6 +121,24 @@ export const ClientTools = () => {
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
   const [foodDrawerVisible, setFoodDrawerVisible] = useState(false);
   const [taskDrawerVisible, setTaskDrawerVisible] = useState(false);
+  /**
+   * 结束动画
+   */
+  const [isAnimateEnd, setIsAnimateEnd] = useState(false);
+  const tipsStatus = useMemo(() => {
+    if (
+      ['HIGHLIGHT_ACTION_BTN', 'HIGHLIGHT_FEED_FOOD'].includes(
+        list![list!.length - 1]?.specialEventTrigger
+      )
+    ) {
+      setIsAnimateEnd(false);
+
+      setTimeout(() => {
+        setIsAnimateEnd(true);
+      }, 2000);
+    }
+    return list![list!.length - 1]?.specialEventTrigger;
+  }, [list]);
 
   const getTools = () => {
     fetchRequest(
@@ -165,9 +153,12 @@ export const ClientTools = () => {
           result
             .filter((item) => ['Kiss on', 'Touch', 'Hug'].includes(item.action))
             .map(
-              (item) =>
+              (item, index) =>
                 ({
                   ...item,
+                  step: index === 1 ? 'HIGHLIGHT_ACTION_BTN' : '',
+                  highlight: 'HIGHLIGHT_ACTION_BTN',
+                  content: 'Please choose an action to touch your pet.',
                   url: filterImage(item.expression2),
                   name: item.action,
                 } as never)
@@ -176,14 +167,19 @@ export const ClientTools = () => {
               {
                 url: '/icons/food.png',
                 name: 'feed',
+                step: 'HIGHLIGHT_FEED_FOOD',
+                highlight: 'HIGHLIGHT_FEED_FOOD',
+                content: 'Click to feed your pet food',
               },
               {
                 url: '/icons/task.png',
                 name: 'task',
+                step: 'task',
               },
               {
                 url: '/icons/shop.png',
                 name: 'food',
+                step: 'food',
               },
             ] as never[])
         );
@@ -261,18 +257,33 @@ export const ClientTools = () => {
             key={index}
             className="tool relative flex justify-center items-center"
             onClick={() => {
+              setIsAnimateEnd(true);
               clickTool(tool);
             }}
           >
             <Image
-              className="tool__icon"
               width={33}
               height={33}
               src={filterImage(tool.url)}
               alt={tool.name}
+              className={cn(
+                tipsStatus === tool.step && !isAnimateEnd ? 'relative z-50' : ''
+              )}
             />
-
-            {/* <GuideStep tool={tool}></GuideStep> */}
+            <AnimatePresence>
+              {tipsStatus === tool.step && !isAnimateEnd && (
+                <m.div
+                  animate={{
+                    opacity: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                  }}
+                >
+                  <GuideStep tool={tool}></GuideStep>
+                </m.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </div>
@@ -332,6 +343,26 @@ export const ClientTools = () => {
           />
         </div>
       </CenterPopup>
+    </>
+  );
+};
+
+export const GuideStep: FC<{
+  tool: any;
+}> = ({ tool }) => {
+  return (
+    <>
+      <div
+        className="tool__guide__mask fixed z-40 top-0 left-0 size-full bg-black/40"
+        onClick={(e) => e.stopPropagation()}
+      ></div>
+
+      <ClientTips
+        visible={true}
+        text={tool.content}
+        className="-translate-y-[140%] -translate-x-[55%] !fixed z-50 w-[280px]"
+        cornerClassName="bottom-0 translate-y-2/4 left-2/4 -translate-x-2/4"
+      ></ClientTips>
     </>
   );
 };
