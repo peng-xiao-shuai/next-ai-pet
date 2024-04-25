@@ -5,6 +5,7 @@ import { Loading } from '@/components/Loading';
 import { Toaster } from 'sonner';
 import { TGInitScript } from '@/components/TGInitScript';
 import { ClientLazyMotion } from '@/components/ClientLazyMotion';
+import { TonProvider } from '@/components/TonProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <main className="h-[100vh] w-full bg-black">
-          <ClientLazyMotion>{children}</ClientLazyMotion>
+          <TonProvider>
+            <ClientLazyMotion>{children}</ClientLazyMotion>
+          </TonProvider>
         </main>
         <Toaster
           toastOptions={{
