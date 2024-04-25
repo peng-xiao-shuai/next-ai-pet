@@ -58,8 +58,12 @@ export const fetchRequest = async <T = any>(
       result: T;
     } = await res.json();
 
-    if (data.code === 500) {
-      throw new Error(data.message);
+    switch (data.code) {
+      case 500:
+      case 403:
+      case 404:
+      case 405:
+        throw new Error(data.message);
     }
 
     return {
