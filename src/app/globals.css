@@ -32,10 +32,10 @@
   }
 
   .chat-record > .self + .self {
-    @apply mb-1;
+    @apply mt-1;
   }
   .chat-record > .ai + .ai {
-    @apply mb-1;
+    @apply mt-1;
   }
 }
 
