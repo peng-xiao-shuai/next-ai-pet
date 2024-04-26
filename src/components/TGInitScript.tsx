@@ -3,12 +3,10 @@
 import { useUserStore } from '@/hooks/use-user';
 import { decodeFromBase64Url } from '@/utils/string-transform';
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { toast } from 'sonner';
 
 export const TGInitScript = () => {
-  const router = useRouter();
   const setData = useUserStore.getState().setDataLocal;
   let initData = '';
 
