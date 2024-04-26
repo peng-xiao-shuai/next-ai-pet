@@ -9,6 +9,9 @@ import { ChatContext } from './Client';
 import { filterImage } from '@/utils/business';
 import { useUserStore } from '@/hooks/use-user';
 import { AiFillQuestionCircle } from 'react-icons/ai';
+import { fetchRequest } from '@/utils/request';
+import { base64UrlEncode, copyText } from '@/utils/string-transform';
+import { toast } from 'sonner';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -73,6 +76,28 @@ export const Navbar: FC<{
               width={28}
               height={28}
               alt="share gold"
+              onClick={() => {
+                const str = JSON.stringify({
+                  id: userState.googleOpenid,
+                });
+                fetchRequest(
+                  '/restApi/chatMessage/sendMessage/' +
+                    window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+                  {
+                    message: `点击当前连接转发 tg://msg_url?url=t.me/pxs_test_bot/test?startapp=${base64UrlEncode(
+                      str
+                    )}&text=快来和我一起领养AI宠物吧！`,
+                  }
+                );
+
+                copyText(
+                  `t.me/pxs_test_bot/test?startapp=${base64UrlEncode(str)}`,
+                  () => {
+                    toast('复制链接成功，也可以在机器人聊天中点击链接分享');
+                  },
+                  false
+                );
+              }}
             ></Image>
             <ClientTips
               visible={false}

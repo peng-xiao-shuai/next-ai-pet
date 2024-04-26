@@ -25,6 +25,7 @@ const state = {
   level: 1,
   upgradeRequiredPoint: 0,
   currentFriendCount: 0,
+  googleOpenid: '',
 };
 
 export interface UserStore {

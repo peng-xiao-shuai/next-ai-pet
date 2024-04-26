@@ -66,3 +66,24 @@ export function copyText(value: string, cb?: Function, isShowTip?: false) {
     cb?.();
   }
 }
+
+/**
+ * base64 加密
+ */
+export function base64UrlEncode(str: string) {
+  var base64Str = btoa(unescape(encodeURIComponent(str)));
+  base64Str = base64Str.replace('+', '-').replace('/', '_').replace('=', '');
+  return base64Str;
+}
+
+/**
+ * base64 解密
+ */
+export function decodeFromBase64Url(base64UrlStr: string) {
+  base64UrlStr = base64UrlStr.replace('-', '+').replace('_', '/');
+  while (base64UrlStr.length % 4) {
+    base64UrlStr += '=';
+  }
+  var str = decodeURIComponent(escape(atob(base64UrlStr)));
+  return str;
+}
