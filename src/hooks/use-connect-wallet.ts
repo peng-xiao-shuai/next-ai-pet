@@ -59,7 +59,6 @@ export const useConnectWallet = ({
   useInterval(recreateProofPayload, TonProofDemoApi.refreshIntervalMs);
 
   useEffect(() => {
-    console.log(state);
     if (state.status === 'closed') {
       window.Telegram?.WebApp.MainButton.setText('Ton Connect');
       window.Telegram?.WebApp.MainButton.enable();
@@ -119,5 +118,6 @@ export const useConnectWallet = ({
   return {
     handleOpen,
     isCheck,
+    tonConnectUI,
   };
 };
