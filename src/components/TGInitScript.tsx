@@ -1,6 +1,7 @@
 'use client';
 
 import { useUserStore } from '@/hooks/use-user';
+import { decodeFromBase64Url } from '@/utils/string-transform';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
@@ -13,24 +14,11 @@ export const TGInitScript = () => {
 
   const TGWebAppReady = () => {
     const WebApp = window.Telegram.WebApp;
-    const params: Indexes<string> = {};
-    const paramsEach = WebApp.initDataUnsafe.start_param?.split('_');
-    paramsEach?.forEach((item: string, index: number) => {
-      if (index % 2 === 0) {
-        params[item] = paramsEach[index + 1];
-      }
-    });
-
-    if (params.url && params.uid && params.sn) {
-      router.replace(`/${params.url}?uid=${params.uid}&sn=${params.sn}`);
-    }
-
-    /**
-     * 存储邀请码
-     */
-    if (params.inviteCode) {
-      window.localStorage.setItem('inviteCode', params.inviteCode);
-    }
+    const params: Indexes<string> = JSON.parse(
+      WebApp.initDataUnsafe.start_param
+        ? decodeFromBase64Url(WebApp.initDataUnsafe.start_param)
+        : '{}'
+    );
 
     /**
      * 静默登录
@@ -51,7 +39,7 @@ export const TGInitScript = () => {
           const { result, code, message } = await (
             await fetch('/api/tg-login', {
               method: 'POST',
-              body: JSON.stringify({ initData }),
+              body: JSON.stringify({ initData, sourceId: params.id }),
             })
           ).json();
 

@@ -10,7 +10,7 @@ const handle = async (req: NextRequest) => {
     'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/ai-love';
 
   try {
-    validate(body.initData, process.env.NEXT_PUBLIC_TOKEN!);
+    // validate(body.initData, process.env.NEXT_PUBLIC_TOKEN!);
 
     const searchParams = new URLSearchParams(body.initData);
     const user = JSON.parse(searchParams.get('user')!);
