@@ -60,8 +60,10 @@ export const fetchRequest = async <T = any>(
 
     switch (data.code) {
       case 500:
+      case 502:
       case 403:
       case 404:
+      case 400:
       case 405:
         throw new Error(data.message);
     }
