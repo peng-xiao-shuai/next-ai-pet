@@ -8,9 +8,8 @@ import {
   SequenceOptions,
   m,
   useAnimate,
-  useMotionValue,
-  useTransform,
 } from 'framer-motion';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 
@@ -31,6 +30,7 @@ export const ClientCreatePet: FC<{
       styleId: 1,
     }).then(({ result }) => {
       setFriendId(result.id);
+      Cookies.set('isPet', '1');
     });
 
     const animation = (
