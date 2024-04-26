@@ -24,19 +24,19 @@ export const getAppConfigEnv = (
     ? ''
     : window.origin;
 
-  if (origin.includes('https://www.telegramloveai.com')) {
+  if (origin.includes('https://docbphqre6f8b.cloudfront.net')) {
     return {
       TG_BOT_NAME: 'AIFriendchat_bot',
       TG_APP_NAME: 'AIFriendchat',
       origin,
-      HOST: 'https://api.telegramloveai.com',
-      WSS: 'wss://api.telegramloveai.com/',
+      HOST: 'https://doujiwrzdg1dh.cloudfront.net',
+      WSS: 'wss://doujiwrzdg1dh.cloudfront.net/',
       OSS: 'https://static.ailov3.com/',
-      DOWNLOADAPI: 'https://api.telegramloveai.com/util/file/download/',
+      DOWNLOADAPI: 'https://doujiwrzdg1dh.cloudfront.net/util/file/download/',
       APPVERSIONCODE: 101,
       APPTYPE: 'H5',
       APPNAME: 'Ai girl friend',
-      GOOGLE_GAID: 'G-46HPB8YJYG',
+      GOOGLE_GAID: '',
     };
   } else if (origin.includes('https://127.0.0.1:3000')) {
     return {
