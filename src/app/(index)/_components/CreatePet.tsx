@@ -26,7 +26,7 @@ export const ClientCreatePet: FC<{
   const [countDown, setCountDown] = useState(state.countDown);
 
   useEffect(() => {
-    fetchRequest(`${AppConfigEnv.HOST}/restApi/friend/generate`, {
+    fetchRequest(`/restApi/friend/generate`, {
       styleId: 1,
     }).then(({ result }) => {
       setFriendId(result.id);
