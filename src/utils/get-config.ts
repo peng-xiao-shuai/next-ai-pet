@@ -35,7 +35,7 @@ export const getAppConfigEnv = (
       DOWNLOADAPI: 'https://doujiwrzdg1dh.cloudfront.net/util/file/download/',
       APPVERSIONCODE: 101,
       APPTYPE: 'H5',
-      APPNAME: 'Ai girl friend',
+      APPNAME: 'AI Pet',
       GOOGLE_GAID: '',
     };
   } else if (origin.includes('https://127.0.0.1:3000')) {
@@ -50,23 +50,22 @@ export const getAppConfigEnv = (
         'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/util/file/download/',
       APPVERSIONCODE: 101,
       APPTYPE: 'H5',
-      APPNAME: 'Ai girl friend',
+      APPNAME: 'AI Pet',
       GOOGLE_GAID: 'G-46HPB8YJYG',
     };
   } else {
     return {
-      TG_BOT_NAME: 'pxs_test_bot',
-      TG_APP_NAME: 'test',
+      TG_BOT_NAME: 'AIFriendchat_bot',
+      TG_APP_NAME: 'AIFriendchat',
       origin,
-      HOST: 'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/ai-love',
-      WSS: 'ws://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/',
+      HOST: 'https://doujiwrzdg1dh.cloudfront.net',
+      WSS: 'wss://doujiwrzdg1dh.cloudfront.net/',
       OSS: 'https://static.ailov3.com/',
-      DOWNLOADAPI:
-        'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/util/file/download/',
+      DOWNLOADAPI: 'https://doujiwrzdg1dh.cloudfront.net/util/file/download/',
       APPVERSIONCODE: 101,
       APPTYPE: 'H5',
-      APPNAME: 'Ai girl friend',
-      GOOGLE_GAID: 'G-46HPB8YJYG',
+      APPNAME: 'AI Pet',
+      GOOGLE_GAID: '',
     };
   }
 };
