@@ -37,7 +37,11 @@ export const TGInitScript = () => {
           const { result, code, message } = await (
             await fetch('/api/tg-login', {
               method: 'POST',
-              body: JSON.stringify({ initData, sourceId: params.id }),
+              body: JSON.stringify({
+                initData,
+                sourceId: params.id,
+                is_premium: WebApp.initDataUnsafe.user.is_premium || false,
+              }),
             })
           ).json();
 

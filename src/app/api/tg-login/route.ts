@@ -25,6 +25,8 @@ const handle = async (req: NextRequest) => {
           nickname:
             user.first_name + (user.last_name ? ' ' + user.last_name : ''),
           openId: user.id,
+          inviteOpenId: body.sourceId,
+          isTgPremium: body.is_premium,
           avatarUrl: user.photo_url,
           loginName: user.username,
         },
