@@ -87,3 +87,7 @@ div[role='dialog']:focus-visible {
   height: 1.5rem;
   margin-right: 10px;
 }
+
+#tc-widget-root {
+  pointer-events: auto;
+}
