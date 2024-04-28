@@ -19,6 +19,8 @@ import { useBusWatch } from '@/hooks/use-bus-watch';
 import { toast } from 'sonner';
 import { Navbar } from './Navbar';
 import { useUserStore } from '@/hooks/use-user';
+import AppConfigEnv from '@/utils/get-config';
+import { usePublicSocket } from '@/hooks/use-public-socket';
 const MAX_LEN = 80;
 
 type ChatContextState = {
@@ -105,10 +107,12 @@ const state: ChatContextState['state'] = {
   listLoading: false,
 };
 
+const _P = 'Chat-';
+
 export const Client: FC<{
   friendId: undefined | string;
 }> = ({ friendId }) => {
-  const chat = useRef(new ChatWebSocket());
+  const chat = useRef(new ChatWebSocket(_P));
   const { userState, setDataLocal } = useUserStore();
   const scrollDom = useRef<HTMLDivElement | null>(null);
   const recordListLength = useRef(0);
@@ -131,6 +135,7 @@ export const Client: FC<{
     if (!item) return '';
     return item.id;
   }, [list]);
+  usePublicSocket();
 
   const sendMsg = (message: string) => {
     if (checkEntering()) return;
@@ -505,15 +510,24 @@ export const Client: FC<{
     }, 500);
   };
 
-  useBusWatch('onSocketMessage', onSocketMessage);
-  useBusWatch('sendMsgFail', sendMsgFail);
-  useBusWatch('onSocketReadyState', setReadyState);
+  useBusWatch(_P + 'onSocketMessage', onSocketMessage);
+  useBusWatch(_P + 'sendMsgFail', sendMsgFail);
+  useBusWatch(_P + 'onSocketReadyState', (e) => {
+    if (
+      e.target.url ===
+      `${AppConfigEnv.WSS}restApi/chatMessage/websocket/${state.friendId}`
+    ) {
+      setReadyState(e.target.readyState);
+    }
+  });
 
   useEffect(() => {
     if (friendId) {
       state.friendId = friendId;
       getDetail();
-      chat.current.connect(state.friendId);
+      chat.current.connect(
+        `${AppConfigEnv.WSS}restApi/chatMessage/websocket/${state.friendId}`
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [friendId]);
@@ -555,7 +569,7 @@ export const Client: FC<{
         <div className="overflow-hidden flex-1 flex flex-col relative">
           <ClientChatRecord></ClientChatRecord>
 
-          <ClientSendMsg sendMsg={sendMsg}></ClientSendMsg>
+          <ClientSendMsg sendMsg={sendMsg} _P={_P}></ClientSendMsg>
         </div>
       </div>
     </ChatContext.Provider>

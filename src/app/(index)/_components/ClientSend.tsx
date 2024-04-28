@@ -16,7 +16,8 @@ import { m, AnimatePresence } from 'framer-motion';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
-}> = ({ sendMsg }) => {
+  _P: string;
+}> = ({ sendMsg, _P }) => {
   const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
   const isDefineName = useMemo(
@@ -40,7 +41,7 @@ export const ClientSendMsg: FC<{
     setMessage('');
   };
 
-  useBusWatch('sendMsgSuc', sendMsgSuc);
+  useBusWatch(_P + 'sendMsgSuc', sendMsgSuc);
 
   useEffect(() => {
     if (detail.isInitialized) {

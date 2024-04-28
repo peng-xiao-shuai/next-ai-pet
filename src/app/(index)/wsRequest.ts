@@ -1,5 +1,4 @@
 import emitter from '@/utils/bus';
-import AppConfigEnv from '@/utils/get-config';
 import { Dispatch, SetStateAction } from 'react';
 
 export default class wsRequest {
@@ -22,12 +21,17 @@ export default class wsRequest {
    */
   timeoutObj: NodeJS.Timeout | null;
   /**
+   * 事件前缀
+   */
+  emitPrefix: string;
+  /**
    * 重连延时器对象
    */
   reconnectTimeOutObj: NodeJS.Timeout | null;
-  constructor(time: number = 1000) {
+  constructor(emitPrefix: string, time: number = 3000) {
     this.status = null; // websocket是否关闭
     this.lockReconnect = false; //避免重复连接
+    this.emitPrefix = emitPrefix;
 
     //心跳检测
     this.timeout = time; //多少秒执行检测
@@ -35,8 +39,8 @@ export default class wsRequest {
     this.reconnectTimeOutObj = null; //重连之后多久再次重连
   }
 
-  connect(friendId: string) {
-    this.url = `${AppConfigEnv.WSS}restApi/chatMessage/websocket/${friendId}`;
+  connect(url: string) {
+    this.url = url;
 
     try {
       this.initRequest();
@@ -48,12 +52,14 @@ export default class wsRequest {
 
   initRequest() {
     this.socket = new WebSocket(this.url!);
+    // 清除重连定时器
+    if (this.reconnectTimeOutObj) {
+      clearTimeout(this.reconnectTimeOutObj);
+    }
 
     this.socket.onopen = (e) => {
       // console.log(e, '连接打开');
-      emitter.emit('onSocketReadyState', 1);
-      // 清除重连定时器
-      this.reconnectTimeOutObj && clearTimeout(this.reconnectTimeOutObj);
+      emitter.emit(this.emitPrefix + 'onSocketReadyState', e);
       // 开启检测
       this.start();
     };
@@ -61,18 +67,18 @@ export default class wsRequest {
     // 如果希望websocket连接一直保持，在close或者error上绑定重新连接方法。
     this.socket.onclose = (e: any) => {
       // console.log(e, '连接关闭');
-      emitter.emit('onSocketReadyState', e.target.readyState);
+      emitter.emit(this.emitPrefix + 'onSocketReadyState', e);
       this.reconnect();
     };
 
     this.socket.onerror = (e: any) => {
       // console.log(e, '连接错误');
-      emitter.emit('onSocketReadyState', e.target.readyState);
+      emitter.emit(this.emitPrefix + 'onSocketReadyState', e);
       this.reconnect();
     };
 
     this.socket.onmessage = (e: any) => {
-      emitter.emit('onSocketMessage', e);
+      emitter.emit(this.emitPrefix + 'onSocketMessage', e);
       //接受任何消息都说明当前连接是正常的
       this.reset();
       // console.log(e, 'pong');
@@ -81,18 +87,18 @@ export default class wsRequest {
 
   sendMsg(value: any, type: string) {
     if (!this.socket || this.socket.readyState === 0) {
-      emitter.emit('sendMsgFail');
+      emitter.emit(this.emitPrefix + 'sendMsgFail');
       return;
     }
 
     if ([2, 3].includes(this.socket.readyState)) {
       this.reconnect();
-      emitter.emit('sendMsgFail');
+      emitter.emit(this.emitPrefix + 'sendMsgFail');
       return;
     }
 
     this.socket.send(value);
-    emitter.emit('sendMsgSuc', type);
+    emitter.emit(this.emitPrefix + 'sendMsgSuc', type);
   }
 
   // reset和start方法主要用来控制心跳的定时。
