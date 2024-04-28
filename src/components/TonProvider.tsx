@@ -7,7 +7,7 @@ export const TonProvider: FC<{
 }> = ({ children }) => {
   return (
     <TonConnectUIProvider
-      manifestUrl={`https://www.telegramloveai.com/tonconnect-manifest.json`}
+      manifestUrl={`https://docbphqre6f8b.cloudfront.net/tonconnect-manifest.json`}
     >
       {children}
     </TonConnectUIProvider>
