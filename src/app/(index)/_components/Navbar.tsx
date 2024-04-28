@@ -81,7 +81,7 @@ export const Navbar: FC<{
                   id: userState.googleOpenid,
                 });
                 fetchRequest(
-                  '/restApi/chatMessage/sendMessage/' +
+                  '/telegram/sendMessage/' +
                     window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
                   {
                     message: `点击当前连接转发 tg://msg_url?url=t.me/pxs_test_bot/test?startapp=${base64UrlEncode(
