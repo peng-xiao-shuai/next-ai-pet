@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { objectToQueryString } from './string-transform';
 import Cookie from 'js-cookie';
 import { createDebounce } from './debounce-throttle';
+import AppConfigEnv from './get-config';
 const [debounce] = createDebounce();
 
 export const fetchRequest = async <T = any>(
@@ -34,7 +35,7 @@ export const fetchRequest = async <T = any>(
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const URL = url;
+    const URL = AppConfigEnv.HOST + url;
 
     /**
      * get 请求拼接参数
