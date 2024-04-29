@@ -41,11 +41,11 @@ export const ClientFeedDrawer: FC<{
       title="Feed"
       setDrawerVisible={setDrawerVisible}
     >
-      <div className="flex mb-6 justify-between gap-3">
+      <div className="flex mb-6 justify-between gap-2">
         <span className="text-white text-sm">
           产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案
         </span>
-        <AiFillQuestionCircle className="size-5 text-[#737373]"></AiFillQuestionCircle>
+        <AiFillQuestionCircle className="size-8 text-[#737373]"></AiFillQuestionCircle>
       </div>
 
       <div className="actions-list grid grid-cols-3 gap-x-4 mb-4">
@@ -109,7 +109,7 @@ export const ClientFeedDrawer: FC<{
       <div className="flex items-center justify-between text-white">
         <div>
           <div className="flex items-center">
-            <div className="mr-2 w-16 h-7 rounded-full flex items-center justify-center gap-1 border-2 border-white/50">
+            <div className="mr-2 min-w-16 h-7 px-2 rounded-full flex items-center justify-center gap-1 border-2 border-white/50">
               <Image
                 src="/icons/feed.png"
                 width={16}
@@ -142,6 +142,7 @@ export const ClientFeedDrawer: FC<{
               console.log(err);
             }
             setSendLoading(false);
+            setFeedValue(0);
             setDataLocal({
               walletAble: userState.walletAble - feedValue,
             });

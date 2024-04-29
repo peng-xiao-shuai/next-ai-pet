@@ -110,7 +110,7 @@ export const Navbar: FC<{
       </div>
 
       <div className="flex justify-between items-center text-white pr-4">
-        <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D]">
+        <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D] max-w-48">
           <div className="text-xs flex items-center">
             <span>Next level need</span>
             <AiFillQuestionCircle className="size-[13px] ml-1 text-[#737373]"></AiFillQuestionCircle>
@@ -122,7 +122,13 @@ export const Navbar: FC<{
               height={10}
               alt="gold coin"
             ></Image>
-            <span className="text-xs">{userState.point}</span>
+            <div
+              className={`${
+                userState.point > 100000000 ? 'text-[9px]' : 'text-sm'
+              } max-w-24 break-words`}
+            >
+              {userState.point}
+            </div>
             <Progress
               className="h-1 w-16 bg-[#947782]"
               value={userState.point}
@@ -139,7 +145,13 @@ export const Navbar: FC<{
               height={14}
               alt="gold coin"
             ></Image>
-            <span className="text-sm font-bold">{userState.point}</span>
+            <div
+              className={`${
+                userState.point > 100000000 ? 'text-[9px]' : 'text-sm'
+              } font-bold max-w-20 break-words`}
+            >
+              {userState.point}
+            </div>
           </div>
           <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
             <Image

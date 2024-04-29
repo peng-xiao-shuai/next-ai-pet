@@ -44,7 +44,6 @@ type TextRecord = {
 export const TextRecord: TextRecord = {
   // me
   TextMe: ({ item }) => {
-    const [isAnimationComplete, setAnimationComplete] = useState(false);
     return (
       <div className="flex items-center relative gap-2" dir="ltr">
         {Boolean(item.friendPointChange) && (
@@ -64,9 +63,15 @@ export const TextRecord: TextRecord = {
               height={16}
               className="mx-[2px]"
             ></Image>
-            <span className="text-[#FDCD62] text-sm">
+            <div
+              className={`text-[#FDCD62] break-words max-w-24 leading-none ${
+                item.friendPointChange > 100000000
+                  ? 'text-[9px] mr-3'
+                  : 'text-sm'
+              }`}
+            >
               +{item.friendPointChange}
-            </span>
+            </div>
           </m.div>
         )}
 
