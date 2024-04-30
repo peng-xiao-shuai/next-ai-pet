@@ -1,17 +1,13 @@
 'use client';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { FC, useContext, useEffect } from 'react';
-import { PiShareFat } from 'react-icons/pi';
 import { Progress } from '@/components/ui/progress';
 import { ClientTips } from './ClientTips';
 import { ChatContext } from './Client';
 import { filterImage } from '@/utils/business';
 import { useUserStore } from '@/hooks/use-user';
 import { AiFillQuestionCircle } from 'react-icons/ai';
-import { fetchRequest } from '@/utils/request';
-import { base64UrlEncode, copyText } from '@/utils/string-transform';
-import { toast } from 'sonner';
+import { useShare } from '@/hooks/use-share';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -20,6 +16,7 @@ export const Navbar: FC<{
 }> = ({ children, title, back }) => {
   const { detail } = useContext(ChatContext);
   const { userState, setData } = useUserStore();
+  const { handleShare } = useShare();
   useEffect(() => {
     if (userState.point >= userState.upgradeRequiredPoint) {
       setData();
@@ -76,28 +73,7 @@ export const Navbar: FC<{
               width={28}
               height={28}
               alt="share gold"
-              onClick={() => {
-                const str = JSON.stringify({
-                  id: userState.googleOpenid,
-                });
-                fetchRequest(
-                  '/telegram/sendMessage/' +
-                    window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-                  {
-                    message: `点击当前连接转发 tg://msg_url?url=t.me/pxs_test_bot/test?startapp=${base64UrlEncode(
-                      str
-                    )}&text=快来和我一起领养AI宠物吧！`,
-                  }
-                );
-
-                copyText(
-                  `t.me/pxs_test_bot/test?startapp=${base64UrlEncode(str)}`,
-                  () => {
-                    toast('复制链接成功，也可以在机器人聊天中点击链接分享');
-                  },
-                  false
-                );
-              }}
+              onClick={handleShare}
             ></Image>
             <ClientTips
               visible={false}
