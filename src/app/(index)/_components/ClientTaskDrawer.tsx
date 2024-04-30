@@ -49,7 +49,7 @@ export const ClientTaskDrawer: FC<{
         fetchRequest('/restApi/task', {
           code: 'FOLLOW_X',
         });
-        window.Telegram.WebApp.openLink('https://t.me/AiPets_Group');
+        window.Telegram.WebApp.openLink('https://x.com/aipets_official');
         break;
       case 'JOIN_GROUP':
         window.Telegram.WebApp.openTelegramLink('https://t.me/AiPets_Group');
@@ -101,10 +101,10 @@ export const ClientTaskDrawer: FC<{
 
                 <Button
                   title={`${item.isCompleted ? '已完成' : '+' + item.reward}`}
-                  className={`!mb-0 h-auto w-auto ${
+                  className={`!mb-0 h-auto ${
                     item.isCompleted
-                      ? 'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white w-20 !text-sm'
-                      : 'font-bold text-[#FDCD62] text-sm leading-normal !items-start'
+                      ? 'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm'
+                      : 'font-bold text-[#FDCD62] text-sm leading-normal !items-start !w-auto'
                   }`}
                   click={() => {}}
                 ></Button>
