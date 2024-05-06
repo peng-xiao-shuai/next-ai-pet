@@ -22,7 +22,7 @@ const state = {
   inviteCode: '',
   walletAble: 0,
   point: 0,
-  level: 1,
+  level: 0,
   upgradeRequiredPoint: 0,
   currentFriendCount: 0,
   googleOpenid: '',

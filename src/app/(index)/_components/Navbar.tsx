@@ -8,6 +8,7 @@ import { filterImage } from '@/utils/business';
 import { useUserStore } from '@/hooks/use-user';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { useShare } from '@/hooks/use-share';
+import { NumberRoll } from '@/components/NumberRoll';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -61,9 +62,7 @@ export const Navbar: FC<{
                   src="/icons/level.png"
                   alt="level"
                 ></Image>
-                <span className="text-xs leading-none">
-                  Lv{userState.level}
-                </span>
+                <NumberRoll prefix="Lv" end={userState.level}></NumberRoll>
               </div>
             </div>
           </div>
@@ -103,7 +102,9 @@ export const Navbar: FC<{
                 userState.point > 100000000 ? 'text-[9px]' : 'text-sm'
               } max-w-24 break-words`}
             >
-              {userState.point}
+              <NumberRoll
+                end={userState.upgradeRequiredPoint - userState.point}
+              ></NumberRoll>
             </div>
             <Progress
               className="h-1 w-16 bg-[#947782]"
@@ -126,7 +127,7 @@ export const Navbar: FC<{
                 userState.point > 100000000 ? 'text-[9px]' : 'text-sm'
               } font-bold max-w-20 break-words`}
             >
-              {userState.point}
+              <NumberRoll end={userState.point}></NumberRoll>
             </div>
           </div>
           <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
@@ -136,7 +137,10 @@ export const Navbar: FC<{
               height={14}
               alt="food"
             ></Image>
-            <span className="text-sm font-bold">{userState.walletAble}</span>
+            <NumberRoll
+              className="text-sm font-bold"
+              end={userState.walletAble}
+            ></NumberRoll>
           </div>
         </div>
       </div>
