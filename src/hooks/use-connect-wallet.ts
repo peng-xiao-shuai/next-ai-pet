@@ -11,6 +11,7 @@ import { TonProofDemoApi } from '@/lib/ton-proofApi';
 import { toast } from 'sonner';
 import { useUserStore } from '@/hooks/use-user';
 import emitter from '@/utils/bus';
+import { debounce } from '@/utils/debounce-throttle';
 
 interface useConnectWalletProps {
   bindSuccessCB?: () => void;
@@ -69,44 +70,46 @@ export const useConnectWallet = ({
   }, [state]);
 
   useEffect(() => {
-    const unChange = tonConnectUI.onStatusChange(async (w) => {
-      console.log('w ==>', w);
+    const unChange = tonConnectUI.onStatusChange((w) => {
+      debounce(async () => {
+        console.log('w ==>', w);
 
-      if (!w) {
-        TonProofDemoApi.reset();
-        return;
-      }
-
-      if (w.account.chain === CHAIN.TESTNET) {
-        toast('You cannot log in using the test network!');
-        return;
-      }
-
-      if (w.connectItems?.tonProof && 'proof' in w.connectItems.tonProof) {
-        try {
-          emitter.emit('setGlobalLoading', true);
-          setIsCheck(false);
-          const { result, ok } = await TonProofDemoApi.checkProof(
-            w.connectItems.tonProof.proof,
-            w.account
-          );
-
-          if (ok) {
-            setIsCheck(true);
-            setDataLocal(result);
-          } else {
-            toast('Check failure');
-          }
-          emitter.emit('setGlobalLoading', false);
-
-          bindSuccessCB?.();
-          // toast('Binding successful');
-        } catch (msg: any) {
-          toast(msg);
-          emitter.emit('setGlobalLoading', false);
-          tonConnectUI.disconnect();
+        if (!w) {
+          TonProofDemoApi.reset();
+          return;
         }
-      }
+
+        if (w.account.chain === CHAIN.TESTNET) {
+          toast('You cannot log in using the test network!');
+          return;
+        }
+
+        if (w.connectItems?.tonProof && 'proof' in w.connectItems.tonProof) {
+          try {
+            emitter.emit('setGlobalLoading', true);
+            setIsCheck(false);
+            const { result, ok } = await TonProofDemoApi.checkProof(
+              w.connectItems.tonProof.proof,
+              w.account
+            );
+
+            if (ok) {
+              setIsCheck(true);
+              setDataLocal(result);
+            } else {
+              toast('Check failure');
+            }
+            emitter.emit('setGlobalLoading', false);
+
+            bindSuccessCB?.();
+            // toast('Binding successful');
+          } catch (msg: any) {
+            toast(msg);
+            emitter.emit('setGlobalLoading', false);
+            tonConnectUI.disconnect();
+          }
+        }
+      }, 1000);
     });
 
     return () => {
