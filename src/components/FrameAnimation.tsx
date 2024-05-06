@@ -29,7 +29,18 @@ const FrameAnimation: FC<{
 
   children?: React.ReactNode;
 
+  /**
+   * 是否全部加载完成在播放动画
+   */
+  allLoaded?: boolean;
+
+  /**
+   * 图片首次加载完成后触发，不保证是第一帧图片加载完成触发
+   */
   onStart?: () => void;
+  /**
+   * 全部图片加载完成后触发
+   */
   onAllLoaded?: () => void;
 }> = ({
   baseUrl,
@@ -42,6 +53,7 @@ const FrameAnimation: FC<{
   salAttributes = {},
   frameNumber = 30,
   children,
+  allLoaded,
   onStart,
   onAllLoaded,
 }) => {
@@ -113,7 +125,10 @@ const FrameAnimation: FC<{
     const timeSinceLastFrame = time - previousTimeRef.current;
 
     // 在这里调整你的帧率，1000 / 60 表示大约 60 FPS
-    if (timeSinceLastFrame > 1000 / frameNumber) {
+    if (
+      timeSinceLastFrame > 1000 / frameNumber &&
+      (!allLoaded || images.current.length === totalFrames)
+    ) {
       frameIndex.current =
         frameIndex.current >= totalFrames - 1
           ? loopIndex == -1
