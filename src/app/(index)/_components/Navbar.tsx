@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { FC, useContext, useEffect } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { ClientTips } from './ClientTips';
 import { ChatContext } from './Client';
@@ -9,6 +9,14 @@ import { useUserStore } from '@/hooks/use-user';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { useShare } from '@/hooks/use-share';
 import { NumberRoll } from '@/components/NumberRoll';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -18,11 +26,13 @@ export const Navbar: FC<{
   const { detail } = useContext(ChatContext);
   const { userState, setData } = useUserStore();
   const { handleShare } = useShare();
+
   useEffect(() => {
     if (userState.point >= userState.upgradeRequiredPoint) {
       setData();
     }
   }, [setData, userState.point, userState.upgradeRequiredPoint]);
+
   return (
     <>
       <div className={`px-4 w-full mb-3`}>
@@ -88,7 +98,20 @@ export const Navbar: FC<{
         <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D] max-w-48">
           <div className="text-xs flex items-center">
             <span>Next level need</span>
-            <AiFillQuestionCircle className="size-[13px] ml-1 text-[#737373]"></AiFillQuestionCircle>
+            <Dialog>
+              <DialogTrigger>
+                <AiFillQuestionCircle className="size-[13px] ml-1 text-[#737373]"></AiFillQuestionCircle>
+              </DialogTrigger>
+              <DialogContent className="text-white !p-6 !bg-[#2F2F3B]">
+                <DialogHeader>
+                  <DialogTitle className="mb-4">说明</DialogTitle>
+                  <DialogDescription>
+                    内容内容内容内容内容内容内容内容内容内容内容
+                    内容内容内容内容内容内容内容内容内容内容内容内容
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </div>
           <div className="flex items-center gap-[2px]">
             <Image
