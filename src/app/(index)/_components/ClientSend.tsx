@@ -142,7 +142,7 @@ export const ClientTools = () => {
 
       setTimeout(() => {
         setIsAnimateEnd(true);
-      }, 3000);
+      }, 4000);
     }
     return list![list!.length - 1]?.specialEventTrigger || 'none';
   }, [list]);
