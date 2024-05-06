@@ -26,6 +26,11 @@ const FrameAnimation: FC<{
    * 帧数
    */
   frameNumber?: number;
+
+  children?: React.ReactNode;
+
+  onStart?: () => void;
+  onAllLoaded?: () => void;
 }> = ({
   baseUrl,
   totalFrames,
@@ -36,11 +41,16 @@ const FrameAnimation: FC<{
   className = '',
   salAttributes = {},
   frameNumber = 30,
+  children,
+  onStart,
+  onAllLoaded,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const frameIndex = useRef<number>(1);
+  const frameIndex = useRef<number>(0);
   const images = useRef<Array<HTMLImageElement>>([]);
   const requestRef = useRef<number>();
+  const isStart = useRef(false);
+  const isAllLoaded = useRef(false);
   const previousTimeRef = useRef<number | undefined>(undefined);
   const [startAnimation, setStartAnimation] = useState(false); // 控制动画开始的状态
 
@@ -68,10 +78,25 @@ const FrameAnimation: FC<{
     return () => {
       timeoutId && clearTimeout(timeoutId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseUrl, totalFrames, startAnimation, initialDelay]);
 
   // 绘制帧
   const drawFrame = (frame: number): void => {
+    if (onStart && frame == 1 && !isStart.current) {
+      onStart?.();
+      isStart.current = true;
+    }
+
+    if (
+      images.current.length === totalFrames &&
+      onAllLoaded &&
+      !isAllLoaded.current
+    ) {
+      onAllLoaded?.();
+      isAllLoaded.current = true;
+    }
+
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (ctx && images.current[frame]) {
@@ -152,6 +177,7 @@ const FrameAnimation: FC<{
         width={width}
         height={height}
       />
+      {children}
     </div>
   );
 };
