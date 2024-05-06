@@ -1,4 +1,5 @@
 'use client';
+import LoadingRender from '@/app/loading';
 import { Button } from '@/components/Button';
 import FrameAnimation from '@/components/FrameAnimation';
 import AppConfigEnv from '@/utils/get-config';
@@ -24,9 +25,12 @@ export const ClientCreatePet: FC<{
   const [scope, animate] = useAnimate();
   const [isGift, setIsGift] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
   const [countDown, setCountDown] = useState(state.countDown);
 
-  const onStart = () => {
+  const onAllLoaded = () => {
+    setIsLoader(true);
+
     const timer = setTimeout(() => {
       setIsGift(false);
 
@@ -54,46 +58,50 @@ export const ClientCreatePet: FC<{
   }, []);
 
   return countDown >= 0 ? (
-    <div className="fixed flex justify-center items-center bg-black w-full h-full">
-      <Image
-        src="/images/lights.png"
-        width={750}
-        height={972}
-        priority
-        alt="lights"
-        className="absolute left-0 top-0"
-      ></Image>
-      <FrameAnimation
-        height={750}
-        width={750}
-        loopIndex={50}
-        baseUrl="/animation/gift/"
-        totalFrames={100}
-        initialDelay={0}
-        frameNumber={30}
-        className="absolute top-2/4 -translate-y-2/4 left-0"
-        onStart={onStart}
-      >
-        {!isGift && (
-          <div className="relative z-10 w-2/4 mx-auto -mt-20">
-            <Button
-              disabled={loading}
-              click={() => {
-                setLoading(true);
-                setCountDown(-1);
-                setIsPet(true);
-              }}
-              title="Adopt a pet"
-              className="bg-[#515151] text-xl w-2/3 mx-auto text-white border-white border-2"
-            />
+    <>
+      {!isLoader && <LoadingRender></LoadingRender>}
+      <div className="fixed flex justify-center items-center bg-black w-full h-full">
+        <Image
+          src="/images/lights.png"
+          width={750}
+          height={972}
+          priority
+          alt="lights"
+          className="absolute left-0 top-0"
+        ></Image>
+        <FrameAnimation
+          height={750}
+          width={750}
+          loopIndex={50}
+          baseUrl="/animation/gift/"
+          totalFrames={100}
+          initialDelay={0}
+          frameNumber={30}
+          allLoaded
+          className="absolute top-2/4 -translate-y-2/4 left-0"
+          onAllLoaded={onAllLoaded}
+        >
+          {!isGift && (
+            <div className="relative z-10 w-2/4 mx-auto -mt-20">
+              <Button
+                disabled={loading}
+                click={() => {
+                  setLoading(true);
+                  setCountDown(-1);
+                  setIsPet(true);
+                }}
+                title="Adopt a pet"
+                className="bg-[#515151] text-xl w-2/3 mx-auto text-white border-white border-2"
+              />
 
-            <div className="text-center text-lg text-[#DCA823]">
-              {countDown}s
+              <div className="text-center text-lg text-[#DCA823]">
+                {countDown}s
+              </div>
             </div>
-          </div>
-        )}
-      </FrameAnimation>
-    </div>
+          )}
+        </FrameAnimation>
+      </div>
+    </>
   ) : (
     <></>
   );
