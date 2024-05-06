@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/components/Button';
+import FrameAnimation from '@/components/FrameAnimation';
 import AppConfigEnv from '@/utils/get-config';
 import { fetchRequest } from '@/utils/request';
 import {
@@ -33,28 +34,7 @@ export const ClientCreatePet: FC<{
       Cookies.set('isPet', '1');
     });
 
-    const animation = (
-      animate as (
-        sequence: AnimationSequence,
-        options?: SequenceOptions
-      ) => AnimationPlaybackControls
-    )(
-      [
-        [scope.current, { rotate: 5 }],
-        [scope.current, { rotate: -5 }],
-        [scope.current, { rotate: 5 }],
-        [scope.current, { rotate: -5 }],
-        [scope.current, { rotate: 0 }],
-        [scope.current, { rotate: 2 }, { delay: 0.5 }],
-        [scope.current, { rotate: -2 }],
-        [scope.current, { rotate: 2 }],
-        [scope.current, { rotate: -2 }],
-        [scope.current, { rotate: 0, opacity: 0 }],
-      ],
-      { delay: 1, duration: 2 }
-    );
-
-    animation.then(() => {
+    const timer = setTimeout(() => {
       setIsGift(false);
 
       const time = setInterval(() => {
@@ -63,10 +43,14 @@ export const ClientCreatePet: FC<{
           clearInterval(time);
         } else {
           state.countDown -= 1;
-          setCountDown((val) => val - 1);
+          setCountDown((val) => state.countDown);
         }
       }, 1000);
-    });
+    }, 4000);
+
+    return () => {
+      clearTimeout(timer);
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -83,14 +67,16 @@ export const ClientCreatePet: FC<{
       ></Image>
       {isGift ? (
         <div>
-          <Image
-            width={232}
-            height={207}
-            ref={scope}
-            alt="Gift"
-            src="/images/gift.png"
-            priority
-          ></Image>
+          <FrameAnimation
+            height={750}
+            width={750}
+            loopIndex={50}
+            baseUrl="/animation/gift/"
+            totalFrames={100}
+            initialDelay={0.1}
+            frameNumber={30}
+            className="absolute top-2/4 -translate-y-2/4 left-0"
+          ></FrameAnimation>
         </div>
       ) : (
         <div className="relative z-10">

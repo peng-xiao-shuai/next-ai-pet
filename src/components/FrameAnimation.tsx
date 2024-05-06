@@ -1,0 +1,159 @@
+'use client';
+/* eslint-disable @next/next/no-img-element */
+import { useState, useEffect, FC, useRef } from 'react';
+
+const FrameAnimation: FC<{
+  baseUrl: string;
+  totalFrames: number;
+  loopIndex: number;
+  className?: string;
+  /**
+   * 设置canvas 大小，避免摸排
+   */
+  width: number;
+  height: number;
+
+  /**
+   * 延时 单位s
+   */
+  initialDelay?: number;
+
+  /**
+   * data-sal 属性
+   */
+  salAttributes?: object & { [key: string]: string };
+  /**
+   * 帧数
+   */
+  frameNumber?: number;
+}> = ({
+  baseUrl,
+  totalFrames,
+  width,
+  height,
+  initialDelay = 0,
+  loopIndex = 1,
+  className = '',
+  salAttributes = {},
+  frameNumber = 30,
+}) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const frameIndex = useRef<number>(1);
+  const images = useRef<Array<HTMLImageElement>>([]);
+  const requestRef = useRef<number>();
+  const previousTimeRef = useRef<number | undefined>(undefined);
+  const [startAnimation, setStartAnimation] = useState(false); // 控制动画开始的状态
+
+  // 预加载所有图片
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null; // 初始化timeout ID
+    // 添加初始延时后开始动画
+    timeoutId = setTimeout(() => {
+      for (let i = 1; i < totalFrames; i++) {
+        if (!images.current[i]) {
+          const img = new Image();
+          img.onload = () => {
+            images.current[i] = img;
+            if (i === 1 && canvasRef.current && startAnimation) {
+              // 确保至少有一帧可画且画布已挂载
+              drawFrame(1);
+            }
+          };
+          img.src = `${baseUrl}${
+            i < 10 ? '00' + i : i < 100 ? '0' + i : i
+          }.png`;
+        }
+      }
+    }, initialDelay * 1000);
+    return () => {
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, [baseUrl, totalFrames, startAnimation, initialDelay]);
+
+  // 绘制帧
+  const drawFrame = (frame: number): void => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (ctx && images.current[frame]) {
+      ctx.clearRect(0, 0, canvas!.width, canvas!.height);
+      ctx.drawImage(images.current[frame], 0, 0, canvas!.width, canvas!.height);
+    }
+  };
+
+  // 动画循环
+  const animate = (time: number): void => {
+    if (previousTimeRef.current === undefined) {
+      previousTimeRef.current = time;
+    }
+    const timeSinceLastFrame = time - previousTimeRef.current;
+
+    // 在这里调整你的帧率，1000 / 60 表示大约 60 FPS
+    if (timeSinceLastFrame > 1000 / frameNumber) {
+      frameIndex.current =
+        frameIndex.current >= totalFrames - 1
+          ? loopIndex == -1
+            ? totalFrames - 1
+            : loopIndex
+          : frameIndex.current + 1;
+
+      drawFrame(frameIndex.current);
+      previousTimeRef.current = time;
+    }
+
+    requestRef.current = window.requestAnimationFrame(animate);
+  };
+
+  // 使用requestAnimationFrame来启动动画
+  useEffect(() => {
+    if (startAnimation) {
+      requestRef.current = requestAnimationFrame(animate);
+      return () => {
+        if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loopIndex, totalFrames, startAnimation]);
+
+  // 初始化时的延迟启动
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    let timeoutId: NodeJS.Timeout | null = null; // 初始化timeout ID
+    const startAnimationFunction = () => {
+      // 添加初始延时后开始动画
+      timeoutId = setTimeout(() => {
+        setStartAnimation(true);
+      }, initialDelay * 1000);
+    };
+
+    // 如果设置了data-sal属性，则监听sal:in事件
+    if (canvas && salAttributes['data-sal']) {
+      canvas.addEventListener('sal:in', startAnimationFunction);
+    } else if (!salAttributes['data-sal']) {
+      // 如果没有设置data-sal属性，则直接应用初始延时
+      startAnimationFunction();
+    }
+
+    return () => {
+      if (canvas && salAttributes['data-sal']) {
+        canvas.removeEventListener('sal:in', startAnimationFunction);
+      }
+
+      if (timeoutId) {
+        clearTimeout(timeoutId); // 清除延时
+      }
+    };
+  }, [initialDelay, salAttributes]);
+
+  return (
+    <div className={`${className}`} {...salAttributes}>
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full"
+        width={width}
+        height={height}
+      />
+    </div>
+  );
+};
+
+export default FrameAnimation;
