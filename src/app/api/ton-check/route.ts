@@ -36,6 +36,8 @@ async function check(req: NextRequest) {
 
     const err = checkPayload(proof.payload, process.env.SECRET!);
     if (err != null) {
+      console.log(err);
+
       return Response.json(
         { ok: false },
         {

@@ -20,7 +20,7 @@
   input,
   button,
   textarea {
-    @apply outline-none;
+    @apply !outline-none;
   }
 
   img {
