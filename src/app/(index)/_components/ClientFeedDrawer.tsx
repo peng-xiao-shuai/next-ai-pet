@@ -22,7 +22,7 @@ export const ClientFeedDrawer: FC<{
   setDrawerVisible: Dispatch<SetStateAction<boolean>>;
 }> = ({ drawerVisible, setDrawerVisible }) => {
   const { state } = useContext(ChatContext);
-  const [feedValue, setFeedValue] = useState(20);
+  const [feedValue, setFeedValue] = useState<number | string>(20);
   const { userState, setDataLocal } = useUserStore();
   const [sendLoading, setSendLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -82,11 +82,10 @@ export const ClientFeedDrawer: FC<{
             )}
           >
             <input
-              type="number"
               className={cn('bg-transparent w-full ')}
               value={feedValue}
               onChange={({ target }) => {
-                setFeedValue(Number(target.value));
+                setFeedValue(target.value.replace(/[^0-9]/g, ''));
               }}
             />
           </div>
@@ -132,20 +131,26 @@ export const ClientFeedDrawer: FC<{
 
             setSendLoading(true);
             try {
-              await fetchRequest(
+              const { result } = await fetchRequest(
                 `/restApi/friend/feedFood/${state!
                   .friendId!}?quantity=${feedValue}`
               );
-
-              toast('投喂成功！');
+              28;
+              toast(
+                `谢谢主人给我投喂，本次投喂产能增加 ${result.chatCapacity} `,
+                {
+                  duration: 3000,
+                }
+              );
             } catch (err: any) {
               console.log(err);
             }
             setSendLoading(false);
-            setFeedValue(0);
+            setFeedValue('');
             setDataLocal({
-              walletAble: userState.walletAble - feedValue,
+              walletAble: userState.walletAble - Number(feedValue),
             });
+            setDrawerVisible(false);
           }}
           disabled={sendLoading}
           className={cn(
