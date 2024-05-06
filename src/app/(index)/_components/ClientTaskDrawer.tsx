@@ -31,7 +31,24 @@ export const ClientTaskDrawer: FC<{
   const [loading, setLoading] = useState(false);
   const [taskList, setTaskList] = useState<Task[]>([]);
   const { handleShare } = useShare();
-  const { handleOpen } = useConnectWallet();
+  const { handleOpen } = useConnectWallet({
+    bindSuccessCB() {
+      // TODO 待测试
+      console.log('成功');
+
+      setTaskList((state) => {
+        const CopyList = state.map((item) => ({
+          ...item,
+        }));
+        CopyList.find((item) => item.code === 'BIND_WALLET')!.isCompleted =
+          true;
+
+        console.log(CopyList, 'CopyList');
+
+        return CopyList;
+      });
+    },
+  });
 
   const getTaskList = async () => {
     setLoading(true);
