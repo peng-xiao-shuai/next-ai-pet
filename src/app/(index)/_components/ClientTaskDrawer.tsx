@@ -7,6 +7,7 @@ import LoadingRender from '@/app/loading';
 import { Button } from '@/components/Button';
 import { useShare } from '@/hooks/use-share';
 import { useConnectWallet } from '@/hooks/use-connect-wallet';
+import { debounce } from '@/utils/debounce-throttle';
 
 export const ClientTaskDrawer: FC<{
   drawerVisible: boolean;
@@ -91,7 +92,9 @@ export const ClientTaskDrawer: FC<{
               key={item.id}
               className="mb-5"
               onClick={() => {
-                handleTask(item);
+                if (!item.isCompleted) {
+                  debounce(handleTask, 300, [item]);
+                }
               }}
             >
               <div className={cn('w-full flex justify-between')}>
@@ -104,7 +107,7 @@ export const ClientTaskDrawer: FC<{
                   className={`!mb-0 h-auto ${
                     item.isCompleted
                       ? 'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm'
-                      : 'font-bold text-[#FDCD62] text-sm leading-normal !items-start !w-auto'
+                      : 'font-bold text-[#FDCD62] text-sm leading-normal !items-start !w-auto pointer-events-none cursor-pointer'
                   }`}
                   click={() => {}}
                 ></Button>
