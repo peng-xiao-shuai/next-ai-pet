@@ -32,18 +32,13 @@ export const ClientTaskDrawer: FC<{
   const [taskList, setTaskList] = useState<Task[]>([]);
   const { handleShare } = useShare();
   const { handleOpen } = useConnectWallet({
-    bindSuccessCB() {
-      // TODO 待测试
-      console.log('成功');
-
+    bindSuccessCB: () => {
       setTaskList((state) => {
         const CopyList = state.map((item) => ({
           ...item,
         }));
         CopyList.find((item) => item.code === 'BIND_WALLET')!.isCompleted =
           true;
-
-        console.log(CopyList, 'CopyList');
 
         return CopyList;
       });
