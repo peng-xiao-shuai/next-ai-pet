@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { useUserStore } from '@/hooks/use-user';
 import emitter from '@/utils/bus';
 import { debounce } from '@/utils/debounce-throttle';
+import { useBusWatch } from './use-bus-watch';
 
 interface useConnectWalletProps {
   bindSuccessCB?: () => void;
@@ -96,12 +97,11 @@ export const useConnectWallet = ({
             if (ok) {
               setIsCheck(true);
               setDataLocal(result);
+              emitter.emit('bindTonSuccess');
             } else {
               toast('Check failure');
             }
             emitter.emit('setGlobalLoading', false);
-
-            bindSuccessCB?.();
             // toast('Binding successful');
           } catch (msg: any) {
             toast(msg);
@@ -117,6 +117,10 @@ export const useConnectWallet = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useBusWatch('bindTonSuccess', () => {
+    bindSuccessCB?.();
+  });
 
   return {
     handleOpen,
