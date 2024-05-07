@@ -45,7 +45,7 @@ export const Navbar: FC<{
             </div>
           </div> */}
 
-          <div className="flex">
+          <div className="flex items-center">
             {Boolean(detail.head) && (
               <Image
                 src={filterImage(detail.head)}
