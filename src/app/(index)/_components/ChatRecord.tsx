@@ -245,9 +245,6 @@ export const ClientChatRecord = () => {
   } = useContext(ChatContext);
 
   const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
     if (scrollTop === 0 && !state!.listLoading) {
       getPast?.();

@@ -5,6 +5,7 @@ import { decodeFromBase64Url } from '@/utils/string-transform';
 import Cookies from 'js-cookie';
 import Script from 'next/script';
 import { toast } from 'sonner';
+import { useEffect } from 'react';
 
 export const TGInitScript = () => {
   const setData = useUserStore.getState().setDataLocal;
@@ -12,6 +13,7 @@ export const TGInitScript = () => {
 
   const TGWebAppReady = () => {
     const WebApp = window.Telegram.WebApp;
+    WebApp.expand();
     const params: Indexes<string> = JSON.parse(
       WebApp.initDataUnsafe.start_param
         ? decodeFromBase64Url(WebApp.initDataUnsafe.start_param)
@@ -58,6 +60,8 @@ export const TGInitScript = () => {
           if (isRegister && typeof fbq != 'undefined')
             fbq('track', 'CompleteRegistration');
           setData(memberDetail);
+          window.scrollTo(0, 100);
+          WebApp.ready();
         } catch (err: any) {
           toast(err.message);
           console.log(err);
@@ -67,6 +71,30 @@ export const TGInitScript = () => {
       sendRequest();
     }
   };
+
+  useEffect(() => {
+    let ts: number | undefined;
+    const onTouchStart = (e: TouchEvent) => {
+      ts = e.touches[0].clientY;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      // if (scrollableEl) {
+      //   const scroll = scrollableEl.scrollTop;
+      //   const te = e.changedTouches[0].clientY;
+      //   if (scroll <= 0 && ts! < te) {
+      //     e.preventDefault();
+      //   }
+      // } else {
+      e.preventDefault();
+      // }
+    };
+    document.documentElement.addEventListener('touchstart', onTouchStart, {
+      passive: false,
+    });
+    document.documentElement.addEventListener('touchmove', onTouchMove, {
+      passive: false,
+    });
+  }, []);
   return (
     <>
       <Script
