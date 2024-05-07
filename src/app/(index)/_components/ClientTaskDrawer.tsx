@@ -37,8 +37,11 @@ export const ClientTaskDrawer: FC<{
         const CopyList = state.map((item) => ({
           ...item,
         }));
-        CopyList.find((item) => item.code === 'BIND_WALLET')!.isCompleted =
-          true;
+        const findData = CopyList.find((item) => item.code === 'BIND_WALLET');
+
+        if (findData) {
+          findData.isCompleted = true;
+        }
 
         return CopyList;
       });

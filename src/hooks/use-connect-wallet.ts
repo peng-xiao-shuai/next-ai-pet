@@ -61,16 +61,6 @@ export const useConnectWallet = ({
   useInterval(recreateProofPayload, TonProofDemoApi.refreshIntervalMs);
 
   useEffect(() => {
-    if (state.status === 'closed') {
-      window.Telegram?.WebApp.MainButton.setText('Ton Connect');
-      window.Telegram?.WebApp.MainButton.enable();
-    } else {
-      window.Telegram?.WebApp.MainButton.setText('Connecting...');
-      window.Telegram?.WebApp.MainButton.disable();
-    }
-  }, [state]);
-
-  useEffect(() => {
     const unChange = tonConnectUI.onStatusChange((w) => {
       debounce(async () => {
         console.log('w ==>', w);
@@ -100,9 +90,9 @@ export const useConnectWallet = ({
               emitter.emit('bindTonSuccess');
             } else {
               toast('Check failure');
+              tonConnectUI.disconnect();
             }
             emitter.emit('setGlobalLoading', false);
-            // toast('Binding successful');
           } catch (msg: any) {
             toast(msg);
             emitter.emit('setGlobalLoading', false);
@@ -125,6 +115,7 @@ export const useConnectWallet = ({
   return {
     handleOpen,
     isCheck,
+    state,
     tonConnectUI,
   };
 };
