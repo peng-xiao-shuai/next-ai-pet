@@ -90,10 +90,7 @@ export const Navbar: FC<{
         <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D] max-w-48">
           <div className="text-xs flex items-center">
             <span>Next level need</span>
-            <Rules>
-              内容内容内容内容内容内容内容内容内容内容内容
-              内容内容内容内容内容内容内容内容内容内容内容内容
-            </Rules>
+            <Rules></Rules>
           </div>
           <div className="flex items-center gap-[2px]">
             <Image
