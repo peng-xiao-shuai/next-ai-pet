@@ -45,7 +45,7 @@ export const ClientFeedDrawer: FC<{
         <span className="text-white text-sm">
           产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案
         </span>
-        <Rules className="size-8 text-[#737373]">
+        <Rules className="!size-6 text-[#737373]">
           内容内容内容内容内容内容内容内容内容内容内容
           内容内容内容内容内容内容内容内容内容内容内容内容
         </Rules>
@@ -108,10 +108,10 @@ export const ClientFeedDrawer: FC<{
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-white">
-        <div>
+      <div className="flex items-center justify-between text-white h-12">
+        <div className="h-full">
           <div className="flex items-center">
-            <div className="mr-2 min-w-16 h-7 px-2 rounded-full flex items-center justify-center gap-1 border-2 border-white/50">
+            <div className="min-w-16 h-7 px-2 rounded-full flex items-center justify-center gap-1 border-2 border-white/50">
               <Image
                 src="/icons/feed.png"
                 width={16}
@@ -120,7 +120,7 @@ export const ClientFeedDrawer: FC<{
               ></Image>
               <span className="text-xs">{userState.walletAble}</span>
             </div>
-            <Rules className="size-5 text-[#737373]">
+            <Rules className="!size-6 text-[#737373]">
               内容内容内容内容内容内容内容内容内容内容内容
               内容内容内容内容内容内容内容内容内容内容内容内容
             </Rules>
@@ -160,7 +160,7 @@ export const ClientFeedDrawer: FC<{
           }}
           disabled={sendLoading}
           className={cn(
-            'duration-300 transition-all !w-28 h-11 bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] mb-0',
+            'duration-300 transition-all !w-28 !h-full bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] !mb-0',
             errorMsg ? 'grayscale' : ''
           )}
         ></Button>
