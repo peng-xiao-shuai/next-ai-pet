@@ -2,6 +2,7 @@ import { fetchRequest } from '@/utils/request';
 import { base64UrlEncode, copyText } from '@/utils/string-transform';
 import { toast } from 'sonner';
 import { useUserStore } from './use-user';
+import { urlencoded } from 'express';
 
 export const useShare = () => {
   const { userState } = useUserStore();
@@ -27,9 +28,10 @@ export const useShare = () => {
     //   false
     // );
     window.Telegram.WebApp.openTelegramLink(
-      `https://t.me/share/url?url=t.me/pxs_test_bot/test?startapp=${base64UrlEncode(
+      encodeURI(`https://t.me/share/url?url=t.me/pxs_test_bot/test?startapp=${base64UrlEncode(
         str
-      )}&text=🎁Let's play-to-earn aridrop right now!`
+      )}&text=💰AI Pets:Chat, Play, Earn - Where a lovely dog Leads to an Airdrop Adventure and chat with you anytime!
+🎁Let's chat-to-earn aridrop right now!`)
     );
   };
 
