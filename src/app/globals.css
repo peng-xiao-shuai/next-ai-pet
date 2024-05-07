@@ -48,6 +48,10 @@ div[role='dialog'] {
   border-radius: 20px;
 }
 
+body[data-scroll-locked] {
+  padding-top: 0px !important;
+}
+
 div[role='dialog'] > button[type='button'] {
   display: none;
   opacity: 0;
