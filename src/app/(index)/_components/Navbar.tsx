@@ -6,17 +6,9 @@ import { ClientTips } from './ClientTips';
 import { ChatContext } from './Client';
 import { filterImage } from '@/utils/business';
 import { useUserStore } from '@/hooks/use-user';
-import { AiFillQuestionCircle } from 'react-icons/ai';
 import { useShare } from '@/hooks/use-share';
 import { NumberRoll } from '@/components/NumberRoll';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Rules } from '@/components/Rules';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -98,20 +90,10 @@ export const Navbar: FC<{
         <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D] max-w-48">
           <div className="text-xs flex items-center">
             <span>Next level need</span>
-            <Dialog>
-              <DialogTrigger>
-                <AiFillQuestionCircle className="size-[13px] ml-1 text-[#737373]"></AiFillQuestionCircle>
-              </DialogTrigger>
-              <DialogContent className="text-white !p-6 !bg-[#2F2F3B]">
-                <DialogHeader>
-                  <DialogTitle className="mb-4">说明</DialogTitle>
-                  <DialogDescription>
-                    内容内容内容内容内容内容内容内容内容内容内容
-                    内容内容内容内容内容内容内容内容内容内容内容内容
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
+            <Rules>
+              内容内容内容内容内容内容内容内容内容内容内容
+              内容内容内容内容内容内容内容内容内容内容内容内容
+            </Rules>
           </div>
           <div className="flex items-center gap-[2px]">
             <Image

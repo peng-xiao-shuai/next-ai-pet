@@ -1,7 +1,6 @@
 'use client';
 import { Button } from '@/components/Button';
 import Image from 'next/image';
-import { AiFillQuestionCircle } from 'react-icons/ai';
 import {
   Dispatch,
   FC,
@@ -16,6 +15,7 @@ import { useUserStore } from '@/hooks/use-user';
 import { fetchRequest } from '@/utils/request';
 import { ChatContext } from './Client';
 import { toast } from 'sonner';
+import { Rules } from '@/components/Rules';
 
 export const ClientFeedDrawer: FC<{
   drawerVisible: boolean;
@@ -45,7 +45,10 @@ export const ClientFeedDrawer: FC<{
         <span className="text-white text-sm">
           产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案
         </span>
-        <AiFillQuestionCircle className="size-8 text-[#737373]"></AiFillQuestionCircle>
+        <Rules className="size-8 text-[#737373]">
+          内容内容内容内容内容内容内容内容内容内容内容
+          内容内容内容内容内容内容内容内容内容内容内容内容
+        </Rules>
       </div>
 
       <div className="actions-list grid grid-cols-3 gap-x-4 mb-4">
@@ -117,7 +120,10 @@ export const ClientFeedDrawer: FC<{
               ></Image>
               <span className="text-xs">{userState.walletAble}</span>
             </div>
-            <AiFillQuestionCircle className="size-5 text-[#737373]"></AiFillQuestionCircle>
+            <Rules className="size-5 text-[#737373]">
+              内容内容内容内容内容内容内容内容内容内容内容
+              内容内容内容内容内容内容内容内容内容内容内容内容
+            </Rules>
           </div>
           <div className="text-sm">You have the food</div>
         </div>
