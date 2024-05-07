@@ -1,7 +1,14 @@
 'use client';
 import { Button } from '@/components/Button';
 import Image from 'next/image';
-import { Dispatch, FC, SetStateAction, useState, useEffect } from 'react';
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import { cn } from '@/lib/utils';
 import { ClientChatDrawer } from './ClientChatDrawer';
 import { useConnectWallet } from '@/hooks/use-connect-wallet';
@@ -30,25 +37,30 @@ export const ClientFoodDrawer: FC<{
   const [feedValue, setFeedValue] = useState<Package | null>(null);
   const [loadingLoadPackage, setLoadingLoadPackage] = useState(false);
   const address = useTonAddress(true);
-  const { handleOpen, isCheck, tonConnectUI } = useConnectWallet();
+  const { handleOpen, isCheck, tonConnectUI, state } = useConnectWallet({
+    bindSuccessCB: () => {
+      if (drawerVisible && !isCheck && !address) {
+        tonSendTransaction();
+      }
+    },
+  });
   const [topUpPackage, setTopUpPackage] = useState<Package[]>([]);
 
   useEffect(() => {
     if (drawerVisible) {
       getTopUpPackage();
 
-      if (address) {
+      if (address && isCheck) {
         window.Telegram?.WebApp.MainButton.setText(
           address.substring(0, 4) +
             '...' +
             address.substring(address.length - 4)
         );
+        window.Telegram?.WebApp.MainButton.show();
+      } else {
+        window.Telegram?.WebApp.MainButton.hide();
       }
-
-      window.Telegram?.WebApp.MainButton.show();
-      window.Telegram?.WebApp.MainButton.onClick(handleOpen);
     } else {
-      window.Telegram?.WebApp.MainButton.offClick(handleOpen);
       window.Telegram?.WebApp.MainButton.hide();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,11 +114,22 @@ export const ClientFoodDrawer: FC<{
     }
   };
 
+  const setVisible = useCallback<Dispatch<SetStateAction<boolean>>>(
+    (value: SetStateAction<boolean>) => {
+      if (state.status === 'closed') {
+        return setDrawerVisible(value);
+      } else {
+        return () => {};
+      }
+    },
+    [setDrawerVisible, state.status]
+  );
+
   return (
     <ClientChatDrawer
       drawerVisible={drawerVisible}
       title="Food"
-      setDrawerVisible={setDrawerVisible}
+      setDrawerVisible={setVisible}
     >
       {loadingLoadPackage && topUpPackage.length === 0 ? (
         <div className="h-40 w-full bg-[#1D1C21] rounded-2xl mb-14">
@@ -146,15 +169,14 @@ export const ClientFoodDrawer: FC<{
         title={'Buy'}
         click={() => {
           if (!address && !isCheck) {
-            return handleOpen();
+            handleOpen();
+          } else {
+            tonSendTransaction();
           }
-
-          tonSendTransaction();
         }}
         disabled={loading}
         className={cn(
-          'h-11 bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] mb-0 text-white text-sm',
-          !address && !isCheck ? 'grayscale' : ''
+          'h-11 bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] mb-0 text-white text-sm'
         )}
       ></Button>
     </ClientChatDrawer>
