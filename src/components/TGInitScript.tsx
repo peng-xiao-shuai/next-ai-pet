@@ -76,14 +76,17 @@ export const TGInitScript = () => {
     let overflow = 100;
     document.documentElement.style.background = 'black';
     document.body.style.overflowY = 'hidden';
-    document.body.style.position = `fixed`;
     document.body.style.width = `100vw`;
-    document.body.style.left = `${0}px`;
-    document.body.style.top = `${-overflow}px`;
     document.body.style.height = window.innerHeight + overflow + 'px';
     document.body.style.paddingBottom = `${overflow}px`;
     document.body.style.marginTop = `${overflow}px`;
     window.scrollTo(0, overflow);
+
+    if (/iphone/ig.test(window.navigator.userAgent)) {
+      document.body.style.position = `fixed`;
+      document.body.style.left = `${0}px`;
+      document.body.style.top = `${-overflow}px`;
+    } else {}
   }, []);
   return (
     <>

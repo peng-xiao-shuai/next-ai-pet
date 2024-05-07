@@ -371,7 +371,7 @@ export const GuideStep: FC<{
       <ClientTips
         visible={true}
         text={tool.content}
-        className="-translate-y-[140%] -translate-x-[55%] !fixed z-50 w-[280px]"
+        className={`${typeof window != 'undefined' && /iphone/gi.test(window.navigator.userAgent) ? '-translate-y-[155%]' : '-translate-y-[355%]'} !fixed -translate-x-[56%] z-50 w-[280px]`}
         cornerClassName="bottom-0 translate-y-2/4 left-2/4 -translate-x-2/4"
       ></ClientTips>
     </>
