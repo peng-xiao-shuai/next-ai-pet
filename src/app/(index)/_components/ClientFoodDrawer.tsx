@@ -66,6 +66,19 @@ export const ClientFoodDrawer: FC<{
       }
     } else {
       window.Telegram?.WebApp.MainButton.hide();
+      
+      let overflow = 100;
+      const timer = setTimeout(() => {
+        document.body.style.height = window.innerHeight + overflow + 'px';
+        document.body.style.marginTop = `${overflow}px`;
+        
+        if (/iphone/gi.test(window.navigator.userAgent)) {
+          window.scrollTo(0, 0);
+        } else {
+          window.scrollTo(0, overflow);
+        }
+        clearTimeout(timer);
+      }, 500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, drawerVisible, isCheck]);
@@ -87,7 +100,6 @@ export const ClientFoodDrawer: FC<{
    */
   const tonSendTransaction = async () => {
     setLoading(true);
-    let overflow = 100;
 
     try {
       const { result } = await fetchRequest('/restApi/recharge/createOrder', {
@@ -127,18 +139,6 @@ export const ClientFoodDrawer: FC<{
 
       toast(error.message);
       setLoading(false);
-
-      const timer = setTimeout(() => {
-        document.body.style.height = window.innerHeight + overflow + 'px';
-        document.body.style.marginTop = `${overflow}px`;
-        if (/iphone/gi.test(window.navigator.userAgent)) {
-          window.scrollTo(0, 0);
-        } else {
-          window.scrollTo(0, overflow);
-        }
-
-        clearTimeout(timer);
-      }, 500);
     }
   };
 
