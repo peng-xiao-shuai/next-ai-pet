@@ -79,7 +79,7 @@ export const ClientSendMsg: FC<{
             /**
              * FIX Ios 软键盘消失页面不会掉下来
              */
-            window.scrollTo(0, 100);
+            window.scrollTo(0, 0);
           }}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {

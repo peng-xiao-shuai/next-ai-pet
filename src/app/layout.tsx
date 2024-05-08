@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="h-[100vh] w-full bg-black">
+        <main className="h-full w-full bg-black">
           <TonProvider>
             <ClientLazyMotion>{children}</ClientLazyMotion>
           </TonProvider>
