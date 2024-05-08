@@ -3,6 +3,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerHeader,
+  DrawerPortal,
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { Dispatch, FC, SetStateAction } from 'react';
@@ -16,23 +17,25 @@ export const ClientChatDrawer: FC<{
 }> = ({ drawerVisible, setDrawerVisible, title, children }) => {
   return (
     <Drawer open={drawerVisible} onOpenChange={setDrawerVisible}>
-      <DrawerContent className="!bg-[#2F2F3B] !p-6 !pt-0 !rounded-b-none">
-        <DrawerHeader className="!p-0">
-          <DrawerTitle className="text-white text-left flex justify-between items-center">
-            <span className="text-lg font-bold text-[#F0F0F2]">{title}</span>
-            <IoCloseCircle
-              className="text-[#3B3B3D] size-6"
-              onClick={() => {
-                setDrawerVisible(false);
-              }}
-            />
-          </DrawerTitle>
-        </DrawerHeader>
+      <DrawerPortal>
+        <DrawerContent className="!bg-[#2F2F3B] !p-6 !pt-0 !rounded-b-none">
+          <DrawerHeader className="!p-0">
+            <DrawerTitle className="text-white text-left flex justify-between items-center">
+              <span className="text-lg font-bold text-[#F0F0F2]">{title}</span>
+              <IoCloseCircle
+                className="text-[#3B3B3D] size-6"
+                onClick={() => {
+                  setDrawerVisible(false);
+                }}
+              />
+            </DrawerTitle>
+          </DrawerHeader>
 
-        <div className="mb-6 mt-4 bg-[#444450] h-[1px] w-full"></div>
+          <div className="mb-6 mt-4 bg-[#444450] h-[1px] w-full"></div>
 
-        {children}
-      </DrawerContent>
+          {children}
+        </DrawerContent>
+      </DrawerPortal>
     </Drawer>
   );
 };
