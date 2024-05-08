@@ -69,9 +69,11 @@ export const ClientTaskDrawer: FC<{
         break;
       case 'JOIN_GROUP':
         window.Telegram.WebApp.openTelegramLink('https://t.me/AiPets_Group');
+        window.Telegram.WebApp.close();
         break;
       case 'JOIN_CHANNEL':
-        window.Telegram.WebApp.openTelegramLink('https://t.me/AiPets_Channel');
+        window.Telegram.WebApp.openTelegramLink('https://t.me/AiPetsAnn');
+        window.Telegram.WebApp.close();
         break;
       case 'BIND_WALLET':
         handleOpen();
