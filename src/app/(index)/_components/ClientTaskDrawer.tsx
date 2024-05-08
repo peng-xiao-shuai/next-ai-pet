@@ -115,12 +115,12 @@ export const ClientTaskDrawer: FC<{
               }}
             >
               <div className={cn('w-full flex justify-between')}>
-                <div className="text-lg font-bold text-white w-full text-left">
+                <div className="text-lg font-bold text-white text-left">
                   {item.name}
                 </div>
 
                 <Button
-                  title={`${item.isCompleted ? '已完成' : '+' + item.reward}`}
+                  title={`${item.isCompleted ? '已完成' : '+' + item.reward + ' $Pets'}`}
                   className={`!mb-0 h-auto ${
                     item.isCompleted
                       ? 'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm'
