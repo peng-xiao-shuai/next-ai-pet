@@ -8,6 +8,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useContext,
 } from 'react';
 import { cn } from '@/lib/utils';
 import { ClientChatDrawer } from './ClientChatDrawer';
@@ -17,6 +18,8 @@ import { fetchRequest } from '@/utils/request';
 import LoadingRender from '@/app/loading';
 import { beginCell, toNano } from 'ton';
 import { toast } from 'sonner';
+import { VideoName } from './ShowAnimation';
+import { ChatContext } from './Client';
 
 export const ClientFoodDrawer: FC<{
   drawerVisible: boolean;
@@ -33,6 +36,7 @@ export const ClientFoodDrawer: FC<{
     validated: number;
     version: number;
   };
+  const { showAnimationFun } = useContext(ChatContext);
   const [loading, setLoading] = useState(false);
   const [feedValue, setFeedValue] = useState<Package | null>(null);
   const [loadingLoadPackage, setLoadingLoadPackage] = useState(false);
@@ -103,6 +107,10 @@ export const ClientFoodDrawer: FC<{
           },
         ],
       });
+
+      // 开启动画
+      showAnimationFun?.(VideoName.FOOD);
+
       toast(
         'We are comfiring the payment, please wait and VIP is on the road!'
       );

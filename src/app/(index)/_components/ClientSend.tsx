@@ -79,7 +79,7 @@ export const ClientSendMsg: FC<{
             /**
              * FIX Ios 软键盘消失页面不会掉下来
              */
-            window.scrollTo(0, 200);
+            window.scrollTo(0, 100);
           }}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
@@ -371,7 +371,12 @@ export const GuideStep: FC<{
       <ClientTips
         visible={true}
         text={tool.content}
-        className={`${typeof window != 'undefined' && /iphone/gi.test(window.navigator.userAgent) ? '-translate-y-[155%]' : '-translate-y-[355%]'} !fixed -translate-x-[56%] z-50 w-[280px]`}
+        className={`${
+          typeof window != 'undefined' &&
+          /iphone/gi.test(window.navigator.userAgent)
+            ? '-translate-y-[155%]'
+            : '-translate-y-[355%]'
+        } !fixed -translate-x-[56%] z-50 w-[280px]`}
         cornerClassName="bottom-0 translate-y-2/4 left-2/4 -translate-x-2/4"
       ></ClientTips>
     </>

@@ -21,6 +21,8 @@ import { Navbar } from './Navbar';
 import { useUserStore } from '@/hooks/use-user';
 import AppConfigEnv from '@/utils/get-config';
 import { usePublicSocket } from '@/hooks/use-public-socket';
+import { VideoName, VideoPlayer } from './ShowAnimation';
+
 const MAX_LEN = 80;
 
 type ChatContextState = {
@@ -78,6 +80,7 @@ type ChatContextState = {
   newestId: string | '';
   readyState: 0 | 1 | 2 | 3;
   checkEntering: () => void;
+  showAnimationFun: (source: VideoName.FOOD | VideoName.FEED) => void;
 };
 
 export const ChatContext = createContext<Partial<ChatContextState>>({});
@@ -117,18 +120,15 @@ export const Client: FC<{
   const scrollDom = useRef<HTMLDivElement | null>(null);
   const recordListLength = useRef(0);
   const [list, setList] = useState<any[]>([]);
+  const [videoPlayerName, setVideoPlayerName] = useState(VideoName.NONE);
   const [loading, setLoading] = useState<boolean>(false);
   const [queryingPast, setQueryingPast] = useState(false);
   const [curSceneStartT, setCurSceneStartT] = useState(0);
-  const [isPress, setIsPress] = useState(false);
-  const [isPlotStage, setIsPlotStage] = useState(false);
   const [detail, setDetail] = useState<Indexes>({});
-  const [guideStep, setGuideStep] = useState(1);
   const [videoData, setVideoData] = useState({
     videoUrl: '',
     poster: '',
   });
-  const [videoVisible, setVideoVisible] = useState(false);
   const [readyState, setReadyState] = useState<0 | 1 | 2 | 3>(0);
   const newestId = useMemo(() => {
     const [item] = list?.slice(-1) || [];
@@ -289,6 +289,18 @@ export const Client: FC<{
       if (data === 'PONG') return;
       item = JSON.parse(data);
       if (item.type === 'HEARTBEAT') return;
+
+      switch (item.action) {
+        case 'Kiss on':
+          setVideoPlayerName(VideoName.KISS);
+          break;
+        case 'Touch':
+          setVideoPlayerName(VideoName.TOUCH);
+          break;
+        case 'Hug':
+          setVideoPlayerName(VideoName.HUG);
+          break;
+      }
     }
 
     state.entering = false;
@@ -311,10 +323,6 @@ export const Client: FC<{
       if (!isFormList) {
         state.readyReturn = true;
       }
-
-      if (isSocket) {
-        clearAllMask();
-      }
     }
 
     let {
@@ -330,14 +338,12 @@ export const Client: FC<{
       if (jsonExtObj.plotReplies) {
         if (isFormList && isLastMessage && plotRound) {
           itemIsPlotStage = !!itemIsPlotStage;
-          setIsPlotStage(itemIsPlotStage);
         }
       }
     }
 
     if (!isFormList && item.source !== 'MEMBER') {
       itemIsPlotStage = !!itemIsPlotStage;
-      setIsPlotStage(itemIsPlotStage);
     }
 
     if (queryingPast) return;
@@ -358,11 +364,6 @@ export const Client: FC<{
       scrollToBottom();
       clearTimeout(time);
     }, 200);
-  };
-
-  const clearAllMask = () => {
-    if (state.tempStep && !state.hasGuide) setGuideStep(state.tempStep);
-    setLoading(false);
   };
 
   const getPast = () => {
@@ -510,6 +511,14 @@ export const Client: FC<{
     }, 500);
   };
 
+  /**
+   * 开启动画, 目前是购买狗粮和喂养狗粮调用
+   * @param {string} source 来源
+   */
+  const showAnimationFun = (source: VideoName.FEED | VideoName.FOOD) => {
+    setVideoPlayerName(source);
+  };
+
   useBusWatch(_P + 'onSocketMessage', onSocketMessage);
   useBusWatch(_P + 'sendMsgFail', sendMsgFail);
   useBusWatch(_P + 'onSocketReadyState', (e) => {
@@ -561,6 +570,7 @@ export const Client: FC<{
         newestId,
         readyState,
         checkEntering,
+        showAnimationFun,
       }}
     >
       <div className="bg-black h-full flex flex-col">
@@ -570,6 +580,13 @@ export const Client: FC<{
           <ClientChatRecord></ClientChatRecord>
 
           <ClientSendMsg sendMsg={sendMsg} _P={_P}></ClientSendMsg>
+
+          <VideoPlayer
+            name={videoPlayerName}
+            onEnd={() => {
+              setVideoPlayerName(VideoName.NONE);
+            }}
+          ></VideoPlayer>
         </div>
       </div>
     </ChatContext.Provider>

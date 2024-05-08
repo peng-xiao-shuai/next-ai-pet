@@ -16,12 +16,13 @@ import { fetchRequest } from '@/utils/request';
 import { ChatContext } from './Client';
 import { toast } from 'sonner';
 import { Rules } from '@/components/Rules';
+import { VideoName } from './ShowAnimation';
 
 export const ClientFeedDrawer: FC<{
   drawerVisible: boolean;
   setDrawerVisible: Dispatch<SetStateAction<boolean>>;
 }> = ({ drawerVisible, setDrawerVisible }) => {
-  const { state } = useContext(ChatContext);
+  const { state, showAnimationFun } = useContext(ChatContext);
   const [feedValue, setFeedValue] = useState<number | string>(20);
   const { userState, setDataLocal } = useUserStore();
   const [sendLoading, setSendLoading] = useState(false);
@@ -135,7 +136,9 @@ export const ClientFeedDrawer: FC<{
                 `/restApi/friend/feedFood/${state!
                   .friendId!}?quantity=${feedValue}`
               );
-              28;
+              // 开启动画
+              showAnimationFun?.(VideoName.FEED);
+
               toast(
                 `谢谢主人给我投喂，本次投喂产能增加 ${result.chatCapacity} `,
                 {
