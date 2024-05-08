@@ -87,6 +87,7 @@ export const ClientFoodDrawer: FC<{
    */
   const tonSendTransaction = async () => {
     setLoading(true);
+    let overflow = 100;
 
     try {
       const { result } = await fetchRequest('/restApi/recharge/createOrder', {
@@ -117,8 +118,27 @@ export const ClientFoodDrawer: FC<{
 
       setLoading(false);
     } catch (error: any) {
+      /**
+       * FIX 修复禁止tg滚动功能导致取消支付会导致页面往下掉
+       */
+      document.body.style.height = window.innerHeight + 'px';
+      document.body.style.marginTop = `${0}px`;
+      window.scrollTo(0, 0);
+
       toast(error.message);
       setLoading(false);
+
+      const timer = setTimeout(() => {
+        document.body.style.height = window.innerHeight + overflow + 'px';
+        document.body.style.marginTop = `${overflow}px`;
+        if (/iphone/gi.test(window.navigator.userAgent)) {
+          window.scrollTo(0, 0);
+        } else {
+          window.scrollTo(0, overflow);
+        }
+
+        clearTimeout(timer);
+      }, 500);
     }
   };
 

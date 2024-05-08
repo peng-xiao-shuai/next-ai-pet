@@ -84,7 +84,7 @@ export const TGInitScript = () => {
     document.body.style.paddingBottom = `${overflow}px`;
     document.body.style.marginTop = `${overflow}px`;
 
-    if (/iphone/ig.test(window.navigator.userAgent)) {
+    if (/iphone/gi.test(window.navigator.userAgent)) {
       document.body.style.position = `fixed`;
       document.body.style.left = `${0}px`;
       document.body.style.top = `${-overflow}px`;
