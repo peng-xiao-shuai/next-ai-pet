@@ -3,7 +3,14 @@
 import { useState, useEffect, FC, useRef } from 'react';
 
 const FrameAnimation: FC<{
+  /**
+   * 需要请求资源的路径
+   */
   baseUrl: string;
+  /**
+   * 加载完成后的数据，由 onAllLoaded 函数传递出去的数据
+   */
+  data?: Array<HTMLImageElement>;
   totalFrames: number;
   loopIndex: number;
   className?: string;
@@ -39,11 +46,16 @@ const FrameAnimation: FC<{
    */
   onStart?: () => void;
   /**
+   * 每次结束执行，如果 loop = -1 则只会执行一次，大于 -1 则会在最后一帧渲染后执行
+   */
+  onLoop?: () => void;
+  /**
    * 全部图片加载完成后触发
    */
-  onAllLoaded?: () => void;
+  onAllLoaded?: (images: Array<HTMLImageElement>) => void;
 }> = ({
   baseUrl,
+  data,
   totalFrames,
   width,
   height,
@@ -54,6 +66,7 @@ const FrameAnimation: FC<{
   frameNumber = 30,
   children,
   allLoaded,
+  onLoop,
   onStart,
   onAllLoaded,
 }) => {
@@ -73,17 +86,24 @@ const FrameAnimation: FC<{
     timeoutId = setTimeout(() => {
       for (let i = 1; i < totalFrames; i++) {
         if (!images.current[i]) {
-          const img = new Image();
-          img.onload = () => {
-            images.current[i] = img;
-            if (i === 1 && canvasRef.current && startAnimation) {
-              // 确保至少有一帧可画且画布已挂载
-              drawFrame(1);
-            }
-          };
-          img.src = `${baseUrl}${
-            i < 10 ? '00' + i : i < 100 ? '0' + i : i
-          }.png`;
+          /**
+           * 如果data存在数据则不去请求资源
+           */
+          if (data?.[i]) {
+            images.current[i] = data[i];
+          } else {
+            const img = new Image();
+            img.onload = () => {
+              images.current[i] = img;
+              if (i === 1 && canvasRef.current && startAnimation) {
+                // 确保至少有一帧可画且画布已挂载
+                drawFrame(1);
+              }
+            };
+            img.src = `${baseUrl}${
+              i < 10 ? '00' + i : i < 100 ? '0' + i : i
+            }.png`;
+          }
         }
       }
     }, initialDelay * 1000);
@@ -91,7 +111,7 @@ const FrameAnimation: FC<{
       timeoutId && clearTimeout(timeoutId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [baseUrl, totalFrames, startAnimation, initialDelay]);
+  }, [baseUrl, totalFrames, startAnimation, initialDelay, data]);
 
   // 绘制帧
   const drawFrame = (frame: number): void => {
@@ -99,13 +119,12 @@ const FrameAnimation: FC<{
       onStart?.();
       isStart.current = true;
     }
-
     if (
       images.current.length === totalFrames &&
       onAllLoaded &&
       !isAllLoaded.current
     ) {
-      onAllLoaded?.();
+      onAllLoaded?.(images.current);
       isAllLoaded.current = true;
     }
 
@@ -130,11 +149,15 @@ const FrameAnimation: FC<{
       (!allLoaded || images.current.length === totalFrames)
     ) {
       frameIndex.current =
-        frameIndex.current >= totalFrames - 1
+        frameIndex.current >= totalFrames
           ? loopIndex == -1
-            ? totalFrames - 1
+            ? totalFrames
             : loopIndex
           : frameIndex.current + 1;
+
+      if (frameIndex.current >= totalFrames && onLoop) {
+        onLoop?.();
+      }
 
       drawFrame(frameIndex.current);
       previousTimeRef.current = time;
@@ -158,30 +181,30 @@ const FrameAnimation: FC<{
   useEffect(() => {
     const canvas = canvasRef.current;
     let timeoutId: NodeJS.Timeout | null = null; // 初始化timeout ID
-    const startAnimationFunction = () => {
-      // 添加初始延时后开始动画
-      timeoutId = setTimeout(() => {
-        setStartAnimation(true);
-      }, initialDelay * 1000);
-    };
+    // const startAnimationFunction = () => {
+    // 添加初始延时后开始动画
+    timeoutId = setTimeout(() => {
+      setStartAnimation(true);
+    }, initialDelay * 1000);
+    // };
 
-    // 如果设置了data-sal属性，则监听sal:in事件
-    if (canvas && salAttributes['data-sal']) {
-      canvas.addEventListener('sal:in', startAnimationFunction);
-    } else if (!salAttributes['data-sal']) {
-      // 如果没有设置data-sal属性，则直接应用初始延时
-      startAnimationFunction();
-    }
+    // // 如果设置了data-sal属性，则监听sal:in事件
+    // if (canvas && salAttributes['data-sal']) {
+    //   canvas.addEventListener('sal:in', startAnimationFunction);
+    // } else if (!salAttributes['data-sal']) {
+    //   // 如果没有设置data-sal属性，则直接应用初始延时
+    //   startAnimationFunction();
+    // }
 
-    return () => {
-      if (canvas && salAttributes['data-sal']) {
-        canvas.removeEventListener('sal:in', startAnimationFunction);
-      }
+    // return () => {
+    //   if (canvas && salAttributes['data-sal']) {
+    //     canvas.removeEventListener('sal:in', startAnimationFunction);
+    //   }
 
-      if (timeoutId) {
-        clearTimeout(timeoutId); // 清除延时
-      }
-    };
+    //   if (timeoutId) {
+    //     clearTimeout(timeoutId); // 清除延时
+    //   }
+    // };
   }, [initialDelay, salAttributes]);
 
   return (
