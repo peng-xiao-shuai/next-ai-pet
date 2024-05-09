@@ -290,16 +290,18 @@ export const Client: FC<{
       item = JSON.parse(data);
       if (item.type === 'HEARTBEAT') return;
 
-      switch (item.action) {
-        case 'Kiss on':
-          setVideoPlayerName(VideoName.KISS);
-          break;
-        case 'Touch':
-          setVideoPlayerName(VideoName.TOUCH);
-          break;
-        case 'Hug':
-          setVideoPlayerName(VideoName.HUG);
-          break;
+      if (item.source === 'MEMBER') {
+        switch (item.action) {
+          case 'Kiss on':
+            setVideoPlayerName(VideoName.KISS);
+            break;
+          case 'Touch':
+            setVideoPlayerName(VideoName.TOUCH);
+            break;
+          case 'Hug':
+            setVideoPlayerName(VideoName.HUG);
+            break;
+        }
       }
     }
 

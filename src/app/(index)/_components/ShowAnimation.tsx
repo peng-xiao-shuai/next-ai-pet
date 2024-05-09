@@ -55,6 +55,7 @@ export const VideoPlayer: React.FC<{
     if (!videoCache[name].length) {
       videoCache[name] = images;
     }
+    setVisible(true);
   };
   const onLoop = () => {
     if (visible) {
@@ -65,7 +66,6 @@ export const VideoPlayer: React.FC<{
   useEffect(() => {
     if (name != VideoName.NONE) {
       setImageData(videoCache[name]);
-      setVisible(true);
     }
   }, [name]);
 
