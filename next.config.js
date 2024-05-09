@@ -15,6 +15,7 @@ const nextConfig = {
   webpack: (config) => {
     // 设置别名
     config.resolve.alias['@'] = path.join(__dirname, 'src')
+    config.resolve.alias['@@'] = path.join(__dirname, 'public')
 
     // 重要: 返回修改后的配置
     return config
