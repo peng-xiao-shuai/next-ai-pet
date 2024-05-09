@@ -27,6 +27,7 @@ const handle = async (req: NextRequest) => {
           openId: user.id,
           inviteOpenId: body.sourceId,
           isTgPremium: body.is_premium,
+          languageCode: body.languageCode,
           avatarUrl: user.photo_url,
           loginName: user.username,
         },
