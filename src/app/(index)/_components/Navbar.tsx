@@ -9,6 +9,8 @@ import { useUserStore } from '@/hooks/use-user';
 import { useShare } from '@/hooks/use-share';
 import { NumberRoll } from '@/components/NumberRoll';
 import { Rules } from '@/components/Rules';
+import { useTranslation } from '@/hooks/useTranslation';
+import { LOCALE_KEYS } from '@@/locales';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -18,6 +20,7 @@ export const Navbar: FC<{
   const { detail } = useContext(ChatContext);
   const { userState, setData } = useUserStore();
   const { handleShare } = useShare();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (userState.point >= userState.upgradeRequiredPoint) {
@@ -56,7 +59,9 @@ export const Navbar: FC<{
               ></Image>
             )}
             <div className="pl-2 text-white">
-              <div className="normal-case">{detail.name || 'Your TonPet'}</div>
+              <div className="normal-case">
+                {detail.name || t(LOCALE_KEYS.YOUR_PET)}
+              </div>
               <div className="w-12 h-4 py-[2px] inline-flex items-center justify-center gap-1 rounded-full bg-[#4D4D4D]">
                 <Image
                   width={10}
@@ -89,7 +94,7 @@ export const Navbar: FC<{
       <div className="flex justify-between items-center text-white pr-4">
         <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D] max-w-48">
           <div className="text-xs flex items-center">
-            <span>Next level need</span>
+            <span>{t(LOCALE_KEYS.NEXT_LEVEL_NEED)}</span>
             <Rules></Rules>
           </div>
           <div className="flex items-center gap-[2px]">
