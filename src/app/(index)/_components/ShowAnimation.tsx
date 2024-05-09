@@ -58,9 +58,7 @@ export const VideoPlayer: React.FC<{
     setVisible(true);
   };
   const onLoop = () => {
-    if (visible) {
-      setVisible(false);
-    }
+    setVisible(false);
   };
 
   useEffect(() => {

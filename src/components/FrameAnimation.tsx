@@ -76,6 +76,7 @@ const FrameAnimation: FC<{
   const requestRef = useRef<number>();
   const isStart = useRef(false);
   const isAllLoaded = useRef(false);
+  const isLoop = useRef(false);
   const previousTimeRef = useRef<number | undefined>(undefined);
   const [startAnimation, setStartAnimation] = useState(false); // 控制动画开始的状态
 
@@ -156,7 +157,12 @@ const FrameAnimation: FC<{
           : frameIndex.current + 1;
 
       if (frameIndex.current >= totalFrames && onLoop) {
-        onLoop?.();
+        if (!isLoop.current) {
+          isLoop.current = true;
+          onLoop?.();
+        }
+      } else {
+        isLoop.current = false;
       }
 
       drawFrame(frameIndex.current);
