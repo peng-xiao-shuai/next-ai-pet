@@ -13,6 +13,7 @@ import { ClientFoodDrawer } from './ClientFoodDrawer';
 import { ClientTaskDrawer } from './ClientTaskDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { m, AnimatePresence } from 'framer-motion';
+import { useShare } from '@/hooks/use-share';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
@@ -20,6 +21,7 @@ export const ClientSendMsg: FC<{
 }> = ({ sendMsg, _P }) => {
   const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
+  const { handleShare } = useShare();
   const isDefineName = useMemo(
     () =>
       list![list!.length - 1]?.specialEventTrigger ===
@@ -63,9 +65,19 @@ export const ClientSendMsg: FC<{
           ></ClientTips>
         )}
 
+        <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 left-3 rtl:left-[unset] rtl:right-3">
+          <Image
+            src="/icons/share-gold.png"
+            width={28}
+            height={28}
+            alt="share gold"
+            onClick={handleShare}
+          ></Image>
+        </div>
+
         <input
           value={message}
-          className="textarea-dom pr-[72px] pl-4 w-full h-12 rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-4 rtl:pl-[72px]"
+          className="textarea-dom pr-[72px] pl-12 w-full h-12 rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]"
           placeholder={
             isDefineName
               ? 'Please directly type the name of your pet'
