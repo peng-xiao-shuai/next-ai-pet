@@ -8,6 +8,7 @@ import { Button } from '@/components/Button';
 import { useShare } from '@/hooks/use-share';
 import { useConnectWallet } from '@/hooks/use-connect-wallet';
 import { debounce } from '@/utils/debounce-throttle';
+import Image from 'next/image';
 
 export const ClientTaskDrawer: FC<{
   drawerVisible: boolean;
@@ -47,12 +48,28 @@ export const ClientTaskDrawer: FC<{
       });
     },
   });
+  const formatText: Indexes<string> = {
+    FOLLOW_X: '去关注',
+    JOIN_GROUP: '去加入',
+    JOIN_CHANNEL: '去加入',
+    BIND_WALLET: '链接钱包',
+    INVITE_MEMBER: 'Invite',
+  };
 
   const getTaskList = async () => {
     setLoading(true);
     const { result } = await fetchRequest('/restApi/task/list');
     const data = result.rows.map((item: Task) => ({
       ...item,
+      remark: item.remark
+        ? item.remark.replaceAll(/&(\+\d+)&|\$(\+\d+)\$/g, (match, p1, p2) => {
+            if (p1) {
+              return `<div class="inline-flex items-center text-[#FDCD62] mx-1"><img src="/icons/gold-coin.png" style="width: 14px;height:14px;margin-right:2px" alt="gold coin" />${p1}</div>`; // 处理 &+数字& 的情况
+            } else {
+              return `<div class="inline-flex items-center text-[#FDCD62] mx-1"><img src="/icons/feed.png" style="width: 14px;height:14px;margin-right:2px" alt="food" />${p2}</div>`; // 处理 $+数字$ 的情况
+            }
+          })
+        : '',
     }));
     setTaskList(data);
     setLoading(false);
@@ -114,33 +131,49 @@ export const ClientTaskDrawer: FC<{
                 }
               }}
             >
-              <div className={cn('w-full flex justify-between')}>
-                <div className="text-lg font-bold text-white text-left">
-                  {item.name}
+              <div className={cn('w-full flex justify-between items-center')}>
+                <div className="text-lg font-bold text-white text-left mb-1">
+                  <span>{item.name}</span>
+                  {Boolean(item.reward) && (
+                    <div className="flex items-center">
+                      <Image
+                        src="/icons/gold-coin.png"
+                        width={15}
+                        height={15}
+                        className="mr-1"
+                        alt="gold coin"
+                      ></Image>
+                      <span className="text-sm text-[#FDCD62]">
+                        +{item.reward}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <Button
-                  title={`${item.isCompleted ? '已完成' : '+' + item.reward + ' $Pets'}`}
-                  className={`!mb-0 h-auto ${
-                    item.isCompleted
-                      ? 'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm'
-                      : 'font-bold text-[#FDCD62] text-sm leading-normal !items-start !w-auto pointer-events-none cursor-pointer'
+                  title={`${
+                    item.isCompleted ? '已完成' : formatText[item.code]
                   }`}
+                  className={`!mb-0 h-8 ${'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm'}`}
                   click={() => {}}
                 ></Button>
               </div>
 
               {Boolean(item.remark.length) &&
-                item.remark.split(';')?.map((remark) => (
-                  <div className="text-sm text-[#BCBCC4]" key={remark}>
-                    {remark}
-                  </div>
-                ))}
+                item.remark
+                  .split('\\n')
+                  ?.map((remark) => (
+                    <div
+                      className="text-sm text-[#BCBCC4] items-center flex mb-1"
+                      key={remark}
+                      dangerouslySetInnerHTML={{ __html: remark }}
+                    ></div>
+                  ))}
             </div>
           ))
         )}
 
-        <div className="flex justify-between gap-4 items-center">
+        {/* <div className="flex justify-between gap-4 items-center">
           <span className="text-sm text-[#BCBCC4] flex-1">
             If you invite a new user you will get{' '}
             <span className="text-[#FDCD62] font-bold">1</span> food
@@ -152,7 +185,7 @@ export const ClientTaskDrawer: FC<{
           >
             Invite
           </div>
-        </div>
+        </div> */}
       </div>
     </ClientChatDrawer>
   );
