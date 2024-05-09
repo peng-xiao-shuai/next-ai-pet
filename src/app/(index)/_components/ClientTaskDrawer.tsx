@@ -154,7 +154,7 @@ export const ClientTaskDrawer: FC<{
                   title={`${
                     item.isCompleted ? '已完成' : formatText[item.code]
                   }`}
-                  className={`!mb-0 h-8 ${'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm'}`}
+                  className={`!mb-0 h-8 ${'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm pointer-events-none'}`}
                   click={() => {}}
                 ></Button>
               </div>
