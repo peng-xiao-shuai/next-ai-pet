@@ -66,7 +66,7 @@ export const fetchRequest = async <T = any>(
       case 404:
       case 400:
       case 405:
-        throw new Error(data.message);
+        throw new Error(data.message || 'unknown exception');
     }
 
     return {
