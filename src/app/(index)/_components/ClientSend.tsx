@@ -390,10 +390,10 @@ export const GuideStep: FC<{
         className={`${
           typeof window != 'undefined' &&
           /iphone/gi.test(window.navigator.userAgent)
-            ? '-translate-y-[155%]'
-            : '-translate-y-[355%]'
-        } !fixed -translate-x-[56%] z-50 w-[280px]`}
-        cornerClassName="bottom-0 translate-y-2/4 left-2/4 -translate-x-2/4"
+            ? '-translate-y-[70px]'
+            : '-translate-y-[130px]'
+        } !fixed -translate-x-[46%] z-50 w-[280px] bottom-0`}
+        cornerClassName="bottom-0 translate-y-2/4 left-[38%]"
       ></ClientTips>
     </>
   );
