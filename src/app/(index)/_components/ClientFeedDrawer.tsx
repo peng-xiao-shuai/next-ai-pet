@@ -23,7 +23,7 @@ export const ClientFeedDrawer: FC<{
   setDrawerVisible: Dispatch<SetStateAction<boolean>>;
 }> = ({ drawerVisible, setDrawerVisible }) => {
   const { state, showAnimationFun } = useContext(ChatContext);
-  const [feedValue, setFeedValue] = useState<number | string>(20);
+  const [feedValue, setFeedValue] = useState<number | string>(5);
   const { userState, setDataLocal } = useUserStore();
   const [sendLoading, setSendLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -50,7 +50,7 @@ export const ClientFeedDrawer: FC<{
       </div>
 
       <div className="actions-list grid grid-cols-3 gap-x-4 mb-4">
-        {[20, 100, 200].map((item) => (
+        {[5, 10, 50].map((item) => (
           <div
             key={item}
             className={cn(
