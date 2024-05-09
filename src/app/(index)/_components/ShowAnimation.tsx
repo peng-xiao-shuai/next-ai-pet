@@ -50,63 +50,70 @@ export const VideoPlayer: React.FC<{
 }> = ({ name, onEnd }) => {
   const [imageData, setImageData] = useState<HTMLImageElement[]>([]);
   const [visible, setVisible] = useState(true);
+  const [isLoader, setIsLoader] = useState(false);
+  const [isLoop, setIsLoop] = useState(false);
 
   const onAllLoaded = (images: HTMLImageElement[]) => {
     if (!videoCache[name].length) {
       videoCache[name] = images;
     }
+    setIsLoader(true);
     setVisible(true);
   };
   const onLoop = () => {
-    setVisible(false);
+    setIsLoop(true);
   };
 
   useEffect(() => {
     if (name != VideoName.NONE) {
+      setIsLoader(Boolean(videoCache[name].length));
       setImageData(videoCache[name]);
     }
   }, [name]);
 
-  if (name == VideoName.NONE || !FrameProps[name]) {
+  if (name == VideoName.NONE || !FrameProps[name] || !visible) {
     return <></>;
   }
 
   return (
-    <m.div
-      className="z-50"
-      animate={
-        visible
-          ? { opacity: 1, scale: 1, display: 'block' }
-          : {
-              opacity: 0,
-              scale: 1,
-              transitionEnd: {
-                display: 'none',
-              },
-            }
-      }
-      transition={{ type: 'spring', duration: 0.5 }}
-      onAnimationComplete={(definition: any) => {
-        if (definition.opacity != 1) {
-          onEnd();
+    <>
+      <m.div
+        className="z-50"
+        animate={
+          isLoader && !isLoop
+            ? { opacity: 1, scale: 1, display: 'block' }
+            : {
+                opacity: 0,
+                scale: 1,
+                transitionEnd: {
+                  display: 'none',
+                },
+              }
         }
-      }}
-    >
-      <div className="fixed left-0 top-0 w-full h-full bg-black/30 z-40">
-        <FrameAnimation
-          className="z-50"
-          height={750}
-          width={750}
-          loopIndex={-1}
-          initialDelay={0.1}
-          frameNumber={30}
-          allLoaded
-          data={imageData}
-          {...FrameProps[name]}
-          onLoop={onLoop}
-          onAllLoaded={onAllLoaded}
-        ></FrameAnimation>
-      </div>
-    </m.div>
+        transition={{ type: 'spring', duration: 0.5 }}
+        onAnimationComplete={(definition: any) => {
+          if (definition.opacity != 1) {
+            onEnd();
+            setIsLoop(false);
+          }
+        }}
+      >
+        <div className="fixed left-0 top-0 w-full h-full bg-black/30 z-40">
+          <FrameAnimation
+            className="z-50"
+            height={750}
+            width={750}
+            loopIndex={-1}
+            initialDelay={0.1}
+            frameNumber={30}
+            allLoaded
+            data={imageData}
+            {...FrameProps[name]}
+            onLoop={onLoop}
+            onAllLoaded={onAllLoaded}
+          ></FrameAnimation>
+        </div>
+      </m.div>
+    </>
   );
 };

@@ -98,7 +98,7 @@ const FrameAnimation: FC<{
               images.current[i] = img;
               if (i === 1 && canvasRef.current && startAnimation) {
                 // 确保至少有一帧可画且画布已挂载
-                drawFrame(1);
+                // drawFrame(1);
               }
             };
             img.src = `${baseUrl}${
