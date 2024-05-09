@@ -44,7 +44,7 @@ export const ClientCreatePet: FC<{
           setCountDown((val) => state.countDown);
         }
       }, 1000);
-    }, 4000);
+    }, 3000);
   };
 
   useEffect(() => {
