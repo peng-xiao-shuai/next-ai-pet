@@ -18,6 +18,7 @@ const lang = {
   [LOCALE_KEYS.HI_MY_DEAR_MASTER]: 'Привет, мой дорогой хозяин',
   [LOCALE_KEYS.FEED_ALL]: 'Всё покормить',
   [LOCALE_KEYS.YOU_HAVE_THE_FOOD_]: 'Количество еды',
+  [LOCALE_KEYS.FEED]: 'кормить',
   [LOCALE_KEYS.SEND]: 'Отправить',
   [LOCALE_KEYS.TASK]: 'Задания',
   [LOCALE_KEYS.ADD_TELEGRAM_GROUP]: 'Присоединиться к сообществу',
@@ -30,5 +31,10 @@ const lang = {
   [LOCALE_KEYS.GO_TO_LINK]: 'Подключить кошелёк',
   [LOCALE_KEYS.INVITE]: 'Пригласить',
   [LOCALE_KEYS.FOOD]: 'Еда',
+  [LOCALE_KEYS.MESSAGE]: 'информация',
+  [LOCALE_KEYS.FINISH]: 'законч',
+  [LOCALE_KEYS.BUY]: 'купля',
+  [LOCALE_KEYS.Loading]: 'балластить',
+  [LOCALE_KEYS.ADOPT_A_PET]: 'Усыновлять животных',
 } as const;
 export default lang;

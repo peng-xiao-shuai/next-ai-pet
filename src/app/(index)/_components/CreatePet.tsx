@@ -2,8 +2,10 @@
 import LoadingRender from '@/app/loading';
 import { Button } from '@/components/Button';
 import FrameAnimation from '@/components/FrameAnimation';
+import { useTranslation } from '@/hooks/useTranslation';
 import AppConfigEnv from '@/utils/get-config';
 import { fetchRequest } from '@/utils/request';
+import { LOCALE_KEYS } from '@@/locales';
 import {
   AnimationPlaybackControls,
   AnimationSequence,
@@ -22,11 +24,11 @@ export const ClientCreatePet: FC<{
   setFriendId: Dispatch<SetStateAction<string | undefined>>;
   setIsPet: Dispatch<SetStateAction<boolean>>;
 }> = ({ setFriendId, setIsPet }) => {
-  const [scope, animate] = useAnimate();
   const [isGift, setIsGift] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isLoader, setIsLoader] = useState(false);
   const [countDown, setCountDown] = useState(state.countDown);
+  const { t } = useTranslation();
 
   const onAllLoaded = () => {
     setIsLoader(true);
@@ -90,7 +92,7 @@ export const ClientCreatePet: FC<{
                   setCountDown(-1);
                   setIsPet(true);
                 }}
-                title="Adopt a pet"
+                title={t(LOCALE_KEYS.ADOPT_A_PET)}
                 className="bg-[#515151] text-xl w-2/3 mx-auto text-white border-white border-2"
               />
 

@@ -9,13 +9,15 @@ import { useShare } from '@/hooks/use-share';
 import { useConnectWallet } from '@/hooks/use-connect-wallet';
 import { debounce } from '@/utils/debounce-throttle';
 import Image from 'next/image';
+import { LOCALE_KEYS } from '@@/locales';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const ClientTaskDrawer: FC<{
   drawerVisible: boolean;
   setDrawerVisible: Dispatch<SetStateAction<boolean>>;
 }> = ({ drawerVisible, setDrawerVisible }) => {
   type Task = {
-    code: string;
+    code: keyof typeof formatText;
     cycleType: string;
     enable: number;
     id: number;
@@ -31,6 +33,7 @@ export const ClientTaskDrawer: FC<{
   };
   const [loading, setLoading] = useState(false);
   const [taskList, setTaskList] = useState<Task[]>([]);
+  const { t } = useTranslation();
   const { handleShare } = useShare();
   const { handleOpen } = useConnectWallet({
     bindSuccessCB: () => {
@@ -48,13 +51,13 @@ export const ClientTaskDrawer: FC<{
       });
     },
   });
-  const formatText: Indexes<string> = {
-    FOLLOW_X: '去关注',
-    JOIN_GROUP: '去加入',
-    JOIN_CHANNEL: '去加入',
-    BIND_WALLET: '链接钱包',
-    INVITE_MEMBER: 'Invite',
-  };
+  const formatText = {
+    FOLLOW_X: LOCALE_KEYS.GO_TO_FOLLOW,
+    JOIN_GROUP: LOCALE_KEYS.GO_TO_ADD,
+    JOIN_CHANNEL: LOCALE_KEYS.GO_TO_ADD,
+    BIND_WALLET: LOCALE_KEYS.GO_TO_LINK,
+    INVITE_MEMBER: LOCALE_KEYS.INVITE,
+  } as const;
 
   const getTaskList = async () => {
     setLoading(true);
@@ -112,7 +115,7 @@ export const ClientTaskDrawer: FC<{
   return (
     <ClientChatDrawer
       drawerVisible={drawerVisible}
-      title="Task"
+      title={t(LOCALE_KEYS.TASK)}
       setDrawerVisible={setDrawerVisible}
     >
       <div className="mb-10">
@@ -152,9 +155,11 @@ export const ClientTaskDrawer: FC<{
 
                 <Button
                   title={`${
-                    item.isCompleted ? '已完成' : formatText[item.code]
+                    item.isCompleted
+                      ? t(LOCALE_KEYS.FINISH)
+                      : t(formatText[item.code])
                   }`}
-                  className={`!mb-0 h-8 ${'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !w-20 !text-sm pointer-events-none'}`}
+                  className={`!mb-0 h-8 ${'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !min-w-20 max-w-28 !w-auto px-2 !text-sm pointer-events-none'}`}
                   click={() => {}}
                 ></Button>
               </div>

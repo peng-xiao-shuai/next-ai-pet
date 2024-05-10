@@ -22,6 +22,8 @@ import { useUserStore } from '@/hooks/use-user';
 import AppConfigEnv from '@/utils/get-config';
 import { usePublicSocket } from '@/hooks/use-public-socket';
 import { VideoName, VideoPlayer } from './ShowAnimation';
+import { useTranslation } from '@/hooks/useTranslation';
+import resources, { LOCALE_KEYS, Resources } from '@@/locales';
 
 const MAX_LEN = 80;
 
@@ -125,6 +127,7 @@ export const Client: FC<{
   const [queryingPast, setQueryingPast] = useState(false);
   const [curSceneStartT, setCurSceneStartT] = useState(0);
   const [detail, setDetail] = useState<Indexes>({});
+  const { t } = useTranslation();
   const [videoData, setVideoData] = useState({
     videoUrl: '',
     poster: '',

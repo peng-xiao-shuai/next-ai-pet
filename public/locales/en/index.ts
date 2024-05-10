@@ -16,6 +16,7 @@ const lang = {
   [LOCALE_KEYS.HI_MY_DEAR_MASTER]: 'Hi,my dear master',
   [LOCALE_KEYS.FEED_ALL]: 'Feed all',
   [LOCALE_KEYS.YOU_HAVE_THE_FOOD_]: 'You have the food',
+  [LOCALE_KEYS.FEED]: 'Feed',
   [LOCALE_KEYS.SEND]: 'Send',
   [LOCALE_KEYS.TASK]: 'Task',
   [LOCALE_KEYS.ADD_TELEGRAM_GROUP]: 'Add Telegram Group',
@@ -28,6 +29,11 @@ const lang = {
   [LOCALE_KEYS.GO_TO_LINK]: 'Go to link',
   [LOCALE_KEYS.INVITE]: 'Invite',
   [LOCALE_KEYS.FOOD]: 'Food',
+  [LOCALE_KEYS.MESSAGE]: 'Message',
+  [LOCALE_KEYS.FINISH]: 'Finish',
+  [LOCALE_KEYS.BUY]: 'Buy',
+  [LOCALE_KEYS.Loading]: 'Loading',
+  [LOCALE_KEYS.ADOPT_A_PET]: 'Adopt a pet',
 } as const;
 
 export default lang;

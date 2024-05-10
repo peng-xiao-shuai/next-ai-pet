@@ -11,6 +11,7 @@ export enum LOCALE_KEYS {
   HI_MY_DEAR_MASTER = 'Hi,my_dear_master',
   FEED_ALL = 'Feed_all',
   YOU_HAVE_THE_FOOD_ = 'You_have_the_food',
+  FEED = 'Feed',
   SEND = 'Send',
   TASK = 'Task',
   ADD_TELEGRAM_GROUP = 'Add_Telegram_Group',
@@ -23,4 +24,10 @@ export enum LOCALE_KEYS {
   GO_TO_LINK = 'Go_to_link',
   INVITE = 'Invite',
   FOOD = 'Food',
+
+  MESSAGE = 'Message',
+  FINISH = 'Finish',
+  BUY = 'Buy',
+  Loading = 'Loading',
+  ADOPT_A_PET = 'Adopt_a_pet',
 }

@@ -17,7 +17,7 @@ type Record<T = any> = FC<
 
 const ClassName = {
   text__inner:
-    'text__inner px-3 py-2 max-w-72 min-w-14 min-h-9 rounded-xl break-words whitespace-pre-wrap',
+    'text__inner px-3 py-2 max-w-96 min-w-14 min-h-9 rounded-xl break-words whitespace-pre-wrap',
 };
 
 // 时间, 通知
@@ -108,7 +108,7 @@ export const TextRecord: TextRecord = {
         <div
           className={cn(
             ClassName.text__inner,
-            'text__inner relative bg-[#252033] max-w-64 pr-12',
+            'text__inner relative bg-[#252033] pr-12',
             item.type === 'HOT_DATE' ? 'hot-date' : '',
             item.type === 'ROLE_PLAY' ? 'role-play' : ''
           )}

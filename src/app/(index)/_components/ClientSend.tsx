@@ -14,11 +14,14 @@ import { ClientTaskDrawer } from './ClientTaskDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { m, AnimatePresence } from 'framer-motion';
 import { useShare } from '@/hooks/use-share';
+import { LOCALE_KEYS } from '@@/locales';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
   _P: string;
 }> = ({ sendMsg, _P }) => {
+  const { t } = useTranslation();
   const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
   const { handleShare } = useShare();
@@ -61,7 +64,7 @@ export const ClientSendMsg: FC<{
             visible={detail.isInitialized}
             className="right-0 -translate-y-[120%] w-56"
             cornerClassName="bottom-0 translate-y-2/4 right-6"
-            text={'Send messages to earn growth points!'}
+            localeKey={LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS}
           ></ClientTips>
         )}
 
@@ -80,8 +83,8 @@ export const ClientSendMsg: FC<{
           className="textarea-dom pr-[72px] pl-12 w-full h-12 rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]"
           placeholder={
             isDefineName
-              ? 'Please directly type the name of your pet'
-              : `Message`
+              ? `${t(LOCALE_KEYS.PLEASE_DIRECTLY_TYPE_THE_NAME_OF_YOUR_PET)}`
+              : `${t(LOCALE_KEYS.MESSAGE)}`
           }
           maxLength={isDefineName ? 20 : 200}
           onChange={({ target }) => {
@@ -181,7 +184,8 @@ export const ClientTools = () => {
                   ...item,
                   step: index === 1 ? 'HIGHLIGHT_ACTION_BTN' : '',
                   highlight: 'HIGHLIGHT_ACTION_BTN',
-                  content: 'Please choose an action to touch your pet.',
+                  content:
+                    LOCALE_KEYS.PLEASE_CHOOSE_AN_ACTION_TO_TOUCH_YOUR_PET,
                   url: filterImage(item.expression2),
                   name: item.action,
                 } as never)
@@ -192,7 +196,7 @@ export const ClientTools = () => {
                 name: 'feed',
                 step: 'HIGHLIGHT_FEED_FOOD',
                 highlight: 'HIGHLIGHT_FEED_FOOD',
-                content: 'Click to feed your pet food',
+                content: LOCALE_KEYS.CLICK_TO_FEED_YOUR_PET_FOOD,
               },
               {
                 url: '/icons/task.png',
@@ -386,7 +390,7 @@ export const GuideStep: FC<{
 
       <ClientTips
         visible={true}
-        text={tool.content}
+        localeKey={tool.content}
         className={`${
           typeof window != 'undefined' &&
           /iphone/gi.test(window.navigator.userAgent)

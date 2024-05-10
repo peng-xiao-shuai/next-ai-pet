@@ -16,6 +16,7 @@ const lang = {
   [LOCALE_KEYS.HI_MY_DEAR_MASTER]: '你好，我亲爱的主人',
   [LOCALE_KEYS.FEED_ALL]: '全部投喂',
   [LOCALE_KEYS.YOU_HAVE_THE_FOOD_]: '拥有的粮食数',
+  [LOCALE_KEYS.FEED]: '喂养',
   [LOCALE_KEYS.SEND]: '发送',
   [LOCALE_KEYS.TASK]: '任务',
   [LOCALE_KEYS.ADD_TELEGRAM_GROUP]: '加入社群',
@@ -28,5 +29,10 @@ const lang = {
   [LOCALE_KEYS.GO_TO_LINK]: '链接钱包',
   [LOCALE_KEYS.INVITE]: '邀请',
   [LOCALE_KEYS.FOOD]: '粮食',
+  [LOCALE_KEYS.MESSAGE]: '消息',
+  [LOCALE_KEYS.FINISH]: '已完成',
+  [LOCALE_KEYS.BUY]: '购买',
+  [LOCALE_KEYS.Loading]: '加载中',
+  [LOCALE_KEYS.ADOPT_A_PET]: '领养宠物',
 } as const;
 export default lang;

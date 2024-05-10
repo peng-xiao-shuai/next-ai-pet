@@ -17,6 +17,8 @@ import { ChatContext } from './Client';
 import { toast } from 'sonner';
 import { Rules } from '@/components/Rules';
 import { VideoName } from './ShowAnimation';
+import { LOCALE_KEYS } from '@@/locales';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const ClientFeedDrawer: FC<{
   drawerVisible: boolean;
@@ -25,25 +27,27 @@ export const ClientFeedDrawer: FC<{
   const { state, showAnimationFun } = useContext(ChatContext);
   const [feedValue, setFeedValue] = useState<number | string>(5);
   const { userState, setDataLocal } = useUserStore();
+  const { t } = useTranslation();
   const [sendLoading, setSendLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     if (Number(feedValue) > userState.walletAble) {
-      setErrorMsg('You don’t have enough food');
+      setErrorMsg(t(LOCALE_KEYS.YOU_DON_T_HAVE_ENOUGH_FOOD));
     } else {
       setErrorMsg('');
     }
-  }, [feedValue, userState.walletAble]);
+  }, [feedValue, t, userState.walletAble]);
 
   return (
     <ClientChatDrawer
       drawerVisible={drawerVisible}
-      title="Feed"
+      title={t(LOCALE_KEYS.FEED)}
       setDrawerVisible={setDrawerVisible}
     >
       <div className="flex mb-6 justify-between gap-2">
         <span className="text-white text-sm">
+          {/* TODO i18n */}
           产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案
         </span>
         <Rules className="!size-6 text-[#737373]"></Rules>
@@ -102,7 +106,7 @@ export const ClientFeedDrawer: FC<{
             setFeedValue(userState.walletAble);
           }}
         >
-          Feed all
+          {t(LOCALE_KEYS.FEED_ALL)}
         </div>
       </div>
 
@@ -120,11 +124,11 @@ export const ClientFeedDrawer: FC<{
             </div>
             <Rules className="!size-6 text-[#737373]"></Rules>
           </div>
-          <div className="text-sm">You have the food</div>
+          <div className="text-sm">{t(LOCALE_KEYS.YOU_HAVE_THE_FOOD_)}</div>
         </div>
 
         <Button
-          title="Send"
+          title={t(LOCALE_KEYS.SEND)}
           click={async () => {
             if (errorMsg) {
               return;
@@ -140,6 +144,7 @@ export const ClientFeedDrawer: FC<{
               showAnimationFun?.(VideoName.FEED);
 
               toast(
+                // TODO i18n
                 `谢谢主人给我投喂，本次投喂产能增加 ${result.chatCapacity} `,
                 {
                   duration: 3000,

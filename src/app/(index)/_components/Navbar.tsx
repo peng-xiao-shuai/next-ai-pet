@@ -81,12 +81,12 @@ export const Navbar: FC<{
               alt="share gold"
               onClick={handleShare}
             ></Image>
-            <ClientTips
+            {/* <ClientTips
               visible={false}
               className="right-0 translate-y-[20%] w-64"
               cornerClassName="top-0 -translate-y-2/4 right-3 bg-[#F5B5CF]"
               text={'If you invite a new user you will get 200 food'}
-            ></ClientTips>
+            ></ClientTips> */}
           </div>
         </div>
       </div>

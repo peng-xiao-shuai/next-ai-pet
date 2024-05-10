@@ -20,6 +20,8 @@ import { beginCell, toNano } from 'ton';
 import { toast } from 'sonner';
 import { VideoName } from './ShowAnimation';
 import { ChatContext } from './Client';
+import { LOCALE_KEYS } from '@@/locales';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const ClientFoodDrawer: FC<{
   drawerVisible: boolean;
@@ -37,6 +39,7 @@ export const ClientFoodDrawer: FC<{
     version: number;
   };
   const { showAnimationFun } = useContext(ChatContext);
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [feedValue, setFeedValue] = useState<Package | null>(null);
   const [loadingLoadPackage, setLoadingLoadPackage] = useState(false);
@@ -66,12 +69,12 @@ export const ClientFoodDrawer: FC<{
       }
     } else {
       window.Telegram?.WebApp.MainButton.hide();
-      
+
       let overflow = 100;
       const timer = setTimeout(() => {
         document.body.style.height = window.innerHeight + overflow + 'px';
         document.body.style.marginTop = `${overflow}px`;
-        
+
         if (/iphone/gi.test(window.navigator.userAgent)) {
           window.scrollTo(0, 0);
         } else {
@@ -125,6 +128,7 @@ export const ClientFoodDrawer: FC<{
       showAnimationFun?.(VideoName.FOOD);
 
       toast(
+        // TODO i18n
         'We are comfiring the payment, please wait and VIP is on the road!'
       );
 
@@ -156,7 +160,7 @@ export const ClientFoodDrawer: FC<{
   return (
     <ClientChatDrawer
       drawerVisible={drawerVisible}
-      title="Food"
+      title={t(LOCALE_KEYS.FOOD)}
       setDrawerVisible={setVisible}
     >
       {loadingLoadPackage && topUpPackage.length === 0 ? (
@@ -194,7 +198,7 @@ export const ClientFoodDrawer: FC<{
       )}
 
       <Button
-        title={'Buy'}
+        title={t(LOCALE_KEYS.BUY)}
         click={() => {
           if (!address && !isCheck) {
             handleOpen();
