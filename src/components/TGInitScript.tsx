@@ -62,7 +62,6 @@ export const TGInitScript = () => {
           if (isRegister && typeof fbq != 'undefined')
             fbq('track', 'CompleteRegistration');
           setData(memberDetail);
-          WebApp.ready();
         } catch (err: any) {
           toast(err.message);
           console.log(err);

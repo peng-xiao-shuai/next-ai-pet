@@ -62,7 +62,7 @@ export const ClientCreatePet: FC<{
   return countDown >= 0 ? (
     <>
       {!isLoader && <LoadingRender></LoadingRender>}
-      <div className="fixed flex justify-center items-center bg-black w-full h-full">
+      <div className="fixed top-0 z-50 flex justify-center items-center bg-black w-full h-full">
         <Image
           src="/images/lights.png"
           width={750}

@@ -30,7 +30,7 @@ export const Navbar: FC<{
 
   return (
     <>
-      <div className={`px-4 w-full mb-3`}>
+      <div className={`px-4 w-full mb-3 relative z-10`}>
         <div
           className={`flex justify-between items-center rounded-lg bg-base-300 h-14 `}
         >
@@ -91,7 +91,7 @@ export const Navbar: FC<{
         </div>
       </div>
 
-      <div className="flex justify-between items-center text-white pr-4">
+      <div className="flex justify-between items-center text-white pr-4 relative z-10">
         <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D] max-w-48">
           <div className="text-xs flex items-center">
             <span>{t(LOCALE_KEYS.NEXT_LEVEL_NEED)}</span>
