@@ -17,7 +17,7 @@ type Record<T = any> = FC<
 
 const ClassName = {
   text__inner:
-    'text__inner px-3 py-2 max-w-96 min-w-14 min-h-9 rounded-xl break-words whitespace-pre-wrap',
+    'text__inner px-3 py-2 max-w-80 min-w-14 min-h-9 rounded-xl break-words whitespace-pre-wrap',
 };
 
 // 时间, 通知

@@ -127,7 +127,7 @@ export const ClientTaskDrawer: FC<{
           taskList.map((item, index) => (
             <div
               key={item.id}
-              className="mb-5"
+              className="mb-3"
               onClick={() => {
                 if (!item.isCompleted) {
                   debounce(handleTask, 300, [item]);
