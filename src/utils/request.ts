@@ -10,7 +10,10 @@ import { objectToQueryString } from './string-transform';
 import Cookie from 'js-cookie';
 import { createDebounce } from './debounce-throttle';
 import AppConfigEnv from './get-config';
+import emitter from './bus';
 const [debounce] = createDebounce();
+
+let activeRequests = 0;
 
 export const fetchRequest = async <T = any>(
   url: string,
@@ -44,6 +47,8 @@ export const fetchRequest = async <T = any>(
       url += objectToQueryString(body || {});
     }
 
+    activeRequests++;
+
     const res = await fetch(URL, {
       method: 'POST',
       ...(options || {}),
@@ -58,6 +63,15 @@ export const fetchRequest = async <T = any>(
       message: string;
       result: T;
     } = await res.json();
+
+    activeRequests--;
+
+    /**
+     * activeRequests = 0 网络请求资源空闲
+     */
+    if (activeRequests === 0) {
+      emitter.emit('fetchIdle');
+    }
 
     switch (data.code) {
       case 500:
@@ -74,6 +88,7 @@ export const fetchRequest = async <T = any>(
       result: (data.result || {}) as T,
     };
   } catch (err: any) {
+    activeRequests--;
     console.log(url, '报错：', err);
     debounce(() => {
       toast(err.message);
