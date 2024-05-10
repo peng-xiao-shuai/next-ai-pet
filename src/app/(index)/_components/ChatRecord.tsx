@@ -283,7 +283,8 @@ export const ClientChatRecord = () => {
           className={cn(
             'item--member flex',
             item.source !== 'AI' ? 'self flex-row-reverse' : 'ai',
-            item.type === 'TIMESTAMP' ? '' : 'mt-6'
+            item.type === 'TIMESTAMP' ? '' : 'mt-6',
+            item.visible === false ? 'opacity-0' : 'opacity-100'
           )}
         >
           <div className="item__container relative text-[17px] leading-[22px] -tracking-[0.5px]">

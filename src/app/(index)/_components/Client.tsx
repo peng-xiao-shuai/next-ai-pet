@@ -23,7 +23,7 @@ import AppConfigEnv from '@/utils/get-config';
 import { usePublicSocket } from '@/hooks/use-public-socket';
 import { VideoName, VideoPlayer } from './ShowAnimation';
 import { useTranslation } from '@/hooks/useTranslation';
-import resources, { LOCALE_KEYS, Resources } from '@@/locales';
+import { ShowIntroductionAnimation } from './ShowIntroductionAnimation';
 
 const MAX_LEN = 80;
 
@@ -128,6 +128,7 @@ export const Client: FC<{
   const [queryingPast, setQueryingPast] = useState(false);
   const [curSceneStartT, setCurSceneStartT] = useState(0);
   const [detail, setDetail] = useState<Indexes>({});
+  const detailCurrent = useRef<Indexes>({});
   const { t } = useTranslation();
   const [videoData, setVideoData] = useState({
     videoUrl: '',
@@ -192,6 +193,7 @@ export const Client: FC<{
     }
 
     item.head = item.source === 'AI' ? item.friendHead : item.memberHead;
+
     if (item.type === 'TIMESTAMP') item.message = filterAbbrTime(item.message);
 
     if (item.type === 'SYSTEM_NOTICE' && item.scene && isSocket) {
@@ -250,6 +252,17 @@ export const Client: FC<{
     if (!item.extObj) return;
 
     const extObj = JSON.parse(item.extObj);
+
+    /**
+     * 判断开场动画
+     */
+    if (
+      detailCurrent.current.isInitialized &&
+      item.source == 'AI' &&
+      extObj.imageUrl?.includes('gif')
+    ) {
+      item.visible = false;
+    }
 
     switch (item.type) {
       case 'VIDEO':
@@ -474,6 +487,7 @@ export const Client: FC<{
     setLoading(loading);
     fetchRequest(`/restApi/friend/detail/${friendId}`)
       .then((res) => {
+        detailCurrent.current = res.result;
         setDetail(res.result || {});
         getList();
       })
@@ -594,6 +608,8 @@ export const Client: FC<{
             <ClientChatRecord></ClientChatRecord>
           </div>
         </div>
+
+        <ShowIntroductionAnimation></ShowIntroductionAnimation>
 
         <ClientSendMsg sendMsg={sendMsg} _P={_P}></ClientSendMsg>
 
