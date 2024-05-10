@@ -24,6 +24,7 @@ export const ClientSendMsg: FC<{
   const { t } = useTranslation();
   const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
+  const [showPetGIF, setShowPetGIF] = useState(false);
   const { handleShare } = useShare();
   const isDefineName = useMemo(
     () =>
@@ -31,6 +32,18 @@ export const ClientSendMsg: FC<{
       'REQUIRE_MODIFY_FRIEND_NAME',
     [list]
   );
+  const handleSend = () => {
+    if (detail.isInitialized) {
+      setDetail?.((state) => ({
+        ...state,
+        isInitialized: false,
+      }));
+      setMessage('');
+      setShowPetGIF(true);
+    }
+
+    sendMsg(message);
+  };
 
   const sendMsgSuc = (type?: unknown) => {
     /**
@@ -58,14 +71,48 @@ export const ClientSendMsg: FC<{
     <>
       <ClientTools></ClientTools>
 
+      {showPetGIF && (
+        <m.div
+          style={{
+            x: '50%',
+            y: '-50%',
+          }}
+          animate={{
+            right: 109,
+            top: 91,
+            scale: 0.08,
+          }}
+          className="fixed right-2/4 top-2/4 z-50"
+          transition={{
+            delay: 2,
+            duration: 0.8,
+          }}
+          onAnimationComplete={(e) => {
+            console.log(e);
+            if ((e as any).scale) {
+              setShowPetGIF(false);
+            }
+          }}
+        >
+          <Image
+            src="/images/gold-coin.gif"
+            width={420}
+            height={420}
+            alt="gold coin"
+          ></Image>
+        </m.div>
+      )}
+
       <div className="input-container relative m-3 leading-none text-white">
         {detail.isInitialized && (
-          <ClientTips
-            visible={detail.isInitialized}
-            className="right-0 -translate-y-[120%] w-56"
-            cornerClassName="bottom-0 translate-y-2/4 right-6"
-            localeKey={LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS}
-          ></ClientTips>
+          <>
+            <ClientTips
+              visible={detail.isInitialized}
+              className="right-0 -translate-y-[120%] w-56"
+              cornerClassName="bottom-0 translate-y-2/4 right-6"
+              localeKey={LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS}
+            ></ClientTips>
+          </>
         )}
 
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 left-3 rtl:left-[unset] rtl:right-3">
@@ -102,29 +149,34 @@ export const ClientSendMsg: FC<{
           }}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
-              sendMsg(message);
+              handleSend();
             }
           }}
         />
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 right-4 rtl:right-[unset] rtl:left-4">
           {readyState === 1 ? (
-            <Image
-              onClick={() => {
-                if (detail.isInitialized) {
-                  setDetail?.((state) => ({
-                    ...state,
-                    isInitialized: false,
-                  }));
-                  setMessage('');
-                }
-                sendMsg(message);
+            <m.div
+              initial={{ scale: 1 }}
+              animate={{
+                scale: detail.isInitialized ? 0.8 : 1,
               }}
-              width={30}
-              height={30}
-              className="send-icon"
-              alt="send"
-              src="/icons/send.png"
-            ></Image>
+              transition={{
+                repeatType: 'reverse',
+                duration: 1,
+                repeat: Infinity,
+              }}
+            >
+              <Image
+                onClick={() => {
+                  handleSend();
+                }}
+                width={30}
+                height={30}
+                className="send-icon"
+                alt="send"
+                src="/icons/send.png"
+              ></Image>
+            </m.div>
           ) : (
             <div className="size-[30px] bg-[#fd2c54] flex items-center justify-center rounded-full overflow-hidden">
               <span className="loading loading-spinner"></span>
