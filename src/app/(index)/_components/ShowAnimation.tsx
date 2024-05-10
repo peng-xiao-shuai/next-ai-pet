@@ -2,6 +2,7 @@ import FrameAnimation from '@/components/FrameAnimation';
 import React, { useEffect, useRef, useState } from 'react';
 import { m } from 'framer-motion';
 import { useBusWatch } from '@/hooks/use-bus-watch';
+import Image from 'next/image';
 
 export enum VideoName {
   KISS = 'kiss',
@@ -14,24 +15,24 @@ export enum VideoName {
 
 const FrameProps = {
   [VideoName.KISS]: {
-    baseUrl: '/animation/kiss/',
-    totalFrames: 75,
+    baseUrl: '/images/kiss.gif',
+    // totalFrames: 75,
   },
   [VideoName.TOUCH]: {
-    baseUrl: '/animation/touch/',
-    totalFrames: 53,
+    baseUrl: '/images/touch.gif',
+    // totalFrames: 53,
   },
   [VideoName.HUG]: {
-    baseUrl: '/animation/hug/',
-    totalFrames: 51,
+    baseUrl: '/images/hug.gif',
+    // totalFrames: 51,
   },
   [VideoName.FOOD]: {
-    baseUrl: '/animation/food/',
-    totalFrames: 52,
+    baseUrl: '/images/food.gif',
+    // totalFrames: 52,
   },
   [VideoName.FEED]: {
-    baseUrl: '/animation/feed/',
-    totalFrames: 53,
+    baseUrl: '/images/feed.gif',
+    // totalFrames: 53,
   },
 };
 
@@ -68,38 +69,45 @@ export const VideoPlayer: React.FC<{
 
   useEffect(() => {
     if (name != VideoName.NONE) {
-      setIsLoader(Boolean(videoCache[name].length));
+      // setIsLoader(Boolean(videoCache[name].length));
+      setIsLoader(true);
       setImageData(videoCache[name]);
+      setVisible(true);
+
+      const timer = setTimeout(() => {
+        setIsLoop(true);
+        clearTimeout(timer);
+      }, 3000);
     }
   }, [name]);
 
-  useBusWatch('fetchIdle', () => {
-    const timer = setTimeout(() => {
-      Object.keys(videoCache).forEach((key, index) => {
-        const K = key as Exclude<VideoName, VideoName.NONE>;
-        if (videoCache[K].length == FrameProps[K].totalFrames) {
-        } else {
-          console.log(FrameProps[K].baseUrl);
+  // useBusWatch('fetchIdle', () => {
+  //   const timer = setTimeout(() => {
+  //     Object.keys(videoCache).forEach((key, index) => {
+  //       const K = key as Exclude<VideoName, VideoName.NONE>;
+  //       if (videoCache[K].length == FrameProps[K].totalFrames) {
+  //       } else {
+  //         console.log(FrameProps[K].baseUrl);
 
-          for (let i = 1; i < FrameProps[K].totalFrames; i++) {
-            if (!videoCache[K][i]) {
-              const img = new Image();
-              img.onload = () => {
-                videoCache[K][i] = img;
-              };
-              img.src = `${FrameProps[K].baseUrl}${
-                i < 10 ? '00' + i : i < 100 ? '0' + i : i
-              }.png`;
-            }
-          }
-        }
+  //         for (let i = 1; i < FrameProps[K].totalFrames; i++) {
+  //           if (!videoCache[K][i]) {
+  //             const img = new Image();
+  //             img.onload = () => {
+  //               videoCache[K][i] = img;
+  //             };
+  //             img.src = `${FrameProps[K].baseUrl}${
+  //               i < 10 ? '00' + i : i < 100 ? '0' + i : i
+  //             }.png`;
+  //           }
+  //         }
+  //       }
 
-        if (index === Object.keys(videoCache).length - 1) {
-          clearTimeout(timer);
-        }
-      });
-    }, 1000);
-  });
+  //       if (index === Object.keys(videoCache).length - 1) {
+  //         clearTimeout(timer);
+  //       }
+  //     });
+  //   }, 1000);
+  // });
 
   if (name == VideoName.NONE || !FrameProps[name] || !visible) {
     return <></>;
@@ -128,8 +136,8 @@ export const VideoPlayer: React.FC<{
           }
         }}
       >
-        <div className="fixed left-0 top-0 w-full h-full bg-black/30 z-40">
-          <FrameAnimation
+        <div className="fixed flex items-center left-0 top-0 w-full h-full bg-black/30 z-40">
+          {/* <FrameAnimation
             className="z-50"
             height={750}
             width={750}
@@ -141,7 +149,14 @@ export const VideoPlayer: React.FC<{
             {...FrameProps[name]}
             onLoop={onLoop}
             onAllLoaded={onAllLoaded}
-          ></FrameAnimation>
+          ></FrameAnimation> */}
+          <Image
+            src={FrameProps[name].baseUrl}
+            width={450}
+            height={450}
+            alt={name}
+            className="mx-auto"
+          ></Image>
         </div>
       </m.div>
     </>
