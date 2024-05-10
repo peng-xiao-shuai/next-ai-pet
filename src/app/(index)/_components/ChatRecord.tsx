@@ -171,7 +171,11 @@ export const ImageVideoRecorder: Record = ({ item }) => {
 
   return (
     <div className="item__container--video relative">
-      <div className="video-wrapper p-2 bg-[#252033] rounded-xl">
+      <div
+        className={`video-wrapper p-2 ${
+          item.imageUrl.includes('gif') ? '' : 'bg-[#252033]'
+        } rounded-xl`}
+      >
         {item.type === 'IMG' ? (
           <Image
             className="cover-img rounded-md"
@@ -269,7 +273,7 @@ export const ClientChatRecord = () => {
       ref={scrollDom}
       dir="ltr"
       className={cn(
-        'relative z-10 p-5 pb-0 flex-1 overflow-y-auto chat-record'
+        `relative z-10 p-5 pb-0 flex-1 overflow-y-auto chat-record`
       )}
       onScroll={onScroll}
     >
