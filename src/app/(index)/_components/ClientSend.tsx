@@ -88,7 +88,6 @@ export const ClientSendMsg: FC<{
             duration: 0.8,
           }}
           onAnimationComplete={(e) => {
-            console.log(e);
             if ((e as any).scale) {
               setShowPetGIF(false);
             }
