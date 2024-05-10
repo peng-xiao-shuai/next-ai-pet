@@ -41,13 +41,20 @@ export default function Home() {
 
   return (
     <>
-      {!isPet ? (
+      {!isPet && (
         <ClientCreatePet
           setIsPet={setIsPet}
           setFriendId={setFriendId}
         ></ClientCreatePet>
-      ) : (
-        <Client friendId={friendId}></Client>
+      )}
+
+      {friendId && (
+        <Client
+          friendId={friendId}
+          className={`duration-200 transition-all ${
+            !isPet ? 'opacity-0' : 'opacity-100'
+          }`}
+        ></Client>
       )}
     </>
   );

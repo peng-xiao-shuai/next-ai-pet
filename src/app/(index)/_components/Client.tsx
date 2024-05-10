@@ -116,7 +116,8 @@ const _P = 'Chat-';
 
 export const Client: FC<{
   friendId: undefined | string;
-}> = ({ friendId }) => {
+  className: string;
+}> = ({ friendId, className }) => {
   const chat = useRef(new ChatWebSocket(_P));
   const { userState, setDataLocal } = useUserStore();
   const scrollDom = useRef<HTMLDivElement | null>(null);
@@ -578,21 +579,30 @@ export const Client: FC<{
         showAnimationFun,
       }}
     >
-      <div className="bg-black h-full flex flex-col">
-        <Navbar></Navbar>
+      <div className={`h-[100vh] flex flex-col ${className}`}>
+        <div className="h-full flex flex-col flex-1 overflow-y-hidden relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/bg.jpg"
+            alt="bg"
+            className="w-full h-full absolute z-[0] left-0 top-0"
+          />
 
-        <div className="overflow-hidden flex-1 flex flex-col relative">
-          <ClientChatRecord></ClientChatRecord>
+          <Navbar></Navbar>
 
-          <ClientSendMsg sendMsg={sendMsg} _P={_P}></ClientSendMsg>
-
-          <VideoPlayer
-            name={videoPlayerName}
-            onEnd={() => {
-              setVideoPlayerName(VideoName.NONE);
-            }}
-          ></VideoPlayer>
+          <div className="overflow-hidden flex-1 flex flex-col relative">
+            <ClientChatRecord></ClientChatRecord>
+          </div>
         </div>
+
+        <ClientSendMsg sendMsg={sendMsg} _P={_P}></ClientSendMsg>
+
+        <VideoPlayer
+          name={videoPlayerName}
+          onEnd={() => {
+            setVideoPlayerName(VideoName.NONE);
+          }}
+        ></VideoPlayer>
       </div>
     </ChatContext.Provider>
   );
