@@ -1,11 +1,12 @@
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import Image from 'next/image';
 import { ChatContext } from './Client';
-import { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { m } from 'framer-motion';
-const _P = 'Chat-';
 
-export const ShowIntroductionAnimation = () => {
+export const ShowIntroductionAnimation: FC<{
+  _P: string;
+}> = ({ _P }) => {
   const { detail, setList } = useContext(ChatContext);
   const [visible, setVisible] = useState(false);
   const [opacity, setOpacity] = useState(0);
@@ -19,11 +20,6 @@ export const ShowIntroductionAnimation = () => {
       }, 200);
     }
   }, [detail.isInitialized]);
-
-  useBusWatch(_P + 'onSocketMessage', () => {
-    if (detail.isInitialized) {
-    }
-  });
 
   return (
     visible && (
