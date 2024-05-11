@@ -1,7 +1,15 @@
 'use client';
 import { filterImage } from '@/utils/business';
 import Image from 'next/image';
-import { FC, useContext, useEffect, useMemo, useState, useRef } from 'react';
+import {
+  FC,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  MutableRefObject,
+} from 'react';
 import { ClientTips } from './ClientTips';
 import { fetchRequest } from '@/utils/request';
 import { ChatContext } from './Client';
@@ -20,7 +28,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
   _P: string;
-}> = ({ sendMsg, _P }) => {
+  detailCurrent: MutableRefObject<Indexes<any>>;
+}> = ({ sendMsg, _P, detailCurrent }) => {
   const { t } = useTranslation();
   const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
@@ -34,6 +43,7 @@ export const ClientSendMsg: FC<{
   );
   const handleSend = () => {
     if (detail.isInitialized) {
+      detailCurrent.current.isInitialized = false;
       setDetail?.((state) => ({
         ...state,
         isInitialized: false,

@@ -609,9 +609,13 @@ export const Client: FC<{
           </div>
         </div>
 
-        <ShowIntroductionAnimation></ShowIntroductionAnimation>
+        <ShowIntroductionAnimation _P={_P}></ShowIntroductionAnimation>
 
-        <ClientSendMsg sendMsg={sendMsg} _P={_P}></ClientSendMsg>
+        <ClientSendMsg
+          sendMsg={sendMsg}
+          _P={_P}
+          detailCurrent={detailCurrent}
+        ></ClientSendMsg>
 
         <VideoPlayer
           name={videoPlayerName}
