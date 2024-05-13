@@ -36,7 +36,7 @@ export const getAppConfigEnv = (
       APPVERSIONCODE: 101,
       APPTYPE: 'H5',
       APPNAME: 'AI Pet',
-      GOOGLE_GAID: '',
+      GOOGLE_GAID: 'G-VMG1LS0MC7',
     };
   } else if (origin.includes('https://127.0.0.1:3000')) {
     return {
