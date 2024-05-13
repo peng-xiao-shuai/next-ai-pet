@@ -14,6 +14,7 @@ import {
 import { MdOutlineLanguage } from 'react-icons/md';
 import { useTranslation } from '@/hooks/useTranslation';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 type Checked = DropdownMenuCheckboxItemProps['checked'];
 
@@ -23,14 +24,14 @@ export function SetLang() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center">
+        <Button>
           <Image
             src="/icons/lang.png"
             alt="lang"
             width={24}
             height={24}
           ></Image>
-        </div>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white !min-w-20">
         <DropdownMenuItem
