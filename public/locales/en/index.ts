@@ -40,7 +40,7 @@ const lang = {
   [LOCALE_KEYS.CAPACITY_DESCRIPTION]:
     'Feeding more dog food can increase the $Pets earned during chatting and interacting. The more you feed the dog, the more $Pets you earn from the same chatting and interacting behaviors!',
   [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
-    'You have buyed ${0} food! Go to feed your pet now!',
+    'You have buyed ${0} food,and it will reach to your account 1 minute later ! Go to feed your pet then!',
 } as const;
 
 export default lang;
