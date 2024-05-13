@@ -69,19 +69,6 @@ export const ClientFoodDrawer: FC<{
       }
     } else {
       window.Telegram?.WebApp.MainButton.hide();
-
-      let overflow = 100;
-      const timer = setTimeout(() => {
-        document.body.style.height = window.innerHeight + overflow + 'px';
-        document.body.style.marginTop = `${overflow}px`;
-
-        if (/iphone/gi.test(window.navigator.userAgent)) {
-          window.scrollTo(0, 0);
-        } else {
-          window.scrollTo(0, overflow);
-        }
-        clearTimeout(timer);
-      }, 500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, drawerVisible, isCheck]);
@@ -112,7 +99,7 @@ export const ClientFoodDrawer: FC<{
         validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [
           {
-            address: 'UQDqcDBO_RHKVjnNtU1op0nnwh1ROWNSdE8e7UOp-tTbBFiV',
+            address: 'UQBByz6dwwnmzdaPAEbqrw4KKZ8cvj-HYp2QH16Z3G95gGFe',
             amount: toNano(result.price / 100).toString(),
             payload: beginCell()
               .storeUint(0, 32)

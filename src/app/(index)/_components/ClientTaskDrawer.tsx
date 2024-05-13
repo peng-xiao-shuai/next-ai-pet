@@ -79,7 +79,7 @@ export const ClientTaskDrawer: FC<{
   };
 
   const handleTask = (item: Task) => {
-    if (item.isCompleted) return;
+    // if (item.isCompleted) return;
     switch (item.code) {
       case 'FOLLOW_X':
         fetchRequest('/restApi/task', {
@@ -107,7 +107,6 @@ export const ClientTaskDrawer: FC<{
   useEffect(() => {
     if (drawerVisible) {
       getTaskList();
-    } else {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawerVisible]);
@@ -129,9 +128,7 @@ export const ClientTaskDrawer: FC<{
               key={item.id}
               className="mb-3"
               onClick={() => {
-                if (!item.isCompleted) {
-                  debounce(handleTask, 300, [item]);
-                }
+                debounce(handleTask, 300, [item]);
               }}
             >
               <div className={cn('w-full flex justify-between items-center')}>

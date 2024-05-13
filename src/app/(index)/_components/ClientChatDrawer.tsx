@@ -6,7 +6,7 @@ import {
   DrawerPortal,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { IoCloseCircle } from 'react-icons/io5';
 
 export const ClientChatDrawer: FC<{
@@ -15,6 +15,31 @@ export const ClientChatDrawer: FC<{
   title: string;
   children: React.ReactNode;
 }> = ({ drawerVisible, setDrawerVisible, title, children }) => {
+  useEffect(() => {
+    // const overflow = 100;
+    if (!drawerVisible) {
+      document.body.classList.add(
+        'fixed',
+        '!top-[-100px]',
+        'left-0',
+        'right-0',
+        'h-auto'
+      );
+    } else {
+      // document.body.className = '';
+      // setClassName('fixed !top-[-100px] left-0 right-0 h-auto')
+      // document.body.style.height =
+      //   window.Telegram.WebApp.viewportStableHeight + 'px';
+      // document.body.style.marginTop = `${0}px`;
+      // document.body.style.paddingBottom = `${0}px`;
+      // document.body.style.top = `${0}px`;
+      // if (/iphone/gi.test(window.navigator.userAgent)) {
+      //   window.scrollTo(0, 0);
+      // } else {
+      //   window.scrollTo(0, 0);
+      // }
+    }
+  }, [drawerVisible]);
   return (
     <Drawer open={drawerVisible} onOpenChange={setDrawerVisible}>
       <DrawerPortal>
