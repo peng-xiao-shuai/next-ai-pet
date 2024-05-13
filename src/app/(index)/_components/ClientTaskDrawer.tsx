@@ -91,9 +91,25 @@ export const ClientTaskDrawer: FC<{
       case 'JOIN_T_APP_PARK_CHANNEL':
         fetchRequest('/restApi/task', {
           code: 'JOIN_T_APP_PARK_CHANNEL',
+        }).then((res) => {
+          setTaskList((state) => {
+            const CopyList = state.map((item) => ({
+              ...item,
+            }));
+            const findData = CopyList.find(
+              (item) => item.code === 'JOIN_T_APP_PARK_CHANNEL'
+            );
+
+            if (findData) {
+              findData.isCompleted = true;
+            }
+
+            return CopyList;
+          });
         });
         window.Telegram.WebApp.openTelegramLink('https://t.me/TAppPark');
-        window.Telegram.WebApp.close();
+
+        // window.Telegram.WebApp.close();
         break;
       case 'JOIN_GROUP':
         window.Telegram.WebApp.openTelegramLink('https://t.me/AiPets_Group');
