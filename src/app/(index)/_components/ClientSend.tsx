@@ -78,7 +78,7 @@ export const ClientSendMsg: FC<{
   }, [detail.isInitialized]);
 
   return (
-    <>
+    <div className="bg-white/95 relative z-20">
       <ClientTools></ClientTools>
 
       {showPetGIF && (
@@ -193,7 +193,7 @@ export const ClientSendMsg: FC<{
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
