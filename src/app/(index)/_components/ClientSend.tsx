@@ -33,6 +33,7 @@ export const ClientSendMsg: FC<{
   const { t } = useTranslation();
   const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
+  const InputRef = useRef<any>(null)
   const [showPetGIF, setShowPetGIF] = useState(false);
   const { handleShare } = useShare();
   const isDefineName = useMemo(
@@ -136,6 +137,7 @@ export const ClientSendMsg: FC<{
 
         <input
           value={message}
+          ref={InputRef}
           className="textarea-dom pr-[72px] pl-12 w-full h-12 rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]"
           placeholder={
             isDefineName
@@ -143,6 +145,9 @@ export const ClientSendMsg: FC<{
               : `${t(LOCALE_KEYS.MESSAGE)}`
           }
           maxLength={isDefineName ? 20 : 200}
+          onClick={() => {
+            InputRef.current?.focus()
+          }}
           onChange={({ target }) => {
             setMessage(target.value);
           }}
@@ -151,10 +156,10 @@ export const ClientSendMsg: FC<{
              * FIX Ios 软键盘消失页面不会掉下来
              */
             if (/iphone/gi.test(window.navigator.userAgent)) {
-              window.scrollTo(0, 0);
-            } else {
-              window.scrollTo(0, 100);
+              window.scrollTo(0, 200);
             }
+            //   window.scrollTo(0, 100);
+            // }
           }}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {

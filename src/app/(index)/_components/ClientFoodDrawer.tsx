@@ -56,16 +56,16 @@ export const ClientFoodDrawer: FC<{
     if (drawerVisible) {
       getTopUpPackage();
 
-      if (address && isCheck) {
-        window.Telegram?.WebApp.MainButton.setText(
-          address.substring(0, 4) +
-            '...' +
-            address.substring(address.length - 4)
-        );
-        window.Telegram?.WebApp.MainButton.show();
-      } else {
+      // if (address && isCheck) {
+      //   window.Telegram?.WebApp.MainButton.setText(
+      //     address.substring(0, 4) +
+      //       '...' +
+      //       address.substring(address.length - 4)
+      //   );
+      //   window.Telegram?.WebApp.MainButton.show();
+      // } else {
         window.Telegram?.WebApp.MainButton.hide();
-      }
+      // }
     } else {
       window.Telegram?.WebApp.MainButton.hide();
     }
@@ -117,9 +117,9 @@ export const ClientFoodDrawer: FC<{
       /**
        * FIX 修复禁止tg滚动功能导致取消支付会导致页面往下掉
        */
-      document.body.style.height = window.innerHeight + 'px';
-      document.body.style.marginTop = `${0}px`;
-      window.scrollTo(0, 0);
+      // document.body.style.height = window.innerHeight + 'px';
+      // document.body.style.marginTop = `${0}px`;
+      // window.scrollTo(0, 0);
 
       toast(error.message);
       setLoading(false);

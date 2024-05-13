@@ -120,6 +120,8 @@ export const ClientTaskDrawer: FC<{
         window.Telegram.WebApp.close();
         break;
       case 'BIND_WALLET':
+        // @ts-ignore
+        document.activeElement?.blur?.();
         handleOpen();
         break;
       case 'INVITE_MEMBER':
