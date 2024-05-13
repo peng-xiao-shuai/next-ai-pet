@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --experimental-https --experimental-https-key ./public/192.168.2.154+1-key.pem --experimental-https-cert ./public/192.168.2.154+1.pem",
+    "dev": "cross-env PORT=4000 NEXT_ORIGIN=https://127.0.0.1:3000 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
