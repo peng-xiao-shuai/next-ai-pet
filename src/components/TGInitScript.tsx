@@ -47,6 +47,7 @@ export const TGInitScript = () => {
                 initData,
                 sourceId: params.id,
                 languageCode:
+                  'en' ||
                   Cookies.get('locale') ||
                   WebApp.initDataUnsafe.user.language_code,
                 is_premium: WebApp.initDataUnsafe.user.is_premium || false,

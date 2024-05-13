@@ -76,7 +76,7 @@ export const Navbar: FC<{
             </div>
           </div>
           <div className="relative flex gap-4 items-center">
-            <SetLang></SetLang>
+            {/* <SetLang></SetLang> */}
             <Image
               src="/icons/share-gold.png"
               width={28}
