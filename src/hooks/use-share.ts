@@ -30,8 +30,8 @@ export const useShare = () => {
     window.Telegram.WebApp.openTelegramLink(
       encodeURI(`https://t.me/share/url?url=t.me/pxs_test_bot/test?startapp=${base64UrlEncode(
         str
-      )}&text=💰AI Pets:Chat, Play, Earn - Where a lovely dog Leads to an Airdrop Adventure and chat with you anytime!
-🎁Let's chat-to-earn aridrop right now!`)
+      )}&text=💰🪙+1,000 $PET as a first-time gift
+⭐️+2,000 $PET if you have Telegram Premium`)
     );
   };
 
