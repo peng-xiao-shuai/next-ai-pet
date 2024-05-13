@@ -129,7 +129,7 @@ export const ClientFeedDrawer: FC<{
         <Button
           title={t(LOCALE_KEYS.SEND)}
           click={async () => {
-            if (errorMsg) {
+            if (errorMsg || !feedValue) {
               return;
             }
 
@@ -161,7 +161,7 @@ export const ClientFeedDrawer: FC<{
           disabled={sendLoading}
           className={cn(
             'duration-300 transition-all !w-28 !h-full bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] !mb-0',
-            errorMsg ? 'grayscale' : ''
+            errorMsg || !feedValue ? 'grayscale' : ''
           )}
         ></Button>
       </div>
