@@ -11,6 +11,8 @@ import { NumberRoll } from '@/components/NumberRoll';
 import { Rules } from '@/components/Rules';
 import { useTranslation } from '@/hooks/useTranslation';
 import { LOCALE_KEYS } from '@@/locales';
+import { FaLanguage } from 'react-icons/fa6';
+import { SetLang } from './SetLang';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -55,7 +57,7 @@ export const Navbar: FC<{
                 alt="avatar"
                 width={44}
                 height={44}
-                className="rounded-full overflow-hidden"
+                className="overflow-hidden"
               ></Image>
             )}
             <div className="pl-2 text-white">
@@ -73,7 +75,8 @@ export const Navbar: FC<{
               </div>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative flex gap-4 items-center">
+            <SetLang></SetLang>
             <Image
               src="/icons/share-gold.png"
               width={28}
