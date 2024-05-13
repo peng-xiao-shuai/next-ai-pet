@@ -99,7 +99,7 @@ export const ClientFoodDrawer: FC<{
         validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [
           {
-            address: 'UQBByz6dwwnmzdaPAEbqrw4KKZ8cvj-HYp2QH16Z3G95gGFe',
+            address: 'UQDqcDBO_RHKVjnNtU1op0nnwh1ROWNSdE8e7UOp-tTbBFiV',
             amount: toNano(result.price / 100).toString(),
             payload: beginCell()
               .storeUint(0, 32)
@@ -111,12 +111,12 @@ export const ClientFoodDrawer: FC<{
         ],
       });
 
+      toast(t(LOCALE_KEYS.PURCHASE_SUCCEEDS, [feedValue?.amount]));
+      setDrawerVisible(false)
+      setLoading(false);
+
       // 开启动画
       showAnimationFun?.(VideoName.FOOD);
-
-      toast(t(LOCALE_KEYS.PURCHASE_SUCCEEDS, [feedValue?.amount]));
-
-      setLoading(false);
     } catch (error: any) {
       /**
        * FIX 修复禁止tg滚动功能导致取消支付会导致页面往下掉

@@ -77,7 +77,7 @@ export const VideoPlayer: React.FC<{
       const timer = setTimeout(() => {
         setIsLoop(true);
         clearTimeout(timer);
-      }, 3000);
+      }, name === VideoName.FOOD ? 2000 : 3000);
     }
   }, [name]);
 
