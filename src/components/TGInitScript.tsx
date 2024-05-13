@@ -10,8 +10,8 @@ import { createDebounce } from '@/utils/debounce-throttle';
 
 export const TGInitScript = () => {
   const setData = useUserStore.getState().setDataLocal;
-  const [debounce, clearFun] = createDebounce()
-  const [debounce2, clearFun2] = createDebounce()
+  const [debounce, clearFun] = createDebounce();
+  const [debounce2, clearFun2] = createDebounce();
   let initData = '';
 
   const TGWebAppReady = () => {
@@ -97,52 +97,52 @@ export const TGInitScript = () => {
     // } else {
     //   window.scrollTo(0, overflow);
     // }
-  //   document.body.addEventListener('touchstart', () => {
-  //     debounce(() => {
-  //       let overflow = 100;
-  //       document.body.style.background = 'black';
-  //       document.body.style.overflowY = 'hidden';
-  //       document.body.style.width = `100vw`;
-  //       document.body.style.height = window.innerHeight + overflow + 'px';
-  //       document.body.style.paddingBottom = `${overflow}px`;
-  //       document.body.style.marginTop = `${overflow}px`;
+    //   document.body.addEventListener('touchstart', () => {
+    //     debounce(() => {
+    //       let overflow = 100;
+    //       document.body.style.background = 'black';
+    //       document.body.style.overflowY = 'hidden';
+    //       document.body.style.width = `100vw`;
+    //       document.body.style.height = window.innerHeight + overflow + 'px';
+    //       document.body.style.paddingBottom = `${overflow}px`;
+    //       document.body.style.marginTop = `${overflow}px`;
 
-  //       if (/iphone/gi.test(window.navigator.userAgent)) {
-  //         document.body.style.position = `fixed`;
-  //         document.body.style.left = `${0}px`;
-  //         document.body.style.top = `${-overflow}px`;
-  //         // document.body.style.bottom = `${-overflow}px`;
-  //         window.scrollTo(0, 0);
-  //       } else {
-  //         window.scrollTo(0, overflow);
-  //       }
-  //     })
-  //   })
+    //       if (/iphone/gi.test(window.navigator.userAgent)) {
+    //         document.body.style.position = `fixed`;
+    //         document.body.style.left = `${0}px`;
+    //         document.body.style.top = `${-overflow}px`;
+    //         // document.body.style.bottom = `${-overflow}px`;
+    //         window.scrollTo(0, 0);
+    //       } else {
+    //         window.scrollTo(0, overflow);
+    //       }
+    //     })
+    //   })
 
-  //   const close = () => {
-  //     console.log('结束');
-      
-  //     let overflow = 100;
-  //     document.body.style.background = 'black';
-  //     document.body.style.overflowY = 'auto';
-  //     document.body.style.width = `100vw`;
-  //     document.body.style.height = window.innerHeight + 'px';
-  //     document.body.style.paddingBottom = `${0}px`;
-  //     document.body.style.marginTop = `${0}px`;
+    //   const close = () => {
+    //     console.log('结束');
 
-  //     if (/iphone/gi.test(window.navigator.userAgent)) {
-  //       document.body.style.position = `relative`;
-  //       document.body.style.left = `${0}px`;
-  //       document.body.style.top = `${0}px`;
-  //       // document.body.style.bottom = `${-overflow}px`;
-  //     }
-  //     window.scrollTo(0, 0);
+    //     let overflow = 100;
+    //     document.body.style.background = 'black';
+    //     document.body.style.overflowY = 'auto';
+    //     document.body.style.width = `100vw`;
+    //     document.body.style.height = window.innerHeight + 'px';
+    //     document.body.style.paddingBottom = `${0}px`;
+    //     document.body.style.marginTop = `${0}px`;
 
-  //     clearFun()
-  // }
+    //     if (/iphone/gi.test(window.navigator.userAgent)) {
+    //       document.body.style.position = `relative`;
+    //       document.body.style.left = `${0}px`;
+    //       document.body.style.top = `${0}px`;
+    //       // document.body.style.bottom = `${-overflow}px`;
+    //     }
+    //     window.scrollTo(0, 0);
 
-  //   document.body.addEventListener('touchcancel', close)
-  //   document.body.addEventListener('touchend', close)
+    //     clearFun()
+    // }
+
+    //   document.body.addEventListener('touchcancel', close)
+    //   document.body.addEventListener('touchend', close)
 
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
       document.body.classList.add('ios');
@@ -153,6 +153,12 @@ export const TGInitScript = () => {
       <Script
         src="https://telegram.org/js/telegram-web-app.js"
         onReady={TGWebAppReady}
+      ></Script>
+
+      <Script
+        defer
+        data-domain="tgaipet.com"
+        src="https://plausible.io/js/script.js"
       ></Script>
     </>
   );

@@ -24,7 +24,7 @@ export const getAppConfigEnv = (
     ? ''
     : window.origin;
 
-  if (origin.includes('https://docbphqre6f8b.cloudfront.net')) {
+  if (origin.includes('https://www.tgaipet.com')) {
     return {
       TG_BOT_NAME: 'aipets_bot',
       TG_APP_NAME: 'app',
@@ -51,7 +51,7 @@ export const getAppConfigEnv = (
       APPVERSIONCODE: 101,
       APPTYPE: 'H5',
       APPNAME: 'AI Pet',
-      GOOGLE_GAID: 'G-46HPB8YJYG',
+      GOOGLE_GAID: 'G-VMG1LS0MC7',
     };
   } else {
     return {
@@ -65,7 +65,7 @@ export const getAppConfigEnv = (
       APPVERSIONCODE: 101,
       APPTYPE: 'H5',
       APPNAME: 'AI Pet',
-      GOOGLE_GAID: '',
+      GOOGLE_GAID: 'G-VMG1LS0MC7',
     };
   }
 };

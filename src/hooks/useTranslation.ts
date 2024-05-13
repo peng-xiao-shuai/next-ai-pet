@@ -1,18 +1,27 @@
 import { useEffect, useState, useCallback } from 'react';
 import resources, { LOCALE_KEYS, Resources } from '@@/locales';
+import Cookies from 'js-cookie';
 
 export const useTranslation = () => {
-  const [lang, setLang] = useState<keyof typeof resources>('en');
+  const [lang, setLangData] = useState<keyof typeof resources>('en');
   useEffect(() => {
     if (window.Telegram?.WebApp.initDataUnsafe.user.language_code) {
       setLang(
-        window.Telegram?.WebApp.initDataUnsafe.user.language_code.substring(
-          0,
-          2
-        )
+        Cookies.get('locale') ||
+          window.Telegram?.WebApp.initDataUnsafe.user.language_code.substring(
+            0,
+            2
+          )
       );
+    } else {
+      setLang((Cookies.get('locale') as keyof Resources) || 'en');
     }
   }, []);
+
+  const setLang = (locale: keyof Resources) => {
+    setLangData(locale);
+    Cookies.set('locale', locale);
+  };
 
   const t = useCallback(
     <T extends LOCALE_KEYS>(
@@ -28,8 +37,10 @@ export const useTranslation = () => {
     },
     [lang]
   );
+
   return {
     lang,
+    setLang,
     t,
   };
 };

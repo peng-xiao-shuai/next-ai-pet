@@ -465,7 +465,7 @@ export const Client: FC<{
     const form = {
       firstMessageId: newestId.value,
       friendId: state?.friendId,
-      pageSize: 10,
+      pageSize: 20,
     };
 
     fetchRequest('/restApi/chatMessage/list', form)
