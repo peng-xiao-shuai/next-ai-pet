@@ -15,7 +15,15 @@ export const useTranslation = () => {
   }, []);
 
   const t = useCallback(
-    <T extends LOCALE_KEYS>(key: T): Resources[keyof typeof resources][T] => {
+    <T extends LOCALE_KEYS>(
+      key: T,
+      arr: any[] = []
+    ): Resources[keyof typeof resources][T] => {
+      if (arr.length) {
+        return resources[lang]?.[key].replace(/\$\{(\d+)\}/gi, (k, e) => {
+          return arr[Number(e)];
+        }) as Resources[keyof typeof resources][T];
+      }
       return resources[lang]?.[key];
     },
     [lang]

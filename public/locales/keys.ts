@@ -30,4 +30,8 @@ export enum LOCALE_KEYS {
   BUY = 'Buy',
   Loading = 'Loading',
   ADOPT_A_PET = 'Adopt_a_pet',
+
+  CAPACITY_DESCRIPTION = 'Capacity_description',
+  PURCHASE_SUCCEEDS = 'purchase succeeds',
+  THANK_YOU_FOR_FEEDING = 'Thank_you_for_feeding',
 }

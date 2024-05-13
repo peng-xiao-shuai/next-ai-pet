@@ -34,6 +34,13 @@ const lang = {
   [LOCALE_KEYS.BUY]: 'Buy',
   [LOCALE_KEYS.Loading]: 'Loading',
   [LOCALE_KEYS.ADOPT_A_PET]: 'Adopt a pet',
+
+  [LOCALE_KEYS.THANK_YOU_FOR_FEEDING]:
+    'Thanks for feeding me, my master! This feed have improved ${0} capacity of $Pets',
+  [LOCALE_KEYS.CAPACITY_DESCRIPTION]:
+    'Feeding more dog food can increase the $Pets earned during chatting and interacting. The more you feed the dog, the more $Pets you earn from the same chatting and interacting behaviors!',
+  [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
+    'You have buyed ${0} food! Go to feed your pet now!',
 } as const;
 
 export default lang;

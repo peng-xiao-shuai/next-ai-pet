@@ -47,8 +47,7 @@ export const ClientFeedDrawer: FC<{
     >
       <div className="flex mb-6 justify-between gap-2">
         <span className="text-white text-sm">
-          {/* TODO i18n */}
-          产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案产能描述简短文案，产能描述，简短文案简短文案简短文案简短文案
+          {t(LOCALE_KEYS.CAPACITY_DESCRIPTION)}
         </span>
         <Rules className="!size-6 text-[#737373]"></Rules>
       </div>
@@ -144,8 +143,7 @@ export const ClientFeedDrawer: FC<{
               showAnimationFun?.(VideoName.FEED);
 
               toast(
-                // TODO i18n
-                `谢谢主人给我投喂，本次投喂产能增加 ${result.chatCapacity} `,
+                t(LOCALE_KEYS.THANK_YOU_FOR_FEEDING, [result.chatCapacity]),
                 {
                   duration: 3000,
                 }

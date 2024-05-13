@@ -33,6 +33,12 @@ const lang = {
   [LOCALE_KEYS.FINISH]: '已完成',
   [LOCALE_KEYS.BUY]: '购买',
   [LOCALE_KEYS.Loading]: '加载中',
-  [LOCALE_KEYS.ADOPT_A_PET]: '领养宠物',
+  [LOCALE_KEYS.ADOPT_A_PET]: '认养一只宠物',
+  [LOCALE_KEYS.THANK_YOU_FOR_FEEDING]:
+    '谢谢主人给我投喂，本次投喂产能增加 ${0}',
+  [LOCALE_KEYS.CAPACITY_DESCRIPTION]:
+    '多喂狗粮，可以提升聊天、互动时候获得的$Pets，喂得越多，同样的聊天、互动行为赚到的$Pets越多！',
+  [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
+    '您已购买成功，粮食+${0}；快去喂你的宠物吧！',
 } as const;
 export default lang;

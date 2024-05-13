@@ -127,10 +127,7 @@ export const ClientFoodDrawer: FC<{
       // 开启动画
       showAnimationFun?.(VideoName.FOOD);
 
-      toast(
-        // TODO i18n
-        'We are comfiring the payment, please wait and VIP is on the road!'
-      );
+      toast(t(LOCALE_KEYS.PURCHASE_SUCCEEDS, [feedValue?.amount]));
 
       setLoading(false);
     } catch (error: any) {

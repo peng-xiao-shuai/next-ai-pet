@@ -31,10 +31,16 @@ const lang = {
   [LOCALE_KEYS.GO_TO_LINK]: 'Подключить кошелёк',
   [LOCALE_KEYS.INVITE]: 'Пригласить',
   [LOCALE_KEYS.FOOD]: 'Еда',
-  [LOCALE_KEYS.MESSAGE]: 'информация',
-  [LOCALE_KEYS.FINISH]: 'законч',
-  [LOCALE_KEYS.BUY]: 'купля',
-  [LOCALE_KEYS.Loading]: 'балластить',
-  [LOCALE_KEYS.ADOPT_A_PET]: 'Усыновлять животных',
+  [LOCALE_KEYS.MESSAGE]: 'Новости',
+  [LOCALE_KEYS.FINISH]: 'Завершено',
+  [LOCALE_KEYS.BUY]: 'Покупка',
+  [LOCALE_KEYS.Loading]: 'Загрузка',
+  [LOCALE_KEYS.ADOPT_A_PET]: 'Усыновить питомца',
+  [LOCALE_KEYS.THANK_YOU_FOR_FEEDING]:
+    'Спасибо, что покормили меня, мой хозяин! Этот корм улучшил ${0} емкость $Pets',
+  [LOCALE_KEYS.CAPACITY_DESCRIPTION]:
+    'Чем больше кормите собачьим кормом, тем больше $Pets вы зарабатываете во время чата и взаимодействия, чем больше кормите, тем больше $Pets вы зарабатываете за одинаковые чаты и взаимодействия!',
+  [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
+    'Вы успешно совершили покупку, корм +${0}; быстрее идите кормить вашего питомца!',
 } as const;
 export default lang;
