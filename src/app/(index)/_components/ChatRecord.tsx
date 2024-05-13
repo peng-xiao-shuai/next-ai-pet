@@ -180,7 +180,7 @@ export const ImageVideoRecorder: Record = ({ item }) => {
           <Image
             className="cover-img rounded-md"
             width={171}
-            height={256}
+            height={171}
             alt=""
             src={filterImage(item.imageUrl)}
             onLoad={(e) => onImgLoad(e)}
