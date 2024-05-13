@@ -55,6 +55,7 @@ export const ClientTaskDrawer: FC<{
     FOLLOW_X: LOCALE_KEYS.GO_TO_FOLLOW,
     JOIN_GROUP: LOCALE_KEYS.GO_TO_ADD,
     JOIN_CHANNEL: LOCALE_KEYS.GO_TO_ADD,
+    JOIN_T_APP_PARK_CHANNEL: LOCALE_KEYS.GO_TO_ADD,
     BIND_WALLET: LOCALE_KEYS.GO_TO_LINK,
     INVITE_MEMBER: LOCALE_KEYS.INVITE,
   } as const;
@@ -86,6 +87,13 @@ export const ClientTaskDrawer: FC<{
           code: 'FOLLOW_X',
         });
         window.Telegram.WebApp.openLink('https://x.com/aipets_official');
+        break;
+      case 'JOIN_T_APP_PARK_CHANNEL':
+        fetchRequest('/restApi/task', {
+          code: 'JOIN_T_APP_PARK_CHANNEL',
+        });
+        window.Telegram.WebApp.openTelegramLink('https://t.me/TAppPark');
+        window.Telegram.WebApp.close();
         break;
       case 'JOIN_GROUP':
         window.Telegram.WebApp.openTelegramLink('https://t.me/AiPets_Group');
