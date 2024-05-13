@@ -18,6 +18,8 @@ interface useConnectWalletProps {
   bindSuccessCB?: () => void;
 }
 
+let timer: NodeJS.Timeout;
+
 export const useConnectWallet = ({
   bindSuccessCB,
 }: useConnectWalletProps = {}) => {
@@ -107,6 +109,48 @@ export const useConnectWallet = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // useEffect(() => {
+  //   console.log(state.status, 'status');
+  //   const overflow = 100;
+  //   if (state.status === 'closed') {
+  //     timer = setTimeout(() => {
+  //       document.body.style.height = window.innerHeight + overflow + 'px';
+  //       document.body.style.marginTop = `${overflow}px`;
+  //       document.body.style.paddingBottom = `${overflow}px`;
+
+  //       if (/iphone/gi.test(window.navigator.userAgent)) {
+  //         window.scrollTo(0, 0);
+  //       } else {
+  //         window.scrollTo(0, overflow);
+  //       }
+  //       clearTimeout(timer);
+  //       console.log('guanbio', /iphone/gi.test(window.navigator.userAgent));
+  //     }, 1000);
+  //   } else {
+  //     if(timer) {
+  //       clearTimeout(timer)
+  //     }
+
+  //     document.body.style.height =
+  //       window.Telegram.WebApp.viewportStableHeight + 'px';
+  //     document.body.style.marginTop = `${0}px`;
+  //     document.body.style.paddingBottom = `${0}px`;
+  //     document.body.style.top = `${0}px`;
+
+  //     if (/iphone/gi.test(window.navigator.userAgent)) {
+  //       window.scrollTo(0, 0);
+  //     } else {
+  //       window.scrollTo(0, 0);
+  //     }
+  //   }
+
+  //   return () => {
+  //     if(timer) {
+  //       clearTimeout(timer)
+  //     }
+  //   };
+  // }, [state]);
 
   useBusWatch('bindTonSuccess', () => {
     bindSuccessCB?.();
