@@ -26,8 +26,8 @@ export const getAppConfigEnv = (
 
   if (origin.includes('https://docbphqre6f8b.cloudfront.net')) {
     return {
-      TG_BOT_NAME: 'AIFriendchat_bot',
-      TG_APP_NAME: 'AIFriendchat',
+      TG_BOT_NAME: 'aipets_bot',
+      TG_APP_NAME: 'app',
       origin,
       HOST: 'https://api.tgaipet.com',
       WSS: 'wss://api.tgaipet.com/',
@@ -40,8 +40,8 @@ export const getAppConfigEnv = (
     };
   } else if (origin.includes('https://127.0.0.1:3000')) {
     return {
-      TG_BOT_NAME: 'pxs_test_bot',
-      TG_APP_NAME: 'test',
+      TG_BOT_NAME: 'aipets_bot',
+      TG_APP_NAME: 'app',
       origin,
       HOST: 'https://api.tgaipet.com',
       WSS: 'wss://api.tgaipet.com/',
@@ -55,8 +55,8 @@ export const getAppConfigEnv = (
     };
   } else {
     return {
-      TG_BOT_NAME: 'AIFriendchat_bot',
-      TG_APP_NAME: 'AIFriendchat',
+      TG_BOT_NAME: 'aipets_bot',
+      TG_APP_NAME: 'app',
       origin,
       HOST: 'https://api.tgaipet.com',
       WSS: 'wss://api.tgaipet.com/',

@@ -3,6 +3,7 @@ import { base64UrlEncode, copyText } from '@/utils/string-transform';
 import { toast } from 'sonner';
 import { useUserStore } from './use-user';
 import { urlencoded } from 'express';
+import AppConfigEnv from '@/utils/get-config';
 
 export const useShare = () => {
   const { userState } = useUserStore();
@@ -28,7 +29,7 @@ export const useShare = () => {
     //   false
     // );
     window.Telegram.WebApp.openTelegramLink(
-      encodeURI(`https://t.me/share/url?url=t.me/pxs_test_bot/test?startapp=${base64UrlEncode(
+      encodeURI(`https://t.me/share/url?url=t.me/${AppConfigEnv.TG_BOT_NAME}/${AppConfigEnv.TG_APP_NAME}?startapp=${base64UrlEncode(
         str
       )}&text=💰🪙+1,000 $PET as a first-time gift
 ⭐️+2,000 $PET if you have Telegram Premium`)
