@@ -16,15 +16,13 @@ import { useTranslation } from '@/hooks/useTranslation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 
-type Checked = DropdownMenuCheckboxItemProps['checked'];
-
 export function SetLang() {
   const { lang, setLang } = useTranslation();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>
+        <Button variant="outline">
           <Image
             src="/icons/lang.png"
             alt="lang"
