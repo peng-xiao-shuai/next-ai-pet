@@ -140,7 +140,6 @@ export const Client: FC<{
     if (!item) return '';
     return item.id;
   }, [list]);
-  usePublicSocket();
 
   const sendMsg = (message: string) => {
     if (checkEntering()) return;
@@ -538,6 +537,8 @@ export const Client: FC<{
   const showAnimationFun = (source: VideoName.FEED | VideoName.FOOD) => {
     setVideoPlayerName(source);
   };
+
+  usePublicSocket(showAnimationFun);
 
   useBusWatch(_P + 'onSocketMessage', onSocketMessage);
   useBusWatch(_P + 'sendMsgFail', sendMsgFail);

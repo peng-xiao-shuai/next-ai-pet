@@ -38,7 +38,6 @@ export const ClientFoodDrawer: FC<{
     validated: number;
     version: number;
   };
-  const { showAnimationFun } = useContext(ChatContext);
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [feedValue, setFeedValue] = useState<Package | null>(null);
@@ -112,11 +111,8 @@ export const ClientFoodDrawer: FC<{
       });
 
       toast(t(LOCALE_KEYS.PURCHASE_SUCCEEDS, [feedValue?.amount]));
-      setDrawerVisible(false)
+      setDrawerVisible(false);
       setLoading(false);
-
-      // 开启动画
-      showAnimationFun?.(VideoName.FOOD);
     } catch (error: any) {
       /**
        * FIX 修复禁止tg滚动功能导致取消支付会导致页面往下掉
