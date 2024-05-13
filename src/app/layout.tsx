@@ -7,6 +7,7 @@ import { TGInitScript } from '@/components/TGInitScript';
 import { ClientLazyMotion } from '@/components/ClientLazyMotion';
 import { TonProvider } from '@/components/TonProvider';
 import { InitLoading } from '@/utils/InitLoading';
+import { GoogleTagScript } from '@/components/GooGleTagScript';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -36,6 +37,8 @@ export default function RootLayout({
           }}
         />
         <TGInitScript></TGInitScript>
+
+        <GoogleTagScript></GoogleTagScript>
 
         <Loading></Loading>
       </body>
