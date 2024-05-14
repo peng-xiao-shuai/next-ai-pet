@@ -5,17 +5,17 @@ import Cookies from 'js-cookie';
 export const useTranslation = () => {
   const [lang, setLangData] = useState<keyof typeof resources>('en');
   useEffect(() => {
-    if (window.Telegram?.WebApp.initDataUnsafe.user.language_code) {
-      setLang(
-        Cookies.get('locale') ||
-          window.Telegram?.WebApp.initDataUnsafe.user.language_code.substring(
-            0,
-            2
-          )
-      );
-    } else {
-      setLang((Cookies.get('locale') as keyof Resources) || 'en');
-    }
+    // if (window.Telegram?.WebApp.initDataUnsafe.user.language_code) {
+    //   setLang(
+    //     Cookies.get('locale') ||
+    //       window.Telegram?.WebApp.initDataUnsafe.user.language_code.substring(
+    //         0,
+    //         2
+    //       )
+    //   );
+    // } else {
+    //   setLang((Cookies.get('locale') as keyof Resources) || 'en');
+    // }
   }, []);
 
   const setLang = (locale: keyof Resources) => {
