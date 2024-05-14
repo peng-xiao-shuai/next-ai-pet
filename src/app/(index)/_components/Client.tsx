@@ -598,6 +598,8 @@ export const Client: FC<{
       <div className="h-full flex flex-col flex-1 overflow-y-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <Image
+          width={576}
+          height={1267}
           sizes="100vw"
           style={{
             width: '100%',
@@ -606,7 +608,7 @@ export const Client: FC<{
           src="/images/bg.jpg"
           alt="bg"
           priority
-          className="absolute z-[0] left-0 top-2/4 -translate-y-2/4"
+          className="fixed z-[0] left-0 top-2/4 -translate-y-2/4"
         />
 
         <Navbar></Navbar>
