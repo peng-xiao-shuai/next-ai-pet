@@ -24,6 +24,7 @@ import { usePublicSocket } from '@/hooks/use-public-socket';
 import { VideoName, VideoPlayer } from './ShowAnimation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { ShowIntroductionAnimation } from './ShowIntroductionAnimation';
+import Image from 'next/image';
 
 const MAX_LEN = 80;
 
@@ -596,10 +597,16 @@ export const Client: FC<{
     >
       <div className="h-full flex flex-col flex-1 overflow-y-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
+          sizes="100vw"
+          style={{
+            width: '100%',
+            height: 'auto',
+          }}
           src="/images/bg.jpg"
           alt="bg"
-          className="w-full h-full absolute z-[0] left-0 top-0"
+          priority
+          className="absolute z-[0] left-0 top-2/4 -translate-y-2/4"
         />
 
         <Navbar></Navbar>
