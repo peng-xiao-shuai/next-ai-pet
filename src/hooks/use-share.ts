@@ -29,10 +29,12 @@ export const useShare = () => {
     //   false
     // );
     window.Telegram.WebApp.openTelegramLink(
-      encodeURI(`https://t.me/share/url?url=t.me/${AppConfigEnv.TG_BOT_NAME}/${AppConfigEnv.TG_APP_NAME}?startapp=${base64UrlEncode(
+      encodeURI(`https://t.me/share/url?url=t.me/${AppConfigEnv.TG_BOT_NAME}/${
+        AppConfigEnv.TG_APP_NAME
+      }?startapp=${base64UrlEncode(
         str
-      )}&text=💰🪙+1,000 $PET as a first-time gift
-⭐️+2,000 $PET if you have Telegram Premium`)
+      )}&text=💰🪙+1,000 $AIPET as a first-time gift
+⭐️+2,000 $AIPET if you have Telegram Premium`)
     );
   };
 

@@ -47,12 +47,12 @@ export const Rules: FC<{
                 <ul className="list-disc pl-4">
                   <li className="my-3">
                     <strong>Adopt Your Exclusive Pet:</strong>
-                    <br /> As the first AI pet game, you can earn $PET tokens by
-                    feeding and chatting with your pet.
+                    <br /> As the first AI pet game, you can earn $AIPET tokens
+                    by feeding and chatting with your pet.
                   </li>
                   <li className="my-3">
                     <strong>Level Up:</strong>
-                    <br /> The higher your pet&apos;s level, the more $PET it
+                    <br /> The higher your pet&apos;s level, the more $AIPET it
                     produces.
                   </li>
                   <li className="my-3">
@@ -61,7 +61,7 @@ export const Rules: FC<{
                   </li>
                   <li className="my-3">
                     <strong>Friends:</strong>
-                    <br /> Invite friends to earn $PET rewards and more dog
+                    <br /> Invite friends to earn $AIPET rewards and more dog
                     food.
                   </li>
                 </ul>
@@ -75,11 +75,11 @@ export const Rules: FC<{
                   <li className="my-3">It&apos;s completely free.</li>
                   <li className="my-3">It&apos;s really fun.</li>
                   <li className="my-3">
-                    You can earn a significant amount of $PET.
+                    You can earn a significant amount of $AIPET.
                   </li>
                 </ol>
 
-                <h2 className="font-bold text-lg my-4">How to Earn $PET?</h2>
+                <h2 className="font-bold text-lg my-4">How to Earn $AIPET?</h2>
                 <ol className="list-decimal pl-4">
                   <li className="my-3">
                     <strong>Invite Friends:</strong> Invite friends to earn
@@ -96,14 +96,14 @@ export const Rules: FC<{
                 </ol>
 
                 <h2 className="font-bold text-lg my-4">
-                  How to Get a Lot of $PET?
+                  How to Get a Lot of $AIPET?
                 </h2>
                 <p className="my-2 ">
                   Dog food is produced not only during interactions and random
                   events but can also be purchased with $TON. Feed your pet dog
-                  food to quickly increase the $PET output and pet’s levels!
-                  Otherwise, you will only slowly get $PET and wait more time to
-                  reach the next level.
+                  food to quickly increase the $AIPET output and pet’s levels!
+                  Otherwise, you will only slowly get $AIPET and wait more time
+                  to reach the next level.
                 </p>
 
                 <p className="my-2 ">
