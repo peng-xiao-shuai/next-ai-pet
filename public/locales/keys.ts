@@ -1,7 +1,7 @@
 export enum LOCALE_KEYS {
   YOUR_PET = 'Your_Pet',
   NEXT_LEVEL_NEED = 'next_level_need',
-  SEND_MESSAGES_TO_EARN_$PETS = 'Send_messages_to_earn_$Pets!',
+  SEND_MESSAGES_TO_EARN_$PETS = 'Send_messages_to_earn_$AIPets!',
   PLEASE_DIRECTLY_TYPE_THE_NAME_OF_YOUR_PET = 'Please_directly_type_the_name_of_your_pet',
   PLEASE_GIVE_YOUR_PET_A_NAME_IN_20_WORDS = 'Please_give_your_pet_a_name_in_20_words.',
   PLEASE_CHOOSE_AN_ACTION_TO_TOUCH_YOUR_PET = 'Please_choose_an_action_to_touch_your_pet.',

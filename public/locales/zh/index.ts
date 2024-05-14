@@ -3,7 +3,7 @@ import { LOCALE_KEYS } from '../keys';
 const lang = {
   [LOCALE_KEYS.YOUR_PET]: '你的寵物',
   [LOCALE_KEYS.NEXT_LEVEL_NEED]: '下個等級需求',
-  [LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS]: '傳訊息賺$Pets',
+  [LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS]: '傳訊息賺$AIPets',
   [LOCALE_KEYS.PLEASE_DIRECTLY_TYPE_THE_NAME_OF_YOUR_PET]:
     '請直接在輸入框中為您的寵物命名，直接輸入名字並發送即可',
   [LOCALE_KEYS.PLEASE_GIVE_YOUR_PET_A_NAME_IN_20_WORDS]:
@@ -37,7 +37,7 @@ const lang = {
   [LOCALE_KEYS.THANK_YOU_FOR_FEEDING]:
     '謝謝主人給我投餵，本次投餵產能增加 ${0}',
   [LOCALE_KEYS.CAPACITY_DESCRIPTION]:
-    '多餵狗糧，可以提升聊天、互動時候獲得的$Pets，餵得越多，同樣的聊天、互動行為賺到的$Pets越多！',
+    '多餵狗糧，可以提升聊天、互動時候獲得的$AIPets，餵得越多，同樣的聊天、互動行為賺到的$AIPets越多！',
   [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
     '您已購買成功，糧食+${0}，预计1分钟后到账；快去餵你的寵物吧！',
 } as const;

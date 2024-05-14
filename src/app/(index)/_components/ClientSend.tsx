@@ -33,7 +33,7 @@ export const ClientSendMsg: FC<{
   const { t } = useTranslation();
   const { detail, setDetail, list, readyState } = useContext(ChatContext);
   const [message, setMessage] = useState('');
-  const InputRef = useRef<any>(null)
+  const InputRef = useRef<any>(null);
   const [showPetGIF, setShowPetGIF] = useState(false);
   const { handleShare } = useShare();
   const isDefineName = useMemo(
@@ -146,7 +146,7 @@ export const ClientSendMsg: FC<{
           }
           maxLength={isDefineName ? 20 : 200}
           onClick={() => {
-            InputRef.current?.focus()
+            InputRef.current?.focus();
           }}
           onChange={({ target }) => {
             setMessage(target.value);

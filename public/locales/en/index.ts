@@ -3,7 +3,7 @@ import { LOCALE_KEYS } from '../keys';
 const lang = {
   [LOCALE_KEYS.YOUR_PET]: 'Your Pet',
   [LOCALE_KEYS.NEXT_LEVEL_NEED]: 'next level need',
-  [LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS]: 'Send messages to earn $Pets!',
+  [LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS]: 'Send messages to earn $AIPets!',
   [LOCALE_KEYS.PLEASE_DIRECTLY_TYPE_THE_NAME_OF_YOUR_PET]:
     'Please directly type the name of your pet',
   [LOCALE_KEYS.PLEASE_GIVE_YOUR_PET_A_NAME_IN_20_WORDS]:
@@ -36,9 +36,9 @@ const lang = {
   [LOCALE_KEYS.ADOPT_A_PET]: 'Adopt a pet',
 
   [LOCALE_KEYS.THANK_YOU_FOR_FEEDING]:
-    'Thanks for feeding me, my master! This feed have improved ${0} capacity of $Pets',
+    'Thanks for feeding me, my master! This feed have improved ${0} capacity of $AIPets',
   [LOCALE_KEYS.CAPACITY_DESCRIPTION]:
-    'Feeding more dog food can increase the $Pets earned during chatting and interacting. The more you feed the dog, the more $Pets you earn from the same chatting and interacting behaviors!',
+    'Feeding more dog food can increase the $AIPets earned during chatting and interacting. The more you feed the dog, the more $AIPets you earn from the same chatting and interacting behaviors!',
   [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
     'You have buyed ${0} food,and it will reach to your account 1 minute later ! Go to feed your pet then!',
 } as const;
