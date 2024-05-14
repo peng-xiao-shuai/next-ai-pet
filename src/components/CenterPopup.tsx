@@ -2,9 +2,11 @@
 'use client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { cn } from '@/lib/utils';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { DialogDescription } from '@radix-ui/react-dialog';
+import { IoCloseSharp } from 'react-icons/io5';
 import './center-popup.scss';
+import { Button } from './Button';
 
 type CenterPopupProps = {
   title: string;
@@ -18,8 +20,8 @@ type CenterPopupProps = {
   isAction: boolean;
   open: boolean;
   children?: React.ReactNode;
-  onConfirm?: () => void;
-  onClose?: (bol: false) => void;
+  onConfirm: (successCB: () => void) => void;
+  onClose: (bol: false) => void;
   className?: string;
 };
 
@@ -39,8 +41,9 @@ export const CenterPopup: FC<Partial<CenterPopupProps>> = ({
   children,
   className,
 }) => {
+  const [loading, setLoading] = useState(false);
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <div
           className={cn(
@@ -52,11 +55,9 @@ export const CenterPopup: FC<Partial<CenterPopupProps>> = ({
           )}
         >
           {needClose && (
-            <img
-              className="centerPopup__container__close"
-              src="/icons/close.png"
+            <IoCloseSharp
+              className="centerPopup__container__close text-white size-6 absolute top-8 right-8"
               onClick={() => onClose?.(false)}
-              alt=""
             />
           )}
 
@@ -84,12 +85,18 @@ export const CenterPopup: FC<Partial<CenterPopupProps>> = ({
               )}
 
               {confirmText && (
-                <div
+                <Button
+                  title={confirmText}
                   className="btn rtl:!border-l-0 rtl:border-r-[0.5px] rtl:border-[#545458]"
-                  onClick={onConfirm}
-                >
-                  {confirmText}
-                </div>
+                  disabled={loading}
+                  click={() => {
+                    setLoading(true);
+
+                    onConfirm?.(() => {
+                      setLoading(false);
+                    });
+                  }}
+                ></Button>
               )}
             </div>
           ) : cancleText || confirmText ? (
@@ -109,9 +116,17 @@ export const CenterPopup: FC<Partial<CenterPopupProps>> = ({
               )}
 
               {confirmText && (
-                <button className="cus-btn thin-y" onClick={onConfirm}>
-                  {confirmText}
-                </button>
+                <Button
+                  title={confirmText}
+                  className="bg-[#745efe] text-white !w-auto px-4 min-w-[140px]"
+                  disabled={loading}
+                  click={() => {
+                    setLoading(true);
+                    onConfirm?.(() => {
+                      setLoading(false);
+                    });
+                  }}
+                ></Button>
               )}
             </div>
           ) : (

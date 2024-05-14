@@ -11,18 +11,42 @@ import { NumberRoll } from '@/components/NumberRoll';
 import { Rules } from '@/components/Rules';
 import { useTranslation } from '@/hooks/useTranslation';
 import { LOCALE_KEYS } from '@@/locales';
-import { FaLanguage } from 'react-icons/fa6';
 import { SetLang } from './SetLang';
+import { CenterPopup } from '@/components/CenterPopup';
+import { toast } from 'sonner';
+import { fetchRequest } from '@/utils/request';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
   title?: string;
   back?: () => void;
 }> = ({ children, title, back }) => {
-  const { detail } = useContext(ChatContext);
+  const { detail, setDetail } = useContext(ChatContext);
   const { userState, setData } = useUserStore();
+  const [changeNickNameDialogVisible, setChangeNickNameDialogVisible] =
+    useState(false);
+  const [name, setName] = useState('');
+
   const { handleShare } = useShare();
   const { t } = useTranslation();
+
+  const changeNickname = (cb: () => void) => {
+    if (!name) {
+      toast('');
+      return;
+    }
+    fetchRequest('/restApi/friend/update', {
+      id: detail.id,
+      name: name,
+    }).then(() => {
+      setDetail?.((state) => {
+        return { ...state, name };
+      });
+      setChangeNickNameDialogVisible(false);
+
+      cb();
+    });
+  };
 
   useEffect(() => {
     if (userState.point >= userState.upgradeRequiredPoint) {
@@ -50,7 +74,13 @@ export const Navbar: FC<{
             </div>
           </div> */}
 
-          <div className="flex items-center">
+          <div
+            className="flex items-center"
+            onClick={() => {
+              setChangeNickNameDialogVisible(true);
+              setName(detail.name);
+            }}
+          >
             {Boolean(detail.head) && (
               <Image
                 src={filterImage(detail.head)}
@@ -154,6 +184,24 @@ export const Navbar: FC<{
           </div>
         </div>
       </div>
+
+      <CenterPopup
+        title={'set Name'}
+        confirmText={'confirm'}
+        isBlack
+        needClose
+        open={changeNickNameDialogVisible}
+        onClose={setChangeNickNameDialogVisible}
+        onConfirm={changeNickname}
+      >
+        <textarea
+          className="change-nickname__slot outline-none text-base overflow-y-auto resize-none mb-6 p-4 w-full h-24 text-white rounded-xl bg-[#3f3b52]"
+          value={name}
+          onChange={({ target }) => {
+            setName(target.value);
+          }}
+        ></textarea>
+      </CenterPopup>
     </>
   );
 };
