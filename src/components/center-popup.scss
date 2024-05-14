@@ -67,17 +67,17 @@
       background-color: #745efe;
 
       &.cancle {
-        background-color: #fff;
+        background-color: black;
         color: #745efe;
       }
     }
   }
 
   &.is-black {
-    background-color: #332f40;
+    background-color: #fff;
 
     .centerPopup__container__title {
-      color: #fff;
+      color: black;
     }
 
     .centerPopup__container__btns--plain {

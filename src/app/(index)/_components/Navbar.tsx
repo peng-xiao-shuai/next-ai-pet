@@ -186,8 +186,8 @@ export const Navbar: FC<{
       </div>
 
       <CenterPopup
-        title={'set Name'}
-        confirmText={'confirm'}
+        title={'Set name'}
+        confirmText={'Confirm'}
         isBlack
         needClose
         open={changeNickNameDialogVisible}
@@ -195,7 +195,7 @@ export const Navbar: FC<{
         onConfirm={changeNickname}
       >
         <textarea
-          className="change-nickname__slot outline-none text-base overflow-y-auto resize-none mb-6 p-4 w-full h-24 text-white rounded-xl bg-[#3f3b52]"
+          className="change-nickname__slot outline-none text-base overflow-y-auto resize-none mb-14 p-4 w-full h-26 text-black rounded-xl bg-[#f8f8f8]"
           value={name}
           onChange={({ target }) => {
             setName(target.value);
