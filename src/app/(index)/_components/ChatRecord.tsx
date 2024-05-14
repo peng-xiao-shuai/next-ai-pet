@@ -184,6 +184,7 @@ export const ImageVideoRecorder: Record = ({ item }) => {
             alt=""
             src={filterImage(item.imageUrl)}
             onLoad={(e) => onImgLoad(e)}
+            unoptimized
           />
         ) : (
           <Image
@@ -193,6 +194,7 @@ export const ImageVideoRecorder: Record = ({ item }) => {
             src={filterImage(item.coverUrl)}
             onLoad={(e) => onImgLoad(e)}
             alt=""
+            unoptimized
           />
         )}
 
