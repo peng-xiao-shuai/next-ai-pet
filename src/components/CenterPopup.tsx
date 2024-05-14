@@ -44,7 +44,7 @@ export const CenterPopup: FC<Partial<CenterPopupProps>> = ({
   const [loading, setLoading] = useState(false);
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className='bottom-4 max-w-max left-4 top-[unset] translate-y-0 translate-x-0 data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-bottom-[100%] data-[state=closed]:slide-out-to-left-0 data-[state=closed]:slide-out-to-bottom-[100%] data-[state=open]:zoom-in-100 data-[state=closed]:zoom-out-100 !duration-300'>
+      <DialogContent className='bottom-4 max-w-max left-4 top-[unset] translate-y-0 translate-x-0 data-[state=open]:!slide-in-from-left-0 data-[state=open]:!slide-in-from-bottom-[100%] data-[state=closed]:!slide-out-to-left-0 data-[state=closed]:!slide-out-to-bottom-[100%] data-[state=open]:!zoom-in-100 data-[state=closed]:!zoom-out-100 !duration-300'>
         <div
           className={cn(
             'centerPopup__container !w-[calc(100vw-theme(padding.4)*2)]',
