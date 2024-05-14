@@ -9,7 +9,7 @@ export const Button: FC<{
 }> = ({ title, click, className, disabled }) => {
   return (
     <button
-      className={`btn-loading h-14 w-full flex justify-center items-center mb-4 rounded-full font-bold ${className}`}
+      className={`btn-loading h-12 w-full flex justify-center items-center mb-4 rounded-full font-bold ${className}`}
       onClick={() => {
         debounce(click);
       }}
