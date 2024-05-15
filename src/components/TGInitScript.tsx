@@ -7,6 +7,7 @@ import Script from 'next/script';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 import { createDebounce } from '@/utils/debounce-throttle';
+import VC from 'vconsole';
 
 export const TGInitScript = () => {
   const setData = useUserStore.getState().setDataLocal;
@@ -80,6 +81,18 @@ export const TGInitScript = () => {
   };
 
   useEffect(() => {
+    let Log: VC;
+
+    if (
+      process.env.NODE_ENV === 'development' &&
+      typeof window != 'undefined'
+    ) {
+      Log = new VC();
+    }
+
+    return () => {
+      Log?.destroy();
+    };
     // /**
     //  * 更改 overflow 需要更改 globals.css body[data-scroll-locked] 样式
     //  */
