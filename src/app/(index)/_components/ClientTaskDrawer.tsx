@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
+import { BsCheckAll } from 'react-icons/bs';
 
 export const ClientTaskDrawer: FC<{
   drawerVisible: boolean;
@@ -199,14 +200,17 @@ export const ClientTaskDrawer: FC<{
                 </div>
 
                 <Button
-                  title={`${
-                    item.isCompleted
-                      ? t(LOCALE_KEYS.FINISH)
-                      : t(formatText[item.code])
-                  }`}
-                  className={`!mb-0 h-8 ${'bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !min-w-20 max-w-28 !w-auto px-2 !text-sm pointer-events-none'}`}
+                  className={`!mb-0 h-8 ${
+                    item.isCompleted ? 'grayscale' : ''
+                  } bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !min-w-20 max-w-28 !w-auto px-2 !text-sm pointer-events-none`}
                   click={() => {}}
-                ></Button>
+                >
+                  {item.isCompleted ? (
+                    <BsCheckAll className="size-7"></BsCheckAll>
+                  ) : (
+                    t(formatText[item.code])
+                  )}
+                </Button>
               </div>
 
               {Boolean(item.remark.length) &&

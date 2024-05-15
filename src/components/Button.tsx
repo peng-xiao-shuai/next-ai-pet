@@ -1,12 +1,13 @@
 import { debounce } from '@/utils/debounce-throttle';
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 export const Button: FC<{
-  title: string;
+  title?: string;
+  children?: React.ReactNode;
   click: () => void;
   className?: string;
   disabled?: boolean;
-}> = ({ title, click, className, disabled }) => {
+}> = ({ title, click, children, className, disabled }) => {
   return (
     <button
       className={`btn-loading h-12 w-full flex justify-center items-center mb-4 rounded-full font-bold ${className}`}
@@ -16,7 +17,7 @@ export const Button: FC<{
       disabled={disabled || false}
     >
       <span className="loading loading-spinner"></span>
-      {title}
+      {children || title}
     </button>
   );
 };

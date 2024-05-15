@@ -30,7 +30,7 @@ const lang = {
   [LOCALE_KEYS.INVITE]: 'Invite',
   [LOCALE_KEYS.FOOD]: 'Food',
   [LOCALE_KEYS.MESSAGE]: 'Message',
-  [LOCALE_KEYS.FINISH]: 'Finish',
+  [LOCALE_KEYS.FINISH]: 'Finished',
   [LOCALE_KEYS.BUY]: 'Buy',
   [LOCALE_KEYS.Loading]: 'Loading',
   [LOCALE_KEYS.ADOPT_A_PET]: 'Adopt a pet',
