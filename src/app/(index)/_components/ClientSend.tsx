@@ -24,6 +24,7 @@ import { m, AnimatePresence } from 'framer-motion';
 import { useShare } from '@/hooks/use-share';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
+import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
@@ -282,6 +283,10 @@ export const ClientTools = () => {
   };
 
   const clickTool = (tool: Indexes<string>) => {
+    if (['Kiss on', 'Touch', 'Hug'].includes(tool.name)) {
+      handleTriggerEvent(CustomEvents.ARE_INTERACTIVE_USERS, true);
+    }
+
     switch (tool.name) {
       case 'feed':
         setFeedDrawerVisible(true);
@@ -293,9 +298,40 @@ export const ClientTools = () => {
         setTaskDrawerVisible(true);
         break;
       case 'Kiss on':
+        openActionPopup(tool);
+        handleTriggerEvent([
+          {
+            eventAction: CustomEvents.NUMBER_KISSES,
+          },
+          {
+            eventAction: CustomEvents.KISS_USERS,
+            isSetCookie: true,
+          },
+        ]);
+        break;
       case 'Touch':
+        openActionPopup(tool);
+        handleTriggerEvent([
+          {
+            eventAction: CustomEvents.OF_STROKES,
+          },
+          {
+            eventAction: CustomEvents.PETTING_USERS,
+            isSetCookie: true,
+          },
+        ]);
+        break;
       case 'Hug':
         openActionPopup(tool);
+        handleTriggerEvent([
+          {
+            eventAction: CustomEvents.OF_HUGS,
+          },
+          {
+            eventAction: CustomEvents.NUMBER_HUG_USERS,
+            isSetCookie: true,
+          },
+        ]);
         break;
       default:
         break;

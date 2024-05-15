@@ -11,6 +11,7 @@ import { debounce } from '@/utils/debounce-throttle';
 import Image from 'next/image';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
+import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 
 export const ClientTaskDrawer: FC<{
   drawerVisible: boolean;
@@ -83,12 +84,26 @@ export const ClientTaskDrawer: FC<{
     // if (item.isCompleted) return;
     switch (item.code) {
       case 'FOLLOW_X':
+        if (!item.isCompleted) {
+          handleTriggerEvent([
+            {
+              eventAction: CustomEvents.FOLLOW_THE_NUMBER_OF_TWITTER_USERS,
+            },
+          ]);
+        }
         fetchRequest('/restApi/task', {
           code: 'FOLLOW_X',
         });
         window.Telegram.WebApp.openLink('https://x.com/aipets_official');
         break;
       case 'JOIN_T_APP_PARK_CHANNEL':
+        if (!item.isCompleted) {
+          handleTriggerEvent([
+            {
+              eventAction: CustomEvents.NUMBER_OF_PEOPLE_WHO_JOINED_TAPPPARK,
+            },
+          ]);
+        }
         fetchRequest('/restApi/task', {
           code: 'JOIN_T_APP_PARK_CHANNEL',
         }).then((res) => {
@@ -120,6 +135,13 @@ export const ClientTaskDrawer: FC<{
         window.Telegram.WebApp.close();
         break;
       case 'BIND_WALLET':
+        if (!item.isCompleted) {
+          handleTriggerEvent([
+            {
+              eventAction: CustomEvents.LINK_WALLET_NUMBER,
+            },
+          ]);
+        }
         // @ts-ignore
         document.activeElement?.blur?.();
         handleOpen();
