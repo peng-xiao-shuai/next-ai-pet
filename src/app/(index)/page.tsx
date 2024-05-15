@@ -26,7 +26,7 @@ export default function Home() {
 
       if (petCount > 0) {
         fetchRequest('/restApi/friend/list/v2').then(({ result }) => {
-          if (result.conversations.rows.length) {
+          if (result.conversations?.rows?.length) {
             setFriendId(result.conversations.rows[0].id);
           }
         });

@@ -80,7 +80,7 @@ export const ClientSendMsg: FC<{
   }, [detail.isInitialized]);
 
   return (
-    <div className="bg-white/95 relative z-20">
+    <div className="bg-white/95 relative z-40">
       <ClientTools></ClientTools>
 
       {showPetGIF && (
@@ -139,6 +139,7 @@ export const ClientSendMsg: FC<{
         <input
           value={message}
           ref={InputRef}
+          cursor-spacing={20}
           className="textarea-dom pr-[72px] pl-12 w-full h-12 rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]"
           placeholder={
             isDefineName
@@ -157,7 +158,7 @@ export const ClientSendMsg: FC<{
              * FIX Ios 软键盘消失页面不会掉下来
              */
             if (/iphone/gi.test(window.navigator.userAgent)) {
-              window.scrollTo(0, 200);
+              window.scrollTo(0, 0);
             }
             //   window.scrollTo(0, 100);
             // }
