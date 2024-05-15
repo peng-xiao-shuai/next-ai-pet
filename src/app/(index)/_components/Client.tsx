@@ -603,6 +603,8 @@ export const Client: FC<{
             width: '100%',
             height: 'auto',
           }}
+          width={576}
+          height={1267}
           src="/images/bg.jpg"
           alt="bg"
           priority
