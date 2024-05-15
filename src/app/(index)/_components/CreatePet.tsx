@@ -32,6 +32,7 @@ export const ClientCreatePet: FC<{
 
   const onAllLoaded = () => {
     setIsLoader(true);
+    console.log(111);
 
     const timer = setTimeout(() => {
       setIsGift(false);
@@ -61,8 +62,12 @@ export const ClientCreatePet: FC<{
 
   return countDown >= 0 ? (
     <>
-      {!isLoader && <LoadingRender></LoadingRender>}
-      <div className="fixed top-0 z-50 flex justify-center items-center bg-black w-full h-full">
+      {!isLoader && (
+        <div className="w-full h-full fixed top-0 left-0 z-50 bg-black">
+          <LoadingRender></LoadingRender>
+        </div>
+      )}
+      <div className="fixed top-0 z-40 flex justify-center items-center bg-black w-full h-full">
         <Image
           src="/images/lights.png"
           width={750}
