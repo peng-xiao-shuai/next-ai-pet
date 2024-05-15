@@ -2,7 +2,7 @@
 'use client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { cn } from '@/lib/utils';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { IoCloseSharp } from 'react-icons/io5';
 import './center-popup.scss';
@@ -42,9 +42,15 @@ export const CenterPopup: FC<Partial<CenterPopupProps>> = ({
   className,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [iosClassName, setIosClassName] = useState('')
+  useEffect(() => {
+    if (!/iphone/gi.test(window.navigator.userAgent)) {
+      setIosClassName('!left-4 top-[unset] !translate-y-0 !translate-x-0 data-[state=open]:!slide-in-from-left-0 data-[state=open]:!slide-in-from-bottom-[100%] data-[state=closed]:!slide-out-to-left-0 data-[state=closed]:!slide-out-to-bottom-[100%] data-[state=open]:!zoom-in-100 data-[state=closed]:!zoom-out-100 !duration-300')
+    }
+  }, [])
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className='bottom-4 max-w-max !left-4 top-[unset] !translate-y-0 !translate-x-0 data-[state=open]:!slide-in-from-left-0 data-[state=open]:!slide-in-from-bottom-[100%] data-[state=closed]:!slide-out-to-left-0 data-[state=closed]:!slide-out-to-bottom-[100%] data-[state=open]:!zoom-in-100 data-[state=closed]:!zoom-out-100 !duration-300'>
+      <DialogContent className={`bottom-4 max-w-max ${iosClassName}`}>
         <div
           className={cn(
             'centerPopup__container !w-[calc(100vw-theme(padding.4)*2)]',

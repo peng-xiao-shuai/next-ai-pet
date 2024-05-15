@@ -51,10 +51,13 @@ div[role='dialog'] {
 /* body[data-scroll-locked] {
   padding-top: 0px !important;
 } */
-/* body[data-scroll-locked].ios {
-  height: calc(100% + 100px) !important;
-  top: -100px !important;
-} */
+body.ios {
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  position: fixed;
+}
 
 body,
 html {

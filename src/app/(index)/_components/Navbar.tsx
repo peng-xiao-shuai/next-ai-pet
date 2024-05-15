@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { ClientTips } from './ClientTips';
 import { ChatContext } from './Client';
@@ -25,7 +25,8 @@ export const Navbar: FC<{
   const { userState, setData } = useUserStore();
   const [changeNickNameDialogVisible, setChangeNickNameDialogVisible] =
     useState(false);
-  const [name, setName] = useState('');
+    const [name, setName] = useState('');
+    const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
 
   const { handleShare } = useShare();
   const { t } = useTranslation();
@@ -78,7 +79,11 @@ export const Navbar: FC<{
             className="flex items-center"
             onClick={() => {
               setChangeNickNameDialogVisible(true);
-              setName(detail.name);
+              
+              setTimeout(() => {
+                setName(detail.name);
+                textAreaRef.current?.setSelectionRange(detail.name.length, detail.name.length)
+              }, 100)
             }}
           >
             {Boolean(detail.head) && (
@@ -197,6 +202,7 @@ export const Navbar: FC<{
         <textarea
           className="change-nickname__slot outline-none text-base overflow-y-auto resize-none mb-14 p-4 w-full h-26 text-black rounded-xl bg-[#f8f8f8]"
           value={name}
+          ref={textAreaRef}
           onChange={({ target }) => {
             setName(target.value);
           }}
