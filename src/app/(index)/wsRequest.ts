@@ -1,3 +1,4 @@
+import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 import emitter from '@/utils/bus';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -97,6 +98,15 @@ export default class wsRequest {
       return;
     }
 
+    handleTriggerEvent([
+      {
+        eventAction: CustomEvents.NUMBER_CHATS,
+      },
+      {
+        eventAction: CustomEvents.NUMBER_CHA_USERS,
+        isSetCookie: true,
+      },
+    ]);
     this.socket.send(value);
     emitter.emit(this.emitPrefix + 'sendMsgSuc', type);
   }

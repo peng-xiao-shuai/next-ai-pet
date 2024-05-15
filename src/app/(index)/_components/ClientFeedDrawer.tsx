@@ -19,6 +19,7 @@ import { Rules } from '@/components/Rules';
 import { VideoName } from './ShowAnimation';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
+import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 
 export const ClientFeedDrawer: FC<{
   drawerVisible: boolean;
@@ -38,6 +39,17 @@ export const ClientFeedDrawer: FC<{
       setErrorMsg('');
     }
   }, [feedValue, t, userState.walletAble]);
+
+  useEffect(() => {
+    if (drawerVisible) {
+      handleTriggerEvent([
+        {
+          eventAction: CustomEvents.FEED_THE_NUMBER_OF_PAGE_VISITORS,
+          isSetCookie: true,
+        },
+      ]);
+    }
+  }, [drawerVisible]);
 
   return (
     <ClientChatDrawer
@@ -139,6 +151,25 @@ export const ClientFeedDrawer: FC<{
                 `/restApi/friend/feedFood/${state!
                   .friendId!}?quantity=${feedValue}`
               );
+
+              handleTriggerEvent([
+                {
+                  eventAction: CustomEvents.NUMBER_OF_FOOD_USERS_FEED,
+                  eventValue: {
+                    value: feedValue,
+                    id: window.Telegram?.WebApp.initDataUnsafe.user.id,
+                  },
+                },
+                {
+                  eventAction: CustomEvents.NUMBER_OF_FOOD_USERS_FEED,
+                  eventValue: feedValue,
+                },
+                {
+                  eventAction: CustomEvents.FEED_THE_NUMBER_OF_DOG_FOOD_USERS,
+                  isSetCookie: true,
+                },
+              ]);
+
               // 开启动画
               showAnimationFun?.(VideoName.FEED);
 

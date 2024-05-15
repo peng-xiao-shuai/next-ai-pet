@@ -22,6 +22,7 @@ import { VideoName } from './ShowAnimation';
 import { ChatContext } from './Client';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
+import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 
 export const ClientFoodDrawer: FC<{
   drawerVisible: boolean;
@@ -56,6 +57,13 @@ export const ClientFoodDrawer: FC<{
     if (drawerVisible) {
       getTopUpPackage();
 
+      handleTriggerEvent([
+        {
+          eventAction: CustomEvents.NUMBER_OF_VISITORS_TO_BUY_DOG_FOOD_PAGE,
+          isSetCookie: true,
+        },
+      ]);
+
       // if (address && isCheck) {
       //   window.Telegram?.WebApp.MainButton.setText(
       //     address.substring(0, 4) +
@@ -64,7 +72,7 @@ export const ClientFoodDrawer: FC<{
       //   );
       //   window.Telegram?.WebApp.MainButton.show();
       // } else {
-        window.Telegram?.WebApp.MainButton.hide();
+      window.Telegram?.WebApp.MainButton.hide();
       // }
     } else {
       window.Telegram?.WebApp.MainButton.hide();
@@ -109,6 +117,13 @@ export const ClientFoodDrawer: FC<{
           },
         ],
       });
+
+      handleTriggerEvent([
+        {
+          eventAction: CustomEvents.BUY_DOG_FOOD_USERS,
+          isSetCookie: true,
+        },
+      ]);
 
       toast(t(LOCALE_KEYS.PURCHASE_SUCCEEDS, [feedValue?.amount]));
       setDrawerVisible(false);

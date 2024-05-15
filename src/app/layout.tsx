@@ -8,6 +8,8 @@ import { ClientLazyMotion } from '@/components/ClientLazyMotion';
 import { TonProvider } from '@/components/TonProvider';
 import { InitLoading } from '@/utils/InitLoading';
 import { GoogleTagScript } from '@/components/GooGleTagScript';
+import { GoogleAnalytics } from '@next/third-parties/google';
+import AppConfigEnv from '@/utils/get-config';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,7 +40,7 @@ export default function RootLayout({
         />
         <TGInitScript></TGInitScript>
 
-        <GoogleTagScript></GoogleTagScript>
+        <GoogleAnalytics gaId={AppConfigEnv.GOOGLE_GAID}></GoogleAnalytics>
 
         <Loading></Loading>
       </body>

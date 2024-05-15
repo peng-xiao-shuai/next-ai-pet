@@ -7,6 +7,7 @@ import Script from 'next/script';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 import { createDebounce } from '@/utils/debounce-throttle';
+import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 
 export const TGInitScript = () => {
   const setData = useUserStore.getState().setDataLocal;
@@ -57,6 +58,20 @@ export const TGInitScript = () => {
 
           if (code != '200') {
             throw new Error(message);
+          }
+
+          if (params.id && result.isRegister == 1) {
+            handleTriggerEvent([
+              {
+                eventAction:
+                  CustomEvents.NUMBER_OF_FRIENDS_SUCCESSFULLY_INVITED,
+                eventValue: params.id,
+                isSetCookie: true,
+              },
+              {
+                eventAction: CustomEvents.FISSION_NEW_USERS,
+              },
+            ]);
           }
 
           const { token, isRegister, memberDetail = {} } = result;
