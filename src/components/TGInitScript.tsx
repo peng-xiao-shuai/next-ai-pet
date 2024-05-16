@@ -61,6 +61,25 @@ export const TGInitScript = () => {
             throw new Error(message);
           }
 
+          if (result.isJoinChannel == 1) {
+            handleTriggerEvent([
+              {
+                eventAction: CustomEvents.NUMBER_OF_FOLLOWERS,
+                eventValue: params.id,
+                isSetCookie: true,
+              },
+            ]);
+          }
+          if (result.isJoinChannel == 1) {
+            handleTriggerEvent([
+              {
+                eventAction: CustomEvents.NUMBER_OF_PEOPLE_COMPLETING_THE_GROUP,
+                eventValue: params.id,
+                isSetCookie: true,
+              },
+            ]);
+          }
+
           if (params.id && result.isRegister == 1) {
             handleTriggerEvent([
               {
