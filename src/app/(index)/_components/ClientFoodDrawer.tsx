@@ -106,7 +106,7 @@ export const ClientFoodDrawer: FC<{
         validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [
           {
-            address: 'UQDqcDBO_RHKVjnNtU1op0nnwh1ROWNSdE8e7UOp-tTbBFiV',
+            address: 'UQCQDthXIzPPvPOBckZMr4d1ObrMp2nimwcaAKMFhn4RF7PE',
             amount: toNano(result.price / 100).toString(),
             payload: beginCell()
               .storeUint(0, 32)
