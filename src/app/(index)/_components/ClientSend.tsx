@@ -32,7 +32,7 @@ export const ClientSendMsg: FC<{
   detailCurrent: MutableRefObject<Indexes<any>>;
 }> = ({ sendMsg, _P, detailCurrent }) => {
   const { t } = useTranslation();
-  const { detail, setDetail, list, readyState } = useContext(ChatContext);
+  const { detail, setDetail, list, readyState, scrollDom } = useContext(ChatContext);
   const [message, setMessage] = useState('');
   const InputRef = useRef<any>(null);
   const [showPetGIF, setShowPetGIF] = useState(false);
@@ -80,7 +80,7 @@ export const ClientSendMsg: FC<{
   }, [detail.isInitialized]);
 
   return (
-    <div className="bg-white/95 relative z-40">
+    <div className="bg-white/95 relative z-40 py-3 group-[.ios]:pb-[calc(15px+constant(safe-area-inset-bottom))] group-[.ios]:pb-[calc(15px+env(safe-area-inset-bottom))]">
       <ClientTools></ClientTools>
 
       {showPetGIF && (
@@ -114,7 +114,7 @@ export const ClientSendMsg: FC<{
         </m.div>
       )}
 
-      <div className="input-container relative m-3 leading-none text-white">
+      <div className="input-container relative m-3 mb-0 leading-none text-white">
         {detail.isInitialized && (
           <>
             <ClientTips
@@ -136,20 +136,19 @@ export const ClientSendMsg: FC<{
           ></Image>
         </div>
 
-        <input
+        <textarea
           value={message}
           ref={InputRef}
+          rows={1}
           cursor-spacing={20}
-          className="textarea-dom pr-[72px] pl-12 w-full h-12 rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]"
+          className={`textarea-dom pr-[72px] pl-12 w-full rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]`}
           placeholder={
             isDefineName
               ? `${t(LOCALE_KEYS.PLEASE_DIRECTLY_TYPE_THE_NAME_OF_YOUR_PET)}`
               : `${t(LOCALE_KEYS.MESSAGE)}`
           }
           maxLength={isDefineName ? 20 : 200}
-          onClick={() => {
-            InputRef.current?.focus();
-          }}
+          onFocus={() => {}}
           onChange={({ target }) => {
             setMessage(target.value);
           }}
@@ -377,7 +376,7 @@ export const ClientTools = () => {
   return (
     <>
       <div
-        className="tools-bar grid grid-cols-6 px-4 overflow-x-auto pt-3"
+        className="tools-bar grid grid-cols-6 px-4 overflow-x-auto"
         style={{
           unicodeBidi: 'normal',
         }}

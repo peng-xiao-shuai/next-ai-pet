@@ -92,22 +92,29 @@ export const TGInitScript = () => {
       };
 
       sendRequest();
+    } else if (process.env.NODE_ENV === 'development') {
+      Cookies.set('token', 'eyJhbGciOiJIUzUxMiJ9.eyJyYW5kb21LZXkiOiJ5enppZWoiLCJzdWIiOiIxNzkwNjQ3MzEyNjk3Njc1Nzc4IiwiZXhwIjoxNzE4MjYxNzI1LCJpYXQiOjE3MTU4NDI1MjV9.67tcw66FSfIZa7OuGqYkOQyukhA_SVP7bFx7AZdC3T_irDF0Z-uGfiPthtUumwvMK_MSrVO5GboBQHh2HnaAhA')
+      Cookies.set('isPet', '1')
     }
   };
 
   useEffect(() => {
-    let Log: VC;
-
-    if (
-      process.env.NODE_ENV === 'development' &&
-      typeof window != 'undefined'
-    ) {
-      Log = new VC();
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      document.body.classList.add('ios', 'group');
     }
 
-    return () => {
-      Log?.destroy();
-    };
+    // let Log: VC;
+
+    // if (
+    //   process.env.NODE_ENV === 'development' &&
+    //   typeof window != 'undefined'
+    // ) {
+    //   Log = new VC();
+    // }
+
+    // return () => {
+    //   Log?.destroy();
+    // };
     // /**
     //  * 更改 overflow 需要更改 globals.css body[data-scroll-locked] 样式
     //  */
@@ -174,10 +181,6 @@ export const TGInitScript = () => {
 
     //   document.body.addEventListener('touchcancel', close)
     //   document.body.addEventListener('touchend', close)
-
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-      document.body.classList.add('ios');
-    }
   }, []);
   return (
     <>
