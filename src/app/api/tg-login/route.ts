@@ -22,6 +22,7 @@ const handle = async (req: NextRequest) => {
         data: {
           loginType: 'telegram-mini-apps',
           email: '',
+          timezone: body.timezone,
           nickname:
             user.first_name + (user.last_name ? ' ' + user.last_name : ''),
           openId: user.id,

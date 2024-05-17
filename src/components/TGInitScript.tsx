@@ -48,6 +48,7 @@ export const TGInitScript = () => {
               body: JSON.stringify({
                 initData,
                 sourceId: params.id,
+                timezone: Math.round(-new Date().getTimezoneOffset() / 60),
                 languageCode:
                   'en' ||
                   Cookies.get('locale') ||
