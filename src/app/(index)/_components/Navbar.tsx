@@ -15,6 +15,7 @@ import { SetLang } from './SetLang';
 import { CenterPopup } from '@/components/CenterPopup';
 import { toast } from 'sonner';
 import { fetchRequest } from '@/utils/request';
+import { ControlSound } from './ControlSound';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -111,6 +112,7 @@ export const Navbar: FC<{
             </div>
           </div>
           <div className="relative flex gap-4 items-center">
+            <ControlSound></ControlSound>
             {/* <SetLang></SetLang> */}
             <Image
               src="/icons/share-gold.png"
