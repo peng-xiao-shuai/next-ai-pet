@@ -5,6 +5,7 @@ import {
   useTonConnectUI,
   CHAIN,
   useTonAddress,
+  ConnectedWallet,
 } from '@tonconnect/ui-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TonProofDemoApi } from '@/lib/ton-proofApi';
@@ -15,7 +16,7 @@ import { debounce } from '@/utils/debounce-throttle';
 import { useBusWatch } from './use-bus-watch';
 
 interface useConnectWalletProps {
-  bindSuccessCB?: () => void;
+  bindSuccessCB?: (e: ConnectedWallet) => void;
 }
 
 let timer: NodeJS.Timeout;
@@ -89,7 +90,9 @@ export const useConnectWallet = ({
             if (ok) {
               setIsCheck(true);
               setDataLocal(result);
-              emitter.emit('bindTonSuccess');
+              emitter.emit('bindTonSuccess', {
+                ...w
+              });
             } else {
               toast('Check failure');
               tonConnectUI.disconnect();
@@ -152,8 +155,8 @@ export const useConnectWallet = ({
   //   };
   // }, [state]);
 
-  useBusWatch('bindTonSuccess', () => {
-    bindSuccessCB?.();
+  useBusWatch('bindTonSuccess', (e) => {
+    bindSuccessCB?.(e as ConnectedWallet);
   });
 
   return {
