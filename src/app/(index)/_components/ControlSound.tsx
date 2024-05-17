@@ -49,6 +49,7 @@ export const ControlSound = () => {
 
       document.body.removeEventListener('click', bodyClick);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

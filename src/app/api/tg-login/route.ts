@@ -5,7 +5,7 @@ import { getAppConfigEnv } from '@/utils/get-config';
 
 const handle = async (req: NextRequest) => {
   const body = await req.json();
-
+  
   const BaseUrl =
     'http://ai-love-pet-322313939.us-west-2.elb.amazonaws.com/ai-love';
 
@@ -19,6 +19,10 @@ const handle = async (req: NextRequest) => {
       BaseUrl + '/restApi/platform/google/auth/authLogin',
       {
         method: 'POST',
+        headers: {
+          'Proxy-Client-IP': req.headers.get('X-Forwarded-For'),
+          'HTTP_X_FORWARDED_FOR': req.headers.get('X-Forwarded-For'),
+        },
         data: {
           loginType: 'telegram-mini-apps',
           email: '',
