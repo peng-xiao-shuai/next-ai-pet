@@ -7,7 +7,6 @@ import { TGInitScript } from '@/components/TGInitScript';
 import { ClientLazyMotion } from '@/components/ClientLazyMotion';
 import { TonProvider } from '@/components/TonProvider';
 import { InitLoading } from '@/utils/InitLoading';
-import { GoogleTagScript } from '@/components/GooGleTagScript';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import AppConfigEnv from '@/utils/get-config';
 
