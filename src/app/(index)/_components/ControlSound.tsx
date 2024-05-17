@@ -19,12 +19,12 @@ export const ControlSound = () => {
     }
   };
 
-  useEffect(() => {
-    // 在组件挂载时开始播放音乐
+  const bodyClick = () => {
     if (audioRef.current) {
       audioRef.current
         .play()
         .then(() => {
+          document.body.removeEventListener('click', bodyClick);
           setIsPlaying(true);
         })
         .catch((error) => {
@@ -32,6 +32,12 @@ export const ControlSound = () => {
           console.error('Error playing audio:', error);
         });
     }
+  };
+
+  useEffect(() => {
+    bodyClick();
+
+    document.body.addEventListener('click', bodyClick);
 
     // 在组件卸载时暂停音乐
     return () => {
@@ -40,6 +46,8 @@ export const ControlSound = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         audioRef.current.currentTime = 0;
       }
+
+      document.body.removeEventListener('click', bodyClick);
     };
   }, []);
 
@@ -61,7 +69,7 @@ export const ControlSound = () => {
         }
         onChange={(val, setVal) => {
           if (isPlaying != val) {
-            setVal(isPlaying)
+            setVal(isPlaying);
           }
         }}
         onClick={() => {
