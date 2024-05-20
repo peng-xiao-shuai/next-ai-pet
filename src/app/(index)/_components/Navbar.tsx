@@ -88,8 +88,12 @@ export const Navbar: FC<{
 
   return (
     <>
-      <div className={`px-4 w-full my-[10px] relative z-10`}>
-        <div className={`flex justify-between items-center gap-2`}>
+      <div
+        className={`px-4 w-full my-[10px] relative z-10 leading-none flex flex-wrap justify-center`}
+      >
+        <div
+          className={`flex justify-between items-center gap-2 mb-[10px] w-full`}
+        >
           <div className="relative">
             <ControlSound></ControlSound>
           </div>
@@ -184,37 +188,37 @@ export const Navbar: FC<{
             ></ClientTips> */}
           </div>
         </div>
-      </div>
 
-      <div className="inline-flex gap-3 mx-auto justify-between items-center text-[#874544] relative z-10">
-        {counts.map((item, index) => (
-          <div
-            key={item.alt}
-            className={numberBox}
-            onClick={() => {
-              setCountsExpansion((state) => {
-                const CopyState = [...state];
-                CopyState[index] = !CopyState[index];
-                return CopyState;
-              });
-            }}
-          >
-            <Image
-              src={item.iconUrl}
-              width={22}
-              height={22}
-              alt={item.alt}
-              className="mr-1"
-            ></Image>
+        <div className="inline-flex gap-3 items-center text-[#874544] relative z-10">
+          {counts.map((item, index) => (
+            <div
+              key={item.alt}
+              className={numberBox}
+              onClick={() => {
+                setCountsExpansion((state) => {
+                  const CopyState = [...state];
+                  CopyState[index] = !CopyState[index];
+                  return CopyState;
+                });
+              }}
+            >
+              <Image
+                src={item.iconUrl}
+                width={22}
+                height={22}
+                alt={item.alt}
+                className="mr-1"
+              ></Image>
 
-            <NumberRoll
-              end={item.val}
-              className={`max-w-24 text-ellipsis ${
-                countsExpansion[index] ? 'break-all' : 'line-clamp-1'
-              } inline-block`}
-            ></NumberRoll>
-          </div>
-        ))}
+              <NumberRoll
+                end={item.val}
+                className={`max-w-24 text-ellipsis ${
+                  countsExpansion[index] ? 'break-all' : 'line-clamp-1'
+                } inline-block`}
+              ></NumberRoll>
+            </div>
+          ))}
+        </div>
       </div>
 
       <CenterPopup
