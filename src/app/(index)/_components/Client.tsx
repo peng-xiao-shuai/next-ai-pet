@@ -25,6 +25,8 @@ import { VideoName, VideoPlayer } from './ShowAnimation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { ShowIntroductionAnimation } from './ShowIntroductionAnimation';
 import Image from 'next/image';
+import { ClientDog } from './ClientDog';
+import { cn } from '@/lib/utils';
 
 const MAX_LEN = 80;
 
@@ -128,6 +130,8 @@ export const Client: FC<{
   const [videoPlayerName, setVideoPlayerName] = useState(VideoName.NONE);
   const [loading, setLoading] = useState<boolean>(false);
   const [queryingPast, setQueryingPast] = useState(false);
+  const [bgImgHeight, setBgImgHeight] = useState(0);
+  const [scrollHeight, setScrollHeight] = useState('30vh');
   const [curSceneStartT, setCurSceneStartT] = useState(0);
   const [detail, setDetail] = useState<Indexes>({});
   const detailCurrent = useRef<Indexes>({});
@@ -609,18 +613,36 @@ export const Client: FC<{
         alt="bg"
         priority
         className="absolute z-[0] top-0"
+        onLoadingComplete={(e) => {
+          setBgImgHeight(e.height);
+          setScrollHeight(window.innerHeight - e.height / 1.6 + 'px');
+        }}
       />
 
-      <div className="h-full flex flex-col flex-1 overflow-y-hidden relative">
+      <div className="h-full overflow-y-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <Navbar></Navbar>
 
-        <div className="overflow-hidden h-[21rem] absolute w-full bottom-0 flex flex-col">
+        <ClientDog
+          bgImgHeight={bgImgHeight}
+          name={videoPlayerName}
+          onEnd={() => {
+            setVideoPlayerName(VideoName.NONE);
+          }}
+        ></ClientDog>
+
+        <div
+          className={`overflow-hidden absolute w-full bottom-0 flex flex-col`}
+          style={{
+            height: scrollHeight,
+          }}
+        >
           <div
-            className="fixed pointer-events-none left-0 bottom-[21.1rem] translate-y-full z-30 w-full h-20 bg-[url(/images/bg.png)] bg-[size:cover] bg-no-repeat"
+            className={`fixed pointer-events-none left-0 translate-y-full z-30 w-full h-20 bg-[url(/images/bg.png)] bg-[size:cover] bg-no-repeat`}
             style={{
-              backgroundPositionY: 'calc(-100vh + 21.1rem)',
+              backgroundPositionY: `calc(-100vh + ${scrollHeight})`,
               maskImage: 'linear-gradient(#000, transparent)',
+              bottom: `calc(${scrollHeight} + 2px)`,
             }}
           ></div>
           <ClientChatRecord></ClientChatRecord>
@@ -635,12 +657,12 @@ export const Client: FC<{
 
       <ShowIntroductionAnimation _P={_P}></ShowIntroductionAnimation>
 
-      <VideoPlayer
+      {/* <VideoPlayer
         name={videoPlayerName}
         onEnd={() => {
           setVideoPlayerName(VideoName.NONE);
         }}
-      ></VideoPlayer>
+      ></VideoPlayer> */}
     </ChatContext.Provider>
   );
 };

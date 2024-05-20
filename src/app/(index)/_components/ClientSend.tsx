@@ -115,7 +115,7 @@ export const ClientSendMsg: FC<{
         </m.div>
       )}
 
-      <div className="input-container relative m-3 mb-0 leading-none text-white">
+      <div className="input-container relative mx-3 leading-none text-white">
         {detail.isInitialized && (
           <>
             <ClientTips

@@ -11,6 +11,7 @@ export enum VideoName {
   FOOD = 'food',
   FEED = 'feed',
   NONE = 'none',
+  LEISURE = 'leisure',
 }
 
 const FrameProps = {
@@ -74,10 +75,13 @@ export const VideoPlayer: React.FC<{
       setImageData(videoCache[name]);
       setVisible(true);
 
-      const timer = setTimeout(() => {
-        setIsLoop(true);
-        clearTimeout(timer);
-      }, name === VideoName.FOOD ? 2000 : 3000);
+      const timer = setTimeout(
+        () => {
+          setIsLoop(true);
+          clearTimeout(timer);
+        },
+        name === VideoName.FOOD ? 2000 : 3000
+      );
     }
   }, [name]);
 
