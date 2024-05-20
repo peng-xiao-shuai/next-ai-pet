@@ -49,7 +49,7 @@ export const ControlSound = () => {
 
       document.body.removeEventListener('click', bodyClick);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -63,8 +63,8 @@ export const ControlSound = () => {
         visibleNode={
           <Image
             src="/icons/play.png"
-            width={28}
-            height={28}
+            width={32}
+            height={32}
             alt="play music"
           ></Image>
         }
@@ -79,8 +79,8 @@ export const ControlSound = () => {
       >
         <Image
           src="/icons/pause.png"
-          width={28}
-          height={28}
+          width={32}
+          height={32}
           alt="pause music"
         ></Image>
       </Fade>

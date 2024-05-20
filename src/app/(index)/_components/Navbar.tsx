@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { FC, useContext, useEffect, useRef, useState } from 'react';
+import { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { ClientTips } from './ClientTips';
 import { ChatContext } from './Client';
@@ -16,6 +16,10 @@ import { CenterPopup } from '@/components/CenterPopup';
 import { toast } from 'sonner';
 import { fetchRequest } from '@/utils/request';
 import { ControlSound } from './ControlSound';
+import { cn } from '@/lib/utils';
+
+const numberBox =
+  'inline-flex items-center text-xs min-w-20 box-border pr-1 rounded-full bg-gradient-to-t from-[#F1D8B1] to-[#FCF9F3] border border-[#CF9A68]';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
@@ -26,8 +30,34 @@ export const Navbar: FC<{
   const { userState, setData } = useUserStore();
   const [changeNickNameDialogVisible, setChangeNickNameDialogVisible] =
     useState(false);
-    const [name, setName] = useState('');
-    const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+  const [name, setName] = useState('');
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const counts = useMemo(
+    () => [
+      {
+        iconUrl: '/icons/gold-coin.png',
+        alt: 'gold coin',
+        val: userState.upgradeRequiredPoint - userState.point,
+      },
+      {
+        iconUrl: '/icons/feed.png',
+        alt: 'feed',
+        val: userState.walletAble,
+      },
+      {
+        iconUrl: '/icons/invite.png',
+        alt: 'invite',
+        val: userState.invites,
+      },
+    ],
+    [
+      userState.invites,
+      userState.point,
+      userState.upgradeRequiredPoint,
+      userState.walletAble,
+    ]
+  );
+  const [countsExpansion, setCountsExpansion] = useState([false, false, false]);
 
   const { handleShare } = useShare();
   const { t } = useTranslation();
@@ -58,66 +88,91 @@ export const Navbar: FC<{
 
   return (
     <>
-      <div className={`px-4 w-full mb-3 relative z-10`}>
-        <div
-          className={`flex justify-between items-center rounded-lg bg-base-300 h-14 `}
-        >
-          {/* <div
-            onClick={() => {
-              if (back && typeof back === 'function') {
-                back();
-              } else {
-                router.back();
-              }
-            }}
-          >
-            <div className="flex-none leading-none">
-              <FaChevronLeft className=" size-6 svg-icon swap-off text-white rtl:rotate-180" />
-            </div>
-          </div> */}
+      <div className={`px-4 w-full my-[10px] relative z-10`}>
+        <div className={`flex justify-between items-center gap-2`}>
+          <div className="relative">
+            <ControlSound></ControlSound>
+          </div>
 
           <div
-            className="flex items-center"
-            onClick={() => {
-              setChangeNickNameDialogVisible(true);
-              
-              setTimeout(() => {
-                setName(detail.name);
-                textAreaRef.current?.setSelectionRange(detail.name.length, detail.name.length)
-              }, 100)
-            }}
+            className={cn(
+              'flex flex-1 items-center relative z-10 text-[#874544] border-[#CF9A68] border bg-[#F9E3CD] rounded-[20px] px-[14px] py-[10px]',
+              'before:w-[98%] before:h-[94%] before:z-[-1] before:shadow-[inset_0px_0px_7px_0px] before:shadow-[#C19E7D] before:absolute before:left-[1%] before:top-[3%] before:border before:border-[#CF9A68] before:rounded-[18px]'
+            )}
           >
             {Boolean(detail.head) && (
-              <Image
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 src={filterImage(detail.head)}
                 alt="avatar"
-                width={44}
-                height={44}
-                className="overflow-hidden"
-              ></Image>
+                className="size-9 overflow-hidden rounded-full object-fill"
+                loading="lazy"
+                decoding="async"
+              />
             )}
-            <div className="pl-2 text-white">
-              <div className="normal-case">
+
+            <div className="pl-2 flex-1 leading-none">
+              <span
+                className="line-clamp-1 max-w-48 text-ellipsis inline-block"
+                onClick={() => {
+                  setChangeNickNameDialogVisible(true);
+
+                  setTimeout(() => {
+                    setName(detail.name);
+                    textAreaRef.current?.setSelectionRange(
+                      detail.name.length,
+                      detail.name.length
+                    );
+                  }, 100);
+                }}
+              >
                 {detail.name || t(LOCALE_KEYS.YOUR_PET)}
-              </div>
-              <div className="w-12 h-4 py-[2px] inline-flex items-center justify-center gap-1 rounded-full bg-[#4D4D4D]">
-                <Image
-                  width={10}
-                  height={12}
-                  src="/icons/level.png"
-                  alt="level"
-                ></Image>
-                <NumberRoll prefix="Lv" end={userState.level}></NumberRoll>
+              </span>
+
+              <div className="flex">
+                <div className="min-w-12 h-4 mr-2 text-xs border border-[#CF9A68] inline-flex items-center justify-center gap-1 rounded-full bg-gradient-to-t from-[#F3CF86] to-[#FFF5E0]">
+                  <Image
+                    width={10}
+                    height={12}
+                    src="/icons/level.png"
+                    alt="level"
+                  ></Image>
+                  <NumberRoll prefix="Lv" end={userState.level}></NumberRoll>
+                </div>
+
+                <div className="flex items-center justify-center relative">
+                  <div
+                    className={`flex items-center absolute z-10 ${
+                      userState.point ||
+                      userState.upgradeRequiredPoint > 100000000
+                        ? 'text-[9px]'
+                        : 'text-xs'
+                    } *:max-w-12 *:inline-block *:line-clamp-1 *:text-ellipsis`}
+                  >
+                    <NumberRoll end={userState.point}></NumberRoll>
+                    <div>/</div>
+                    <NumberRoll
+                      end={userState.upgradeRequiredPoint}
+                    ></NumberRoll>
+                  </div>
+                  <Progress
+                    className="h-4 w-36 bg-[#EEC39B] border-[#CF9A68] border"
+                    value={userState.point % 100}
+                    max={userState.upgradeRequiredPoint % 100}
+                  />
+                </div>
+
+                <Rules className="text-[#C19F80] !size-4"></Rules>
               </div>
             </div>
           </div>
-          <div className="relative flex gap-4 items-center">
-            <ControlSound></ControlSound>
+
+          <div className="relative flex items-center">
             {/* <SetLang></SetLang> */}
             <Image
               src="/icons/share-gold.png"
-              width={28}
-              height={28}
+              width={32}
+              height={32}
               alt="share gold"
               onClick={handleShare}
             ></Image>
@@ -131,65 +186,35 @@ export const Navbar: FC<{
         </div>
       </div>
 
-      <div className="flex justify-between items-center text-white pr-4 relative z-10">
-        <div className="py-[6px] px-3 rounded-tr-full rounded-br-full bg-[#4D4D4D] max-w-48">
-          <div className="text-xs flex items-center">
-            <span>{t(LOCALE_KEYS.NEXT_LEVEL_NEED)}</span>
-            <Rules></Rules>
-          </div>
-          <div className="flex items-center gap-[2px]">
+      <div className="inline-flex gap-3 mx-auto justify-between items-center text-[#874544] relative z-10">
+        {counts.map((item, index) => (
+          <div
+            key={item.alt}
+            className={numberBox}
+            onClick={() => {
+              setCountsExpansion((state) => {
+                const CopyState = [...state];
+                CopyState[index] = !CopyState[index];
+                return CopyState;
+              });
+            }}
+          >
             <Image
-              src="/icons/gold-coin.png"
-              width={10}
-              height={10}
-              alt="gold coin"
+              src={item.iconUrl}
+              width={22}
+              height={22}
+              alt={item.alt}
+              className="mr-1"
             ></Image>
-            <div
-              className={`${
-                userState.point > 100000000 ? 'text-[9px]' : 'text-sm'
-              } max-w-24 break-words`}
-            >
-              <NumberRoll
-                end={userState.upgradeRequiredPoint - userState.point}
-              ></NumberRoll>
-            </div>
-            <Progress
-              className="h-1 w-16 bg-[#947782]"
-              value={userState.point}
-              max={userState.upgradeRequiredPoint}
-            />
-          </div>
-        </div>
 
-        <div className="flex gap-[6px]">
-          <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
-            <Image
-              src="/icons/gold-coin.png"
-              width={14}
-              height={14}
-              alt="gold coin"
-            ></Image>
-            <div
-              className={`${
-                userState.point > 100000000 ? 'text-[9px]' : 'text-sm'
-              } font-bold max-w-20 break-words`}
-            >
-              <NumberRoll end={userState.point}></NumberRoll>
-            </div>
-          </div>
-          <div className="flex  items-center pl-1 py-1 pr-2 bg-[#4D4D4D] rounded-full gap-[2px]">
-            <Image
-              src="/icons/feed.png"
-              width={14}
-              height={14}
-              alt="food"
-            ></Image>
             <NumberRoll
-              className="text-sm font-bold"
-              end={userState.walletAble}
+              end={item.val}
+              className={`max-w-24 text-ellipsis ${
+                countsExpansion[index] ? 'break-all' : 'line-clamp-1'
+              } inline-block`}
             ></NumberRoll>
           </div>
-        </div>
+        ))}
       </div>
 
       <CenterPopup

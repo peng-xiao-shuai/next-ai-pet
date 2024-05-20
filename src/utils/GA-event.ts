@@ -153,7 +153,7 @@ const triggerEvent = (
   if (!isSetCookie) {
     console.log('触发 ==========》');
     sendGAEvent('event', eventName, {
-      value: eventValue || window.Telegram?.WebApp.initDataUnsafe.user.id,
+      value: eventValue || window.Telegram?.WebApp.initDataUnsafe.user?.id,
     });
     return;
   }
@@ -163,7 +163,7 @@ const triggerEvent = (
 
     // 这里可以集成实际的事件跟踪逻辑，例如 Google Analytics 的 gtag
     sendGAEvent('event', eventName, {
-      value: eventValue || window.Telegram?.WebApp.initDataUnsafe.user.id,
+      value: eventValue || window.Telegram?.WebApp.initDataUnsafe.user?.id,
     });
 
     const val = Cookies.get(COOKIE_NAME)?.split(',') || [];

@@ -14,7 +14,9 @@ export const NumberRoll: FC<CountUpProps> = (props) => {
   }, [props.duration, props.end]);
   return (
     <CountUp decimal="" separator="" duration={0.4} {...props} start={start}>
-      {({ countUpRef }) => <span ref={countUpRef} />}
+      {({ countUpRef }) => (
+        <span className={props.className} ref={countUpRef} />
+      )}
     </CountUp>
   );
 };

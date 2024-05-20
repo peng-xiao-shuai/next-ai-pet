@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { Loading } from '@/components/Loading';
 import { Toaster } from 'sonner';
@@ -10,11 +10,14 @@ import { InitLoading } from '@/utils/InitLoading';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import AppConfigEnv from '@/utils/get-config';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = localFont({
+  src: '../../public/FontsFree-Net-SFProText-Semibold.ttf',
+});
 
 export const metadata: Metadata = {
   title: 'AiPets',
-  description: 'Chat and interact with your pet, and your AI pet will accompany you for life. Invite friends to earn more $PET together!📈',
+  description:
+    'Chat and interact with your pet, and your AI pet will accompany you for life. Invite friends to earn more $PET together!📈',
 };
 
 export function generateViewport(): Viewport {
@@ -23,7 +26,7 @@ export function generateViewport(): Viewport {
     initialScale: 1,
     maximumScale: 1,
     userScalable: false,
-    viewportFit: 'cover'
+    viewportFit: 'cover',
   };
 }
 

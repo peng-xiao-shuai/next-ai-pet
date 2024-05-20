@@ -25,6 +25,7 @@ const state = {
   level: 0,
   upgradeRequiredPoint: 0,
   currentFriendCount: 0,
+  invites: 0,
   googleOpenid: '',
 };
 
