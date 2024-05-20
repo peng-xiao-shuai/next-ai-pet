@@ -84,7 +84,7 @@ type ChatContextState = {
   readyState: 0 | 1 | 2 | 3;
   checkEntering: () => void;
   showAnimationFun: (source: VideoName.FOOD | VideoName.FEED) => void;
-  scrollToBottom: (duration?: number) => void
+  scrollToBottom: (duration?: number) => void;
 };
 
 export const ChatContext = createContext<Partial<ChatContextState>>({});
@@ -594,36 +594,43 @@ export const Client: FC<{
         readyState,
         checkEntering,
         showAnimationFun,
-        scrollToBottom
+        scrollToBottom,
       }}
     >
-        <Image
-          width={576}
-          height={1267}
-          sizes="100vw"
-          style={{
-            width: '100%',
-            height: 'auto',
-          }}
-          src="/images/bg.jpg"
-          alt="bg"
-          priority
-          className="absolute z-[0] bottom-0"
-        />
+      <Image
+        width={576}
+        height={1267}
+        sizes="100vw"
+        style={{
+          width: '100%',
+          height: 'auto',
+        }}
+        src="/images/bg.png"
+        alt="bg"
+        priority
+        className="absolute z-[0] top-0"
+      />
 
       <div className="h-full flex flex-col flex-1 overflow-y-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <Navbar></Navbar>
 
-        <div className="overflow-hidden flex-1 flex flex-col relative">
+        <div className="overflow-hidden h-[21rem] absolute w-full bottom-0 flex flex-col">
+          <div
+            className="fixed pointer-events-none left-0 bottom-[21.1rem] translate-y-full z-30 w-full h-20 bg-[url(/images/bg.png)] bg-[size:cover] bg-no-repeat"
+            style={{
+              backgroundPositionY: 'calc(-100vh + 21.1rem)',
+              maskImage: 'linear-gradient(#000, transparent)',
+            }}
+          ></div>
           <ClientChatRecord></ClientChatRecord>
-        </div>
 
-        <ClientSendMsg
-          sendMsg={sendMsg}
-          _P={_P}
-          detailCurrent={detailCurrent}
-        ></ClientSendMsg>
+          <ClientSendMsg
+            sendMsg={sendMsg}
+            _P={_P}
+            detailCurrent={detailCurrent}
+          ></ClientSendMsg>
+        </div>
       </div>
 
       <ShowIntroductionAnimation _P={_P}></ShowIntroductionAnimation>

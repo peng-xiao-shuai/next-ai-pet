@@ -78,7 +78,7 @@ export const TextRecord: TextRecord = {
         <div
           className={cn(
             ClassName.text__inner,
-            'text__inner bg-[#EFE0DD] text-[#1D1C21] pr-12',
+            'text__inner bg-[rgba(188,117,0,0.72)] text-white pr-12',
             item.type === 'HOT_DATE' ? 'hot-date text-white' : '',
             item.type === 'ROLE_PLAY' ? 'role-play text-white' : ''
           )}
@@ -94,7 +94,7 @@ export const TextRecord: TextRecord = {
           dangerouslySetInnerHTML={{ __html: item.message }}
         />
 
-        <div className="absolute text-xs right-2 bottom-2 text-[#9C9CA3]">
+        <div className="absolute text-xs right-2 bottom-2 text-white regular">
           {filterFormatDate(item.timestamp, 'hh:mm')}
         </div>
       </div>
@@ -108,7 +108,7 @@ export const TextRecord: TextRecord = {
         <div
           className={cn(
             ClassName.text__inner,
-            'text__inner relative bg-[#252033] pr-12',
+            'text__inner relative bg-[rgba(37,32,51,0.56)] pr-12',
             item.type === 'HOT_DATE' ? 'hot-date' : '',
             item.type === 'ROLE_PLAY' ? 'role-play' : ''
           )}
@@ -117,7 +117,7 @@ export const TextRecord: TextRecord = {
           }}
         />
 
-        <div className="absolute text-xs right-2 bottom-2 text-[#9C9CA3]">
+        <div className="absolute text-xs right-2 bottom-2 text-white regular">
           {filterFormatDate(item.timestamp, 'hh:mm')}
         </div>
       </div>
@@ -173,7 +173,7 @@ export const ImageVideoRecorder: Record = ({ item }) => {
     <div className="item__container--video relative">
       <div
         className={`video-wrapper p-2 ${
-          item.imageUrl.includes('gif') ? '' : 'bg-[#252033]'
+          item.imageUrl.includes('gif') ? '' : 'bg-[rgba(37,32,51,0.56)]'
         } rounded-xl`}
       >
         {item.type === 'IMG' ? (
@@ -216,7 +216,7 @@ export const ImageVideoRecorder: Record = ({ item }) => {
         </div>
       </div>
 
-      <div className="absolute text-xs right-2 bottom-3 text-white rounded-full px-[10px] bg-black/40 py-[2px]">
+      <div className="absolute text-xs right-2 bottom-3 text-white rounded-full px-[10px] bg-[rgba(37,32,51,0.56)] py-[2px]">
         {filterFormatDate(item.timestamp, 'hh:mm')}
       </div>
     </div>
@@ -229,7 +229,7 @@ export const AwaitRecord: FC = () => {
     <div className="item__container--text relative z-[1]">
       <div
         className={cn(
-          'text__inner flex bg-[#252033] text-white items-center',
+          'text__inner flex bg-[rgba(37,32,51,0.56)] text-white items-center',
           ClassName.text__inner
         )}
       >
@@ -292,7 +292,7 @@ export const ClientChatRecord = () => {
             {['TEXT', 'ACTION', 'REQUEST', 'HOT_DATE', 'ROLE_PLAY'].includes(
               item.type
             ) && (
-              <div className="item__container--text relative z-[1] text-white">
+              <div className="item__container--text relative z-[1] text-white pointer-events-none">
                 {['TEXT', 'HOT_DATE', 'ROLE_PLAY'].includes(item.type) &&
                 item.source === 'AI' ? (
                   <TextRecord.TextAI item={item}></TextRecord.TextAI>

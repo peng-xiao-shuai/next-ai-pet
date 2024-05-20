@@ -102,12 +102,12 @@ export const Navbar: FC<{
           >
             {Boolean(detail.head) && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={filterImage(detail.head)}
                 alt="avatar"
-                className="size-9 overflow-hidden rounded-full object-fill"
-                loading="lazy"
-                decoding="async"
+                width={36}
+                height={36}
+                className="overflow-hidden rounded-full"
               />
             )}
 
@@ -140,7 +140,7 @@ export const Navbar: FC<{
                   <NumberRoll prefix="Lv" end={userState.level}></NumberRoll>
                 </div>
 
-                <div className="flex items-center justify-center relative">
+                <div className="flex items-center justify-center relative w-full">
                   <div
                     className={`flex items-center absolute z-10 ${
                       userState.point ||
@@ -156,7 +156,7 @@ export const Navbar: FC<{
                     ></NumberRoll>
                   </div>
                   <Progress
-                    className="h-4 w-36 bg-[#EEC39B] border-[#CF9A68] border"
+                    className="h-4 min-w-28 w-full max-w-36 bg-[#EEC39B] border-[#CF9A68] border"
                     value={userState.point % 100}
                     max={userState.upgradeRequiredPoint % 100}
                   />

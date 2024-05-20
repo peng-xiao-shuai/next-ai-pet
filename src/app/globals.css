@@ -112,3 +112,11 @@ div[role='dialog']:focus-visible {
 #tc-widget-root {
   pointer-events: auto;
 }
+
+@font-face {
+  font-family: 'SF Pro Text'; /* 自定义字体名称 */
+  src: url('../../public/FontsFree-Net-SFProText-Regular.ttf');
+}
+.regular {
+  font-family: 'SF Pro Text', sans-serif;
+}

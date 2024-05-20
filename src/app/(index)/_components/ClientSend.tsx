@@ -32,7 +32,8 @@ export const ClientSendMsg: FC<{
   detailCurrent: MutableRefObject<Indexes<any>>;
 }> = ({ sendMsg, _P, detailCurrent }) => {
   const { t } = useTranslation();
-  const { detail, setDetail, list, readyState, scrollDom } = useContext(ChatContext);
+  const { detail, setDetail, list, readyState, scrollDom } =
+    useContext(ChatContext);
   const [message, setMessage] = useState('');
   const InputRef = useRef<any>(null);
   const [showPetGIF, setShowPetGIF] = useState(false);
@@ -80,8 +81,8 @@ export const ClientSendMsg: FC<{
   }, [detail.isInitialized]);
 
   return (
-    <div className="bg-white/95 relative z-40 py-3 group-[.ios]:pb-[calc(15px+constant(safe-area-inset-bottom))] group-[.ios]:pb-[calc(15px+env(safe-area-inset-bottom))]">
-      <ClientTools></ClientTools>
+    <div className="relative z-40 py-3 group-[.ios]:pb-[calc(15px+constant(safe-area-inset-bottom))]">
+      {/* <ClientTools></ClientTools> */}
 
       {showPetGIF && (
         <m.div
@@ -141,7 +142,7 @@ export const ClientSendMsg: FC<{
           ref={InputRef}
           rows={1}
           cursor-spacing={20}
-          className={`textarea-dom pr-[72px] pl-12 w-full rounded-3xl bg-[#302c4f] resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]`}
+          className={`bg-white/55 border border-white text-[#222222] placeholder:text-black/50 textarea-dom pr-[72px] pl-12 w-full rounded-xl resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]`}
           placeholder={
             isDefineName
               ? `${t(LOCALE_KEYS.PLEASE_DIRECTLY_TYPE_THE_NAME_OF_YOUR_PET)}`
@@ -193,7 +194,7 @@ export const ClientSendMsg: FC<{
               ></Image>
             </m.div>
           ) : (
-            <div className="size-[30px] bg-[#fd2c54] flex items-center justify-center rounded-full overflow-hidden">
+            <div className="size-[30px] bg-[#c19140] flex items-center justify-center rounded-full overflow-hidden">
               <span className="loading loading-spinner"></span>
             </div>
           )}
