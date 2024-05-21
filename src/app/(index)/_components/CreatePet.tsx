@@ -80,16 +80,18 @@ export const ClientCreatePet: FC<{
     <>
       {!isLoader && (
         <InitLoading>
-          <div className="absolute bottom-20 flex flex-wrap justify-center w-full">
+          <div className="absolute bottom-5 flex flex-wrap justify-center w-full">
             <span
-              className="text-sm text-white font-bold"
+              className="text-sm text-white font-bold bg-[#753D3F]"
               style={{
-                WebkitTextStroke: '0.6px #753D3F',
+                WebkitTextStroke: '2px transparent',
+                // @ts-ignore
+                '-webkit-background-clip': 'text',
               }}
             >
               Regret for your waiting because the first loading
             </span>
-            <div className="border border-[#753D3F] rounded-full">
+            <div className="border border-[#753D3F] rounded-full my-1">
               <Progress
                 className="w-[70vw] !bg-[rgba(128,84,62,0.50)]"
                 bgClassName="from-[#3BDC14] to-[#46F71D] rounded-full border border-white duration-500"
@@ -97,9 +99,11 @@ export const ClientCreatePet: FC<{
               ></Progress>
             </div>
             <div
-              className="text-sm text-white font-bold w-full text-center"
+              className="text-sm text-white font-bold bg-[#753D3F]"
               style={{
-                WebkitTextStroke: '0.6px #753D3F',
+                WebkitTextStroke: '2px transparent',
+                // @ts-ignore
+                '-webkit-background-clip': 'text',
               }}
             >
               Communicating with Server
