@@ -6,7 +6,6 @@ import { ClientTaskDrawer } from './ClientTaskDrawer';
 import { ClientFoodDrawer } from './ClientFoodDrawer';
 
 export const ClientTaskAndShop = () => {
-  const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
   const [foodDrawerVisible, setFoodDrawerVisible] = useState(false);
   const [taskDrawerVisible, setTaskDrawerVisible] = useState(false);
 
@@ -33,11 +32,6 @@ export const ClientTaskAndShop = () => {
           }}
         ></Image>
       </div>
-
-      <ClientFeedDrawer
-        drawerVisible={feedDrawerVisible}
-        setDrawerVisible={setFeedDrawerVisible}
-      ></ClientFeedDrawer>
 
       <ClientFoodDrawer
         drawerVisible={foodDrawerVisible}
