@@ -618,9 +618,10 @@ export const Client: FC<{
         alt="bg"
         priority
         className="absolute z-[0] top-0"
-        onLoadingComplete={(e) => {
-          setBgImgHeight(e.height);
-          setScrollHeight(window.innerHeight - e.height / 1.6 + 'px');
+        onLoad={({ target }) => {
+          const _target = target as HTMLImageElement;
+          setBgImgHeight(_target.height);
+          setScrollHeight(window.innerHeight - _target.height / 1.6 + 'px');
         }}
       />
 
