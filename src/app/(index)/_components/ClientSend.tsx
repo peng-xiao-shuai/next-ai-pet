@@ -81,6 +81,7 @@ export const ClientSendMsg: FC<{
   useBusWatch('IntroductionAnimation', () => {
     setCurrentStep(0);
     setIsOpen(true);
+    document.body.setAttribute('data-guide', 'SEND_MESSAGE');
   });
 
   useEffect(() => {
@@ -90,7 +91,10 @@ export const ClientSendMsg: FC<{
   }, [detail.isInitialized]);
 
   return (
-    <div className="relative z-40 py-3 group-[.ios]:pb-[calc(15px+constant(safe-area-inset-bottom))]">
+    <div
+      className="relative z-40 py-3 group-[.ios]:pb-[calc(15px+constant(safe-area-inset-bottom))]"
+      id="input-step"
+    >
       {/* <ClientTools></ClientTools> */}
 
       {showPetGIF && (
@@ -124,21 +128,7 @@ export const ClientSendMsg: FC<{
         </m.div>
       )}
 
-      <div
-        className="input-container relative mx-3 leading-none text-white"
-        id="input-step"
-      >
-        {/* {detail.isInitialized && !showPetGIF && (
-          <>
-            <ClientTips
-              visible={detail.isInitialized}
-              className="right-0 -translate-y-[120%] w-56"
-              cornerClassName="bottom-0 translate-y-2/4 right-6"
-              localeKey={LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS}
-            ></ClientTips>
-          </>
-        )} */}
-
+      <div className="input-container relative mx-3 leading-none text-white">
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 left-3 rtl:left-[unset] rtl:right-3">
           <Image
             src="/icons/share-gold.png"
