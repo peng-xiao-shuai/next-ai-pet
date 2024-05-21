@@ -26,7 +26,7 @@ export const Rules: FC<{
           <DialogTitle className="mb-4 text-left text-xl px-3">
             {title || 'Rules'}
           </DialogTitle>
-          <DialogDescription className="text-left w-[70vw] max-h-[70vh] overflow-y-auto px-3">
+          <div className="text-left w-[70vw] max-h-[70vh] overflow-y-auto px-3">
             {children || (
               <>
                 <h2 className="font-bold text-lg mb-4">
@@ -112,7 +112,7 @@ export const Rules: FC<{
                 </p>
               </>
             )}
-          </DialogDescription>
+          </div>
         </DialogHeader>
       </DialogContent>
     </Dialog>
