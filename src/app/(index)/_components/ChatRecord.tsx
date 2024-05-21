@@ -278,6 +278,7 @@ export const ClientChatRecord = () => {
       onScroll={onScroll}
       style={{
         maskImage: 'linear-gradient(transparent, #000 20%)',
+        WebkitMaskImage: 'linear-gradient(transparent, #000 20%)',
       }}
     >
       {list?.map((item) => (

@@ -642,6 +642,7 @@ export const Client: FC<{
           width: '100%',
           height: 'auto',
           maskImage: 'linear-gradient(#000 80%, transparent)',
+          WebkitMaskImage: 'linear-gradient(#000 80%, transparent)',
         }}
         src="/images/bg.png"
         alt="bg"
