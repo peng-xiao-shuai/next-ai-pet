@@ -120,3 +120,9 @@ div[role='dialog']:focus-visible {
 .regular {
   font-family: 'SF Pro Text', sans-serif;
 }
+
+body[data-guide='HIGHLIGHT_ACTION_BTN'] #first-step,
+body[data-guide='HIGHLIGHT_FEED_FOOD'] #dog-bowl,
+body[data-guide='SEND_MESSAGE'] #input-step {
+  z-index: 9999999;
+}

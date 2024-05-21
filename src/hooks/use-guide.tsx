@@ -11,9 +11,11 @@ export const useGuide = ({ list }: { list: any[] }) => {
      *
      * 第一个空对应 page step 中的第一个
      */
-    const index = ['', 'HIGHLIGHT_ACTION_BTN', 'HIGHLIGHT_FEED_FOOD'].indexOf(
-      list![list!.length - 1]?.specialEventTrigger
-    );
+    const index = [
+      'xxxxx',
+      'HIGHLIGHT_ACTION_BTN',
+      'HIGHLIGHT_FEED_FOOD',
+    ].indexOf(list![list!.length - 1]?.specialEventTrigger);
 
     if (index > -1) {
       document.body.setAttribute(
