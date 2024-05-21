@@ -6,7 +6,7 @@ import { Toaster } from 'sonner';
 import { TGInitScript } from '@/components/TGInitScript';
 import { ClientLazyMotion } from '@/components/ClientLazyMotion';
 import { TonProvider } from '@/components/TonProvider';
-import { InitLoading } from '@/utils/InitLoading';
+import { InitLoading } from '@/components/InitLoading';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import AppConfigEnv from '@/utils/get-config';
 
@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <main className="h-[100vh] w-full bg-black">
+        <main className="h-[100vh] w-full">
           <TonProvider>
             <ClientLazyMotion>{children}</ClientLazyMotion>
           </TonProvider>

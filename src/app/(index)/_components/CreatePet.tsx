@@ -2,17 +2,11 @@
 import LoadingRender from '@/app/loading';
 import { Button } from '@/components/Button';
 import FrameAnimation from '@/components/FrameAnimation';
+import { InitLoading } from '@/components/InitLoading';
+import { Progress } from '@/components/ui/progress';
 import { useTranslation } from '@/hooks/useTranslation';
-import AppConfigEnv from '@/utils/get-config';
 import { fetchRequest } from '@/utils/request';
 import { LOCALE_KEYS } from '@@/locales';
-import {
-  AnimationPlaybackControls,
-  AnimationSequence,
-  SequenceOptions,
-  m,
-  useAnimate,
-} from 'framer-motion';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
@@ -27,12 +21,13 @@ export const ClientCreatePet: FC<{
   const [isGift, setIsGift] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isLoader, setIsLoader] = useState(false);
+  const [progressNum, setProgressNum] = useState(0);
   const [countDown, setCountDown] = useState(state.countDown);
   const { t } = useTranslation();
 
   const onAllLoaded = () => {
     setIsLoader(true);
-    console.log(111);
+    setProgressNum(100);
 
     const timer = setTimeout(() => {
       setIsGift(false);
@@ -51,6 +46,27 @@ export const ClientCreatePet: FC<{
   };
 
   useEffect(() => {
+    if (progressNum >= 100) return;
+
+    let timer: NodeJS.Timeout;
+    let progress = progressNum;
+    timer = setInterval(
+      () => {
+        const num = parseInt(String(Math.random() * 5), 10);
+        if (num > 3) {
+          progress += num;
+          setProgressNum(progress > 99 ? 99 : progress);
+        }
+      },
+      progressNum > 20 ? 300 : progressNum > 60 ? 6000 : 100
+    );
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [progressNum]);
+
+  useEffect(() => {
     fetchRequest(`/restApi/friend/generate`, {
       styleId: 1,
     }).then(({ result }) => {
@@ -63,10 +79,35 @@ export const ClientCreatePet: FC<{
   return countDown >= 0 ? (
     <>
       {!isLoader && (
-        <div className="w-full h-full fixed top-0 left-0 z-50 bg-black">
-          <LoadingRender></LoadingRender>
-        </div>
+        <InitLoading>
+          <div className="absolute bottom-20 flex flex-wrap justify-center w-full">
+            <span
+              className="text-sm text-white font-bold"
+              style={{
+                WebkitTextStroke: '0.6px #753D3F',
+              }}
+            >
+              Regret for your waiting because the first loading
+            </span>
+            <div className="border border-[#753D3F] rounded-full">
+              <Progress
+                className="w-[70vw] !bg-[rgba(128,84,62,0.50)]"
+                bgClassName="from-[#3BDC14] to-[#46F71D] rounded-full border border-white duration-500"
+                value={progressNum}
+              ></Progress>
+            </div>
+            <div
+              className="text-sm text-white font-bold w-full text-center"
+              style={{
+                WebkitTextStroke: '0.6px #753D3F',
+              }}
+            >
+              Communicating with Server
+            </div>
+          </div>
+        </InitLoading>
       )}
+
       <div className="fixed top-0 z-40 flex justify-center items-center bg-black w-full h-full">
         <Image
           src="/images/lights.png"
