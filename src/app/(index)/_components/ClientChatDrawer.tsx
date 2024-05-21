@@ -37,7 +37,7 @@ export const ClientChatDrawer: FC<{
                 style={{
                   WebkitTextStroke: '5px transparent',
                   // @ts-ignore
-                  '-webkit-background-clip': 'text',
+                  WebkitBackgroundClip: 'text',
                 }}
               >
                 {title}

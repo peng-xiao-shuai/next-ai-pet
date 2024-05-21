@@ -207,9 +207,10 @@ export const ClientFeedDrawer: FC<{
               boxShadow: '0px 1px 1px white inset',
               WebkitTextStroke: '3px transparent',
               // @ts-ignore
-              '-webkit-background-clip': 'text',
+              WebkitBackgroundClip: 'text',
             }}
           >
+            <span className="loading loading-spinner"></span>
             {t(LOCALE_KEYS.SEND)}
           </div>
         </Button>

@@ -8,6 +8,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -60,7 +61,7 @@ export const ClientDog: FC<{
   onEnd: () => void;
 }> = ({ bgImgHeight, name, onEnd }) => {
   const [gif, setGif] = useState(Gifs[VideoName.LEISURE].src);
-  const [top, setTop] = useState(0);
+  const top = useMemo(() => bgImgHeight, [bgImgHeight]);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
   const [foodPng, setFoodPng] = useState('/icons/empty-dog-bowl.png');
@@ -98,12 +99,6 @@ export const ClientDog: FC<{
       }
     }, 1000);
   });
-
-  useEffect(() => {
-    if (bgImgHeight) {
-      setTop(bgImgHeight / 1.65);
-    }
-  }, [bgImgHeight]);
 
   useEffect(() => {
     if (![VideoName.NONE, VideoName.FEED, VideoName.FOOD].includes(name)) {

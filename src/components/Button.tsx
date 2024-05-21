@@ -18,7 +18,7 @@ export const Button: FC<{
       disabled={disabled || false}
       style={style || {}}
     >
-      <span className="loading loading-spinner"></span>
+      {!Boolean(children) && <span className="loading loading-spinner"></span>}
       {children || title}
     </button>
   );

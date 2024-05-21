@@ -86,7 +86,7 @@ export const ClientCreatePet: FC<{
               style={{
                 WebkitTextStroke: '2px transparent',
                 // @ts-ignore
-                '-webkit-background-clip': 'text',
+                WebkitBackgroundClip: 'text',
               }}
             >
               Regret for your waiting because the first loading
@@ -103,7 +103,7 @@ export const ClientCreatePet: FC<{
               style={{
                 WebkitTextStroke: '2px transparent',
                 // @ts-ignore
-                '-webkit-background-clip': 'text',
+                WebkitBackgroundClip: 'text',
               }}
             >
               Communicating with Server

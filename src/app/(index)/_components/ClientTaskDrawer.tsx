@@ -176,9 +176,6 @@ export const ClientTaskDrawer: FC<{
             <div
               key={item.id}
               className="mb-3 bg-[#FFFCF7] border-[#D3B996] border-2 rounded-xl py-2 px-3"
-              onClick={() => {
-                debounce(handleTask, 300, [item]);
-              }}
             >
               <div className={cn('w-full flex justify-between items-center')}>
                 <div className="text-lg font-bold text-[#7F6957] text-left mb-1">
@@ -202,17 +199,19 @@ export const ClientTaskDrawer: FC<{
                 <Button
                   className={cn(
                     item.isCompleted ? 'grayscale' : '',
-                    '!mb-0 h-8 duration-300 transition-all !min-w-20 max-w-28 !w-auto border-2 border-[#A55636] bg-[#FFD262] text-[#FFFAEF]  pointer-events-none'
+                    '!mb-0 h-8 duration-300 transition-all !min-w-20 max-w-28 !w-auto border-2 border-[#A55636] bg-[#FFD262] text-[#FFFAEF]'
                   )}
-                  click={() => {}}
+                  click={() => {
+                    handleTask(item);
+                  }}
                 >
                   <div
-                    className="bg-[#84420B] w-full h-full flex text-sm items-center justify-center rounded-full"
+                    className="bg-[#84420B] w-full h-full flex text-sm items-center justify-center rounded-full pointer-events-none"
                     style={{
                       boxShadow: '0px 1px 1px white inset',
                       WebkitTextStroke: '3px transparent',
                       // @ts-ignore
-                      '-webkit-background-clip': 'text',
+                      WebkitBackgroundClip: 'text',
                     }}
                   >
                     {item.isCompleted ? (
