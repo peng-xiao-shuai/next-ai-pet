@@ -8,6 +8,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { ChatContext } from './Client';
@@ -16,6 +17,7 @@ import { filterImage } from '@/utils/business';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 import { VideoName } from './ShowAnimation';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
+import { useBusWatch } from '@/hooks/use-bus-watch';
 
 const Gifs: Record<
   Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>,
@@ -26,7 +28,7 @@ const Gifs: Record<
   }
 > = {
   [VideoName.LEISURE]: {
-    src: '/images/introduction.gif',
+    src: '/images/leisure.gif',
     name: 'Leisure',
     data: null,
   },
@@ -61,6 +63,8 @@ export const ClientDog: FC<{
   const [top, setTop] = useState(0);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
+  const [foodPng, setFoodPng] = useState('/icons/empty-dog-bowl.png');
+  const timeCount = useRef(30);
 
   const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
     const { offsetX, offsetY } = e.nativeEvent;
@@ -79,6 +83,21 @@ export const ClientDog: FC<{
       }
     }
   };
+
+  useBusWatch('foodStatus', () => {
+    setFoodPng('/icons/dog-bowl.png');
+    timeCount.current = 30;
+
+    const timer = setInterval(() => {
+      timeCount.current -= 1;
+      localStorage.setItem('foodTimeCount', String(timeCount.current));
+
+      if (timeCount.current <= 0) {
+        setFoodPng('/icons/empty-dog-bowl.png');
+        clearInterval(timer);
+      }
+    }, 1000);
+  });
 
   useEffect(() => {
     if (bgImgHeight) {
@@ -100,6 +119,27 @@ export const ClientDog: FC<{
     }
   }, [name, onEnd]);
 
+  useEffect(() => {
+    timeCount.current = Number(localStorage.getItem('foodTimeCount') || '0');
+    console.log(timeCount.current, localStorage.getItem('foodTimeCount'));
+
+    let timer: NodeJS.Timeout;
+    if (timeCount.current > 0) setFoodPng('/icons/dog-bowl.png');
+    timer = setInterval(() => {
+      timeCount.current -= 1;
+      localStorage.setItem('foodTimeCount', String(timeCount.current));
+
+      if (timeCount.current <= 0) {
+        setFoodPng('/icons/empty-dog-bowl.png');
+        clearInterval(timer);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -118,6 +158,7 @@ export const ClientDog: FC<{
         <NextImage
           className="relative z-40"
           priority
+          unoptimized
           src={gif}
           alt="dog"
           width={200}
@@ -137,7 +178,7 @@ export const ClientDog: FC<{
         }}
       >
         <NextImage
-          src="/icons/empty-dog-bowl.png"
+          src={foodPng}
           width={84}
           height={84}
           alt="dog bowl"
