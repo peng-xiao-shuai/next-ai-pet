@@ -676,15 +676,14 @@ export const Client: FC<{
             height: scrollHeight,
           }}
         >
-          <div
+          {/* <div
             className={`fixed pointer-events-none left-0 translate-y-full z-30 w-full h-20 bg-[url(/images/bg.png)] bg-[size:cover] bg-no-repeat`}
             style={{
               backgroundPositionY: `calc(-100vh + ${scrollHeight})`,
-              maskImage: 'linear-gradient(#000, transparent)',
               WebkitMaskImage: 'linear-gradient(#000, transparent)',
               bottom: `calc(${scrollHeight} + 2px)`,
             }}
-          ></div>
+          ></div> */}
           <ClientChatRecord></ClientChatRecord>
 
           <ClientSendMsg

@@ -276,6 +276,9 @@ export const ClientChatRecord = () => {
       dir="ltr"
       className={cn(`relative z-10 p-5 flex-1 overflow-y-auto chat-record`)}
       onScroll={onScroll}
+      style={{
+        maskImage: 'linear-gradient(transparent, #000 20%)',
+      }}
     >
       {list?.map((item) => (
         <div
