@@ -641,6 +641,7 @@ export const Client: FC<{
         style={{
           width: '100%',
           height: 'auto',
+          maskImage: 'linear-gradient(#000 80%, transparent)',
         }}
         src="/images/bg.png"
         alt="bg"
@@ -648,8 +649,8 @@ export const Client: FC<{
         className="fixed z-[0] top-0"
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
-          setBgImgHeight(_target.height);
-          setScrollHeight(window.innerHeight - _target.height / 1.6 + 'px');
+          setBgImgHeight(_target.height / 1.75);
+          setScrollHeight(window.innerHeight - _target.height / 1.7 + 'px');
         }}
       />
 
