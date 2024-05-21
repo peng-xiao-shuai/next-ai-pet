@@ -64,18 +64,17 @@ export const ClientDog: FC<{
 
   const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
     const { offsetX, offsetY } = e.nativeEvent;
-    console.log(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     if (
       // @ts-ignore
       e.target.src.indexOf(encodeURIComponent(Gifs[VideoName.LEISURE].src)) !=
       -1
     ) {
       // 摸头
-      if (offsetY <= 55) {
+      if (offsetY <= 55 && offsetX < 140) {
         setTargetActive('Touch');
-      } else if (offsetY <= 110) {
+      } else if (offsetY <= 110 && offsetX < 140) {
         setTargetActive('Kiss on');
-      } else {
+      } else if (offsetY > 110 && offsetX < 160) {
         setTargetActive('Hug');
       }
     }
