@@ -16,7 +16,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [isPet, setIsPet] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const { setIsOpen, isOpen } = useTour();
   const { t } = useTranslation();
   const [steps] = useState<StepType[]>([
     {
@@ -56,25 +55,6 @@ export default function Home() {
     },
   ]);
 
-  const handleClose = () => {
-    if (!isOpen) return;
-
-    document.body.removeAttribute('data-guide');
-    /**
-     * 设置淡出
-     */
-    document
-      .getElementsByClassName('guide-popover')[0]
-      .classList.add('opacity-0');
-    document
-      .getElementsByClassName('reactour__mask')[0]
-      .classList.add('!opacity-0');
-
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 300);
-  };
-
   useEffect(() => {
     if (friendId) {
       setLoading(false);
@@ -98,14 +78,6 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userState]);
 
-  useEffect(() => {
-    document.body.addEventListener('click', handleClose);
-    return () => {
-      document.body.removeEventListener('click', handleClose);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   if (loading) {
     return <Loading></Loading>;
   }
@@ -127,6 +99,7 @@ export default function Home() {
           showCloseButton={false}
           maskClassName="reactour__mask transition-all duration-300"
           className="guide-popover !bg-[#FFEFE0] border-2 text-lg leading-5 border-[#FFD65F] !text-[#643C28] rounded-t-[36px] rounded-b-2xl !px-4 !py-3"
+          onClickMask={() => {}}
           styles={{
             close: (base) => ({
               ...base,

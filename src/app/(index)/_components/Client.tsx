@@ -29,6 +29,7 @@ import { ClientDog } from './ClientDog';
 import { cn } from '@/lib/utils';
 import { ClientTaskAndShop } from './ClientTaskAndShop';
 import { useGuide } from '@/hooks/use-guide';
+import { useTour } from '@reactour/tour';
 
 const MAX_LEN = 80;
 
@@ -126,6 +127,7 @@ export const Client: FC<{
 }> = ({ friendId, className }) => {
   const chat = useRef(new ChatWebSocket(_P));
   const { userState, setDataLocal } = useUserStore();
+  const { setIsOpen, isOpen } = useTour();
   const scrollDom = useRef<HTMLDivElement | null>(null);
   const recordListLength = useRef(0);
   const [list, setList] = useState<any[]>([]);
@@ -580,6 +582,32 @@ export const Client: FC<{
     recordListLength.current = list!.length;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list]);
+
+  const handleClose = () => {
+    if (isOpen) return;
+    /**
+     * 设置淡出
+     */
+    document
+      .getElementsByClassName('guide-popover')[0]
+      .classList.add('opacity-0');
+    document
+      .getElementsByClassName('reactour__mask')[0]
+      .classList.add('!opacity-0');
+    document.body.removeAttribute('data-guide');
+
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 500);
+  };
+
+  useEffect(() => {
+    document.body.addEventListener('click', handleClose);
+    return () => {
+      document.body.removeEventListener('click', handleClose);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ChatContext.Provider

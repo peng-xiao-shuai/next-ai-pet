@@ -22,6 +22,7 @@ export const useGuide = ({ list }: { list: any[] }) => {
         'data-guide',
         list![list!.length - 1]?.specialEventTrigger
       );
+
       setCurrentStep(index);
       setIsOpen(true);
     }
