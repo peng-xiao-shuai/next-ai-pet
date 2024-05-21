@@ -1,12 +1,21 @@
 import AppConfigEnv from '@/utils/get-config';
 import { fetchRequest } from '@/utils/request';
 import NextImage from 'next/image';
-import { FC, useContext, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  FC,
+  MouseEvent,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { ChatContext } from './Client';
 import { LOCALE_KEYS } from '@@/locales';
 import { filterImage } from '@/utils/business';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 import { VideoName } from './ShowAnimation';
+import { ClientFeedDrawer } from './ClientFeedDrawer';
 
 const Gifs: Record<
   Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>,
@@ -38,6 +47,11 @@ const Gifs: Record<
   },
 };
 
+type Tools = {
+  url: string;
+  name: 'Kiss on' | 'Touch' | 'Hug';
+} & Indexes<string>;
+
 export const ClientDog: FC<{
   bgImgHeight: number;
   name: Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>;
@@ -45,7 +59,28 @@ export const ClientDog: FC<{
 }> = ({ bgImgHeight, name, onEnd }) => {
   const [gif, setGif] = useState(Gifs[VideoName.LEISURE].src);
   const [top, setTop] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
+  const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
+
+  const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
+    const { offsetX, offsetY } = e.nativeEvent;
+    console.log(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    if (
+      // @ts-ignore
+      e.target.src.indexOf(encodeURIComponent(Gifs[VideoName.LEISURE].src)) !=
+      -1
+    ) {
+      // 摸头
+      if (offsetY <= 55) {
+        setTargetActive('Touch');
+      } else if (offsetY <= 110) {
+        setTargetActive('Kiss on');
+      } else {
+        setTargetActive('Hug');
+      }
+    }
+  };
+
   useEffect(() => {
     if (bgImgHeight) {
       setTop(bgImgHeight / 1.65);
@@ -55,40 +90,75 @@ export const ClientDog: FC<{
   useEffect(() => {
     if (![VideoName.NONE, VideoName.FEED, VideoName.FOOD].includes(name)) {
       setGif(Gifs[name].src);
-      setVisible(true);
+      // setVisible(true);
 
       const timer = setTimeout(() => {
         setGif(Gifs[VideoName.LEISURE].src);
         onEnd();
+        setTargetActive('');
         clearTimeout(timer);
       }, 2500);
     }
   }, [name, onEnd]);
 
   return (
-    <div
-      className="absolute left-2/4 -translate-x-2/4 -translate-y-full z-40 w-[200px] h-[200px]"
-      style={{
-        top: top,
-        opacity: top ? 1 : 0,
-      }}
-    >
-      <Active></Active>
+    <>
+      <div
+        className="absolute left-2/4 -translate-x-2/4 -translate-y-full z-40 w-[200px] h-[200px]"
+        id="first-step"
+        style={{
+          top: top,
+          opacity: top ? 1 : 0,
+        }}
+      >
+        <Active
+          targetActive={targetActive}
+          setTargetActive={setTargetActive}
+        ></Active>
 
-      <NextImage
-        className="relative z-40"
-        src={gif}
-        alt="dog"
-        width={200}
-        height={200}
-      ></NextImage>
-    </div>
+        <NextImage
+          className="relative z-40"
+          priority
+          src={gif}
+          alt="dog"
+          width={200}
+          height={200}
+          onClick={handleImageClick}
+        ></NextImage>
+      </div>
+
+      <div
+        className="absolute -translate-y-20 translate-x-16 z-50"
+        id="dog-bowl"
+        style={{
+          top: top,
+        }}
+        onClick={() => {
+          setFeedDrawerVisible(true);
+        }}
+      >
+        <NextImage
+          src="/icons/empty-dog-bowl.png"
+          width={84}
+          height={84}
+          alt="dog bowl"
+        ></NextImage>
+      </div>
+
+      <ClientFeedDrawer
+        drawerVisible={feedDrawerVisible}
+        setDrawerVisible={setFeedDrawerVisible}
+      ></ClientFeedDrawer>
+    </>
   );
 };
 
-export const Active = () => {
+export const Active: FC<{
+  targetActive: Tools['name'] | '';
+  setTargetActive: Dispatch<SetStateAction<Tools['name'] | ''>>;
+}> = ({ targetActive, setTargetActive }) => {
   const { state, checkEntering } = useContext(ChatContext);
-  const [tools, setTools] = useState<any>([]);
+  const [tools, setTools] = useState<Tools[]>([]);
 
   const getTools = () => {
     fetchRequest(
@@ -106,10 +176,6 @@ export const Active = () => {
               (item, index) =>
                 ({
                   ...item,
-                  step: index === 1 ? 'HIGHLIGHT_ACTION_BTN' : '',
-                  highlight: 'HIGHLIGHT_ACTION_BTN',
-                  content:
-                    LOCALE_KEYS.PLEASE_CHOOSE_AN_ACTION_TO_TOUCH_YOUR_PET,
                   url: filterImage(item.expression2),
                   name: item.action,
                   style: [
@@ -192,14 +258,18 @@ export const Active = () => {
   };
 
   useEffect(() => {
+    if (targetActive != '') {
+      clickTool(tools.find((item) => item.name === targetActive)!);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetActive]);
+
+  useEffect(() => {
     getTools();
   }, []);
 
   return (
-    <div
-      className="absolute px-4 -left-10 -top-7 z-40 w-[84px]"
-      id="first-step"
-    >
+    <div className="absolute px-4 -left-10 -top-7 z-40 w-[84px]">
       {tools?.map((tool: any, index: number) => (
         <div
           key={index}
