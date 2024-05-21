@@ -1,14 +1,11 @@
 import AppConfigEnv from '@/utils/get-config';
 import { fetchRequest } from '@/utils/request';
-import { m, AnimatePresence } from 'framer-motion';
 import NextImage from 'next/image';
-import { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { ChatContext } from './Client';
 import { LOCALE_KEYS } from '@@/locales';
 import { filterImage } from '@/utils/business';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
-import { cn } from '@/lib/utils';
-import { GuideStep } from './ClientSend';
 import { VideoName } from './ShowAnimation';
 
 const Gifs: Record<
@@ -78,33 +75,20 @@ export const ClientDog: FC<{
     >
       <Active></Active>
 
-      <NextImage src={gif} alt="dog" width={200} height={200}></NextImage>
+      <NextImage
+        className="relative z-40"
+        src={gif}
+        alt="dog"
+        width={200}
+        height={200}
+      ></NextImage>
     </div>
   );
 };
 
 export const Active = () => {
-  const { state, checkEntering, list } = useContext(ChatContext);
+  const { state, checkEntering } = useContext(ChatContext);
   const [tools, setTools] = useState<any>([]);
-
-  /**
-   * 结束动画
-   */
-  const [isAnimateEnd, setIsAnimateEnd] = useState(false);
-  const tipsStatus = useMemo(() => {
-    if (
-      ['HIGHLIGHT_ACTION_BTN', 'HIGHLIGHT_FEED_FOOD'].includes(
-        list![list!.length - 1]?.specialEventTrigger
-      )
-    ) {
-      setIsAnimateEnd(false);
-
-      setTimeout(() => {
-        setIsAnimateEnd(true);
-      }, 4000);
-    }
-    return list![list!.length - 1]?.specialEventTrigger || 'none';
-  }, [list]);
 
   const getTools = () => {
     fetchRequest(
@@ -129,9 +113,9 @@ export const Active = () => {
                   url: filterImage(item.expression2),
                   name: item.action,
                   style: [
-                    {},
-                    { transform: 'translate(-100%, 105%)' },
-                    { transform: 'translate(-40%, 235%)' },
+                    { transform: 'translate(55%, 0%)', marginBottom: '6px' },
+                    { transform: 'translate(-45%, 0%)', marginBottom: '18px' },
+                    { transform: 'translate(20%, 0%)' },
                   ][index],
                 } as never)
             )
@@ -213,17 +197,14 @@ export const Active = () => {
 
   return (
     <div
-      className="px-4 overflow-x-auto"
-      style={{
-        unicodeBidi: 'normal',
-      }}
+      className="absolute px-4 -left-10 -top-7 z-40 w-[84px]"
+      id="first-step"
     >
       {tools?.map((tool: any, index: number) => (
         <div
           key={index}
-          className="tool absolute z-40 -left-1 -top-1 size-10 flex justify-center items-center bg-[#FFF2E5] border-[#fff] border rounded-2xl"
+          className="tool size-10 flex justify-center items-center bg-[#FFF2E5] border-[#fff] border rounded-2xl"
           onClick={() => {
-            setIsAnimateEnd(true);
             clickTool(tool);
           }}
           style={tool.style}
@@ -233,31 +214,9 @@ export const Active = () => {
             height={32}
             src={filterImage(tool.url)}
             alt={tool.name}
-            className={cn(
-              tipsStatus === tool.highlight && !isAnimateEnd
-                ? 'relative z-50'
-                : ''
-            )}
           />
         </div>
       ))}
-
-      <AnimatePresence>
-        {tipsStatus === tools[1]?.step && !isAnimateEnd && (
-          <m.div
-            animate={{
-              opacity: 1,
-              zIndex: 40,
-            }}
-            exit={{
-              opacity: 0,
-              zIndex: 40,
-            }}
-          >
-            <GuideStep tool={tools[1]}></GuideStep>
-          </m.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
