@@ -21,7 +21,7 @@ import { Navbar } from './Navbar';
 import { useUserStore } from '@/hooks/use-user';
 import AppConfigEnv from '@/utils/get-config';
 import { usePublicSocket } from '@/hooks/use-public-socket';
-import { VideoName, VideoPlayer } from './ShowAnimation';
+import { VideoName } from './ShowAnimation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { ShowIntroductionAnimation } from './ShowIntroductionAnimation';
 import Image from 'next/image';
@@ -661,6 +661,8 @@ export const Client: FC<{
 
         <ClientDog
           bgImgHeight={bgImgHeight}
+          // @ts-ignore
+          // TODO
           name={videoPlayerName}
           onEnd={() => {
             setVideoPlayerName(VideoName.NONE);
@@ -693,13 +695,6 @@ export const Client: FC<{
       </div>
 
       <ShowIntroductionAnimation _P={_P}></ShowIntroductionAnimation>
-
-      {/* <VideoPlayer
-        name={videoPlayerName}
-        onEnd={() => {
-          setVideoPlayerName(VideoName.NONE);
-        }}
-      ></VideoPlayer> */}
     </ChatContext.Provider>
   );
 };
