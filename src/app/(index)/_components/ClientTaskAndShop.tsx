@@ -20,7 +20,7 @@ export const ClientTaskAndShop = () => {
           height={62}
           className="mb-2"
           onClick={() => {
-            setTaskDrawerVisible(true);
+            setFoodDrawerVisible(true);
           }}
         ></Image>
         <Image
@@ -29,7 +29,7 @@ export const ClientTaskAndShop = () => {
           width={62}
           height={62}
           onClick={() => {
-            setFoodDrawerVisible(true);
+            setTaskDrawerVisible(true);
           }}
         ></Image>
       </div>
@@ -43,11 +43,11 @@ export const ClientTaskAndShop = () => {
         drawerVisible={foodDrawerVisible}
         setDrawerVisible={setFoodDrawerVisible}
       ></ClientFoodDrawer>
-      {/* 
+
       <ClientTaskDrawer
         drawerVisible={taskDrawerVisible}
         setDrawerVisible={setTaskDrawerVisible}
-      ></ClientTaskDrawer> */}
+      ></ClientTaskDrawer>
     </>
   );
 };
