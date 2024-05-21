@@ -27,6 +27,8 @@ import { ShowIntroductionAnimation } from './ShowIntroductionAnimation';
 import Image from 'next/image';
 import { ClientDog } from './ClientDog';
 import { cn } from '@/lib/utils';
+import { ClientTaskAndShop } from './ClientTaskAndShop';
+import { useGuide } from '@/hooks/use-guide';
 
 const MAX_LEN = 80;
 
@@ -545,6 +547,9 @@ export const Client: FC<{
   };
 
   usePublicSocket(showAnimationFun);
+  useGuide({
+    list,
+  });
 
   useBusWatch(_P + 'onSocketMessage', onSocketMessage);
   useBusWatch(_P + 'sendMsgFail', sendMsgFail);
@@ -622,6 +627,8 @@ export const Client: FC<{
       <div className="h-full overflow-y-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <Navbar></Navbar>
+
+        <ClientTaskAndShop></ClientTaskAndShop>
 
         <ClientDog
           bgImgHeight={bgImgHeight}
