@@ -645,7 +645,7 @@ export const Client: FC<{
         src="/images/bg.png"
         alt="bg"
         priority
-        className="absolute z-[0] top-0"
+        className="fixed z-[0] top-0"
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
           setBgImgHeight(_target.height);

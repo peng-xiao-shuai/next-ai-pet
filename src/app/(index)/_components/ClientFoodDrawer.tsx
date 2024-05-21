@@ -160,7 +160,7 @@ export const ClientFoodDrawer: FC<{
     >
       {loadingLoadPackage && topUpPackage.length === 0 ? (
         <div className="h-40 w-full overflow-hidden rounded-2xl mb-14">
-          <LoadingRender />
+          <LoadingRender className="h-full" />
         </div>
       ) : (
         <div className="actions-list grid grid-cols-2 gap-y-4 gap-x-4 mb-14">

@@ -169,7 +169,7 @@ export const ClientTaskDrawer: FC<{
       <div className="max-h-[50vh] overflow-y-auto">
         {loading && taskList.length === 0 ? (
           <div className="h-40 w-full bg-[#1D1C21] overflow-hidden rounded-2xl mb-14">
-            <LoadingRender />
+            <LoadingRender className="h-full" />
           </div>
         ) : (
           taskList.map((item, index) => (
