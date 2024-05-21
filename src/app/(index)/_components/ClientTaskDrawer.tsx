@@ -70,9 +70,9 @@ export const ClientTaskDrawer: FC<{
       remark: item.remark
         ? item.remark.replaceAll(/&(\+\d+)&|\$(\+\d+)\$/g, (match, p1, p2) => {
             if (p1) {
-              return `<div class="inline-flex items-center text-[#FDCD62] mx-1"><img src="/icons/gold-coin.png" style="width: 14px;height:14px;margin-right:2px" alt="gold coin" />${p1}</div>`; // 处理 &+数字& 的情况
+              return `<div class="inline-flex items-center text-[#F1B62D] mx-1"><img src="/icons/gold-coin.png" style="width: 14px;height:14px;margin-right:2px" alt="gold coin" />${p1}</div>`; // 处理 &+数字& 的情况
             } else {
-              return `<div class="inline-flex items-center text-[#FDCD62] mx-1"><img src="/icons/feed.png" style="width: 14px;height:14px;margin-right:2px" alt="food" />${p2}</div>`; // 处理 $+数字$ 的情况
+              return `<div class="inline-flex items-center text-[#F1B62D] mx-1"><img src="/icons/feed.png" style="width: 14px;height:14px;margin-right:2px" alt="food" />${p2}</div>`; // 处理 $+数字$ 的情况
             }
           })
         : '',
@@ -166,22 +166,22 @@ export const ClientTaskDrawer: FC<{
       title={t(LOCALE_KEYS.TASK)}
       setDrawerVisible={setDrawerVisible}
     >
-      <div className="mb-10">
+      <div className="max-h-[50vh] overflow-y-auto">
         {loading && taskList.length === 0 ? (
-          <div className="h-40 w-full bg-[#1D1C21] rounded-2xl mb-14">
+          <div className="h-40 w-full bg-[#1D1C21] overflow-hidden rounded-2xl mb-14">
             <LoadingRender />
           </div>
         ) : (
           taskList.map((item, index) => (
             <div
               key={item.id}
-              className="mb-3"
+              className="mb-3 bg-[#FFFCF7] border-[#D3B996] border-2 rounded-xl py-2 px-3"
               onClick={() => {
                 debounce(handleTask, 300, [item]);
               }}
             >
               <div className={cn('w-full flex justify-between items-center')}>
-                <div className="text-lg font-bold text-white text-left mb-1">
+                <div className="text-lg font-bold text-[#7F6957] text-left mb-1">
                   <span>{item.name}</span>
                   {Boolean(item.reward) && (
                     <div className="flex items-center">
@@ -192,7 +192,7 @@ export const ClientTaskDrawer: FC<{
                         className="mr-1"
                         alt="gold coin"
                       ></Image>
-                      <span className="text-sm text-[#FDCD62]">
+                      <span className="text-sm text-[#F1B62D]">
                         +{item.reward}
                       </span>
                     </div>
@@ -200,16 +200,27 @@ export const ClientTaskDrawer: FC<{
                 </div>
 
                 <Button
-                  className={`!mb-0 h-8 ${
-                    item.isCompleted ? 'grayscale' : ''
-                  } bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] text-white !min-w-20 max-w-28 !w-auto px-2 !text-sm pointer-events-none`}
+                  className={cn(
+                    item.isCompleted ? 'grayscale' : '',
+                    '!mb-0 h-8 duration-300 transition-all !min-w-20 max-w-28 !w-auto border-2 border-[#A55636] bg-[#FFD262] text-[#FFFAEF]  pointer-events-none'
+                  )}
                   click={() => {}}
                 >
-                  {item.isCompleted ? (
-                    <BsCheckAll className="size-7"></BsCheckAll>
-                  ) : (
-                    t(formatText[item.code])
-                  )}
+                  <div
+                    className="bg-[#84420B] w-full h-full flex text-sm items-center justify-center rounded-full"
+                    style={{
+                      boxShadow: '0px 1px 1px white inset',
+                      WebkitTextStroke: '3px transparent',
+                      // @ts-ignore
+                      '-webkit-background-clip': 'text',
+                    }}
+                  >
+                    {item.isCompleted ? (
+                      <BsCheckAll className="size-7"></BsCheckAll>
+                    ) : (
+                      t(formatText[item.code])
+                    )}
+                  </div>
                 </Button>
               </div>
 
@@ -218,7 +229,7 @@ export const ClientTaskDrawer: FC<{
                   .split('\\n')
                   ?.map((remark) => (
                     <div
-                      className="text-sm text-[#BCBCC4] items-center flex mb-1"
+                      className="text-sm text-[#7F6957] items-center flex mb-1"
                       key={remark}
                       dangerouslySetInnerHTML={{ __html: remark }}
                     ></div>

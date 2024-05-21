@@ -159,7 +159,7 @@ export const ClientFoodDrawer: FC<{
       setDrawerVisible={setVisible}
     >
       {loadingLoadPackage && topUpPackage.length === 0 ? (
-        <div className="h-40 w-full bg-[#1D1C21] rounded-2xl mb-14">
+        <div className="h-40 w-full overflow-hidden rounded-2xl mb-14">
           <LoadingRender />
         </div>
       ) : (
@@ -168,8 +168,8 @@ export const ClientFoodDrawer: FC<{
             <div
               key={item.price}
               className={cn(
-                'h-28 w-full bg-[#1D1C21] flex flex-wrap justify-center content-center rounded-2xl border-[#FDCD62]',
-                item == feedValue ? 'border-2' : ''
+                'h-28 w-full bg-[#fffcf7] flex flex-wrap justify-center content-center rounded-2xl border-2 border-[#D3B996] transition-all duration-300',
+                item == feedValue ? '!border-[#FDCD62] !bg-[#fff7d5]' : ''
               )}
               onClick={() => {
                 setFeedValue(item);
@@ -182,18 +182,28 @@ export const ClientFoodDrawer: FC<{
                   height={28}
                   alt={item + ' feed'}
                 ></Image>
-                <span className="text-2xl font-bold text-white text-center">
+                <span
+                  className="text-2xl font-bold text-center"
+                  style={{
+                    color: item === feedValue ? '#F1B62D' : '#7F6957',
+                  }}
+                >
                   {item.amount}
                 </span>
               </div>
-              <span className="text-[#8E8D92]">{item.price}Ton</span>
+              <span
+                style={{
+                  color: item === feedValue ? '#7F6957' : '#8E8D92',
+                }}
+              >
+                {item.price}Ton
+              </span>
             </div>
           ))}
         </div>
       )}
 
       <Button
-        title={t(LOCALE_KEYS.BUY)}
         click={() => {
           if (!address && !isCheck) {
             handleOpen();
@@ -203,9 +213,21 @@ export const ClientFoodDrawer: FC<{
         }}
         disabled={loading}
         className={cn(
-          'h-11 bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] mb-0 text-white text-sm'
+          'duration-300 transition-all border-2 border-[#A55636] bg-[#FFD262] text-[#FFFAEF] !mb-0'
         )}
-      ></Button>
+      >
+        <div
+          className="bg-[#84420B] w-full h-full flex items-center justify-center rounded-full"
+          style={{
+            boxShadow: '0px 1px 1px white inset',
+            WebkitTextStroke: '3px transparent',
+            // @ts-ignore
+            '-webkit-background-clip': 'text',
+          }}
+        >
+          {t(LOCALE_KEYS.BUY)}
+        </div>
+      </Button>
     </ClientChatDrawer>
   );
 };

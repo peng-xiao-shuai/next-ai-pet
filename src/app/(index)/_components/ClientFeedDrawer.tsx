@@ -20,6 +20,7 @@ import { VideoName } from './ShowAnimation';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
+import emitter from '@/utils/bus';
 
 export const ClientFeedDrawer: FC<{
   drawerVisible: boolean;
@@ -58,10 +59,10 @@ export const ClientFeedDrawer: FC<{
       setDrawerVisible={setDrawerVisible}
     >
       <div className="flex mb-6 justify-between gap-2">
-        <span className="text-white text-sm">
+        <span className="text-[#7F6957] text-sm">
           {t(LOCALE_KEYS.CAPACITY_DESCRIPTION)}
         </span>
-        <Rules className="!size-6 text-[#737373]"></Rules>
+        <Rules className="!size-6 text-[#D3B49C]"></Rules>
       </div>
 
       <div className="actions-list grid grid-cols-3 gap-x-4 mb-4">
@@ -69,8 +70,8 @@ export const ClientFeedDrawer: FC<{
           <div
             key={item}
             className={cn(
-              'h-28 w-full bg-[#1D1C21] flex flex-wrap justify-center content-center rounded-2xl border-[#FDCD62] ',
-              item === feedValue ? 'border-2' : ''
+              'h-28 w-full bg-[#fffcf7] flex flex-wrap justify-center content-center rounded-2xl border-2 border-[#D3B996] transition-all duration-300',
+              item === feedValue ? '!border-[#FDCD62] !bg-[#fff7d5]' : ''
             )}
             onClick={() => {
               setFeedValue(item);
@@ -82,7 +83,12 @@ export const ClientFeedDrawer: FC<{
               height={32}
               alt={item + ' feed'}
             ></Image>
-            <div className="text-lg font-bold text-[#FDCD62] w-full text-center">
+            <div
+              className="text-lg font-bold w-full text-center"
+              style={{
+                color: item === feedValue ? '#F1B62D' : '#7F6957',
+              }}
+            >
               {item}
             </div>
           </div>
@@ -93,7 +99,7 @@ export const ClientFeedDrawer: FC<{
         <div className="relative flex-1">
           <div
             className={cn(
-              'bg-[#1D1C21] rounded-2xl h-12 flex items-center px-2 w-full border-2 border-transparent duration-300 transition-all',
+              'bg-[#FFFCF7] text-black rounded-2xl h-12 flex items-center px-2 w-full border-2 border-[#D3B996] duration-300 transition-all',
               errorMsg ? 'border-[#FF2F53] mb-[6px]' : ''
             )}
           >
@@ -112,7 +118,7 @@ export const ClientFeedDrawer: FC<{
         </div>
 
         <div
-          className="text-lg leading-[3]"
+          className="text-lg leading-[3] text-[#BF8154]"
           onClick={() => {
             setFeedValue(userState.walletAble);
           }}
@@ -121,10 +127,10 @@ export const ClientFeedDrawer: FC<{
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-white h-12">
+      <div className="flex items-center justify-between text-[#7F6957] h-12">
         <div className="h-full">
           <div className="flex items-center">
-            <div className="min-w-16 h-7 px-2 rounded-full flex items-center justify-center gap-1 border-2 border-white/50">
+            <div className="bg-[#FBEDCE] min-w-16 h-7 px-2 rounded-full flex items-center justify-center gap-1 border-2 border-[#F7D59A]">
               <Image
                 src="/icons/feed.png"
                 width={16}
@@ -139,7 +145,6 @@ export const ClientFeedDrawer: FC<{
         </div>
 
         <Button
-          title={t(LOCALE_KEYS.SEND)}
           click={async () => {
             if (errorMsg || !feedValue) {
               return;
@@ -157,7 +162,7 @@ export const ClientFeedDrawer: FC<{
                   eventAction: CustomEvents.NUMBER_OF_FOOD_USERS_FEED,
                   eventValue: {
                     value: feedValue,
-                    id: window.Telegram?.WebApp.initDataUnsafe.user.id,
+                    id: window.Telegram?.WebApp.initDataUnsafe.user?.id,
                   },
                 },
                 {
@@ -188,13 +193,26 @@ export const ClientFeedDrawer: FC<{
               walletAble: userState.walletAble - Number(feedValue),
             });
             setDrawerVisible(false);
+            emitter.emit('foodStatus');
           }}
           disabled={sendLoading}
           className={cn(
-            'duration-300 transition-all !w-28 !h-full bg-gradient-to-r to-[#D18EF7] from-[#FA3B67] !mb-0',
+            'duration-300 transition-all !w-28 !h-full border-2 border-[#A55636] bg-[#FFD262] text-[#FFFAEF] !mb-0',
             errorMsg || !feedValue ? 'grayscale' : ''
           )}
-        ></Button>
+        >
+          <div
+            className="bg-[#84420B] w-full h-full flex items-center justify-center rounded-full"
+            style={{
+              boxShadow: '0px 1px 1px white inset',
+              WebkitTextStroke: '3px transparent',
+              // @ts-ignore
+              '-webkit-background-clip': 'text',
+            }}
+          >
+            {t(LOCALE_KEYS.SEND)}
+          </div>
+        </Button>
       </div>
     </ClientChatDrawer>
   );
