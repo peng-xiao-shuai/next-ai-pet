@@ -584,7 +584,7 @@ export const Client: FC<{
   }, [list]);
 
   const handleClose = () => {
-    if (isOpen) return;
+    if (!isOpen) return;
     /**
      * 设置淡出
      */
@@ -607,7 +607,7 @@ export const Client: FC<{
       document.body.removeEventListener('click', handleClose);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isOpen]);
 
   return (
     <ChatContext.Provider
