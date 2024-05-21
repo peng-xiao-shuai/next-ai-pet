@@ -18,7 +18,7 @@ export const Rules: FC<{
     <Dialog>
       <DialogTrigger>
         <AiFillQuestionCircle
-          className={`${className} size-[13px] ml-1 text-[#737373]`}
+          className={`${className} size-[13px] ml-1 text-[#D3B49C]`}
         ></AiFillQuestionCircle>
       </DialogTrigger>
       <DialogContent className="text-white !py-6 !px-3 !bg-[#2F2F3B]">

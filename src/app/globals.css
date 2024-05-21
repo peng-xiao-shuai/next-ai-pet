@@ -43,8 +43,7 @@ div[role='dialog'] {
   width: auto;
   padding: 0;
   background: transparent;
-  border: none;
-  overflow: hidden;
+  /* overflow: hidden; */
   border-radius: 20px;
 }
 

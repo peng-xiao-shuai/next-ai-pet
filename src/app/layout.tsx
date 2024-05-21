@@ -46,6 +46,7 @@ export default function RootLayout({
           <InitLoading></InitLoading>
         </main>
         <Toaster
+          position="top-center"
           toastOptions={{
             duration: 1500,
           }}

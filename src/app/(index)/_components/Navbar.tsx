@@ -48,6 +48,9 @@ export const Navbar: FC<{
         iconUrl: '/icons/invite.png',
         alt: 'invite',
         val: userState.invites,
+        fun: () => {
+          toast('coming soon');
+        },
       },
     ],
     [
@@ -161,6 +164,7 @@ export const Navbar: FC<{
                   </div>
                   <Progress
                     className="h-4 min-w-28 w-full max-w-36 bg-[#EEC39B] border-[#CF9A68] border"
+                    bgClassName="rounded-full"
                     value={userState.point % 100}
                     max={userState.upgradeRequiredPoint % 100}
                   />
@@ -200,6 +204,8 @@ export const Navbar: FC<{
                   CopyState[index] = !CopyState[index];
                   return CopyState;
                 });
+
+                item.fun?.();
               }}
             >
               <Image
