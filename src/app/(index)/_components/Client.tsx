@@ -678,6 +678,7 @@ export const Client: FC<{
             style={{
               backgroundPositionY: `calc(-100vh + ${scrollHeight})`,
               maskImage: 'linear-gradient(#000, transparent)',
+              WebkitMaskImage: 'linear-gradient(#000, transparent)',
               bottom: `calc(${scrollHeight} + 2px)`,
             }}
           ></div>
