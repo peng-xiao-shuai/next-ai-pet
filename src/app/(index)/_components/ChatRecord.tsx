@@ -64,7 +64,7 @@ export const TextRecord: TextRecord = {
               className="mx-[2px]"
             ></Image>
             <div
-              className={`text-[#FDCD62] break-words max-w-24 leading-none ${
+              className={`text-[#f5b53b] break-words max-w-24 leading-none ${
                 item.friendPointChange > 100000000
                   ? 'text-[9px] mr-3'
                   : 'text-sm'
