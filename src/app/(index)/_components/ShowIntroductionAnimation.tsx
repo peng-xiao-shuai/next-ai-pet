@@ -1,4 +1,3 @@
-import { useBusWatch } from '@/hooks/use-bus-watch';
 import Image from 'next/image';
 import { ChatContext } from './Client';
 import { FC, useContext, useEffect, useState } from 'react';
@@ -28,9 +27,9 @@ export const ShowIntroductionAnimation: FC<{
       >
         <m.div
           animate={{
-            left: -114,
-            top: 51,
-            scale: 0.8,
+            left: 12,
+            bottom: 87,
+            scale: 0.9,
           }}
           className="fixed z-50"
           transition={{
@@ -55,8 +54,8 @@ export const ShowIntroductionAnimation: FC<{
         >
           <Image
             src="/images/introduction.gif"
-            width={450}
-            height={450}
+            width={200}
+            height={200}
             alt="introduction"
           ></Image>
         </m.div>

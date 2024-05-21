@@ -87,22 +87,22 @@ export const ClientSendMsg: FC<{
       {showPetGIF && (
         <m.div
           style={{
-            x: '50%',
+            x: '-50%',
             y: '-50%',
           }}
           animate={{
-            right: 109,
-            top: 91,
-            scale: 0.08,
+            left: 75,
+            top: 95,
+            scale: 0.15,
           }}
-          className="fixed right-2/4 top-2/4 z-50"
+          className="fixed left-2/4 top-2/4 z-50"
           transition={{
             delay: 2,
             duration: 0.8,
           }}
           onAnimationComplete={(e) => {
             if ((e as any).scale) {
-              setShowPetGIF(false);
+              // setShowPetGIF(false);
             }
           }}
         >
