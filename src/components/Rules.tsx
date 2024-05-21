@@ -21,12 +21,12 @@ export const Rules: FC<{
           className={`${className} size-[13px] ml-1 text-[#D3B49C]`}
         ></AiFillQuestionCircle>
       </DialogTrigger>
-      <DialogContent className="text-white !py-6 !px-3 !bg-[#2F2F3B]">
+      <DialogContent className="text-[#bf8154] !py-6 !px-3 !bg-[#f9f6ec]">
         <DialogHeader>
           <DialogTitle className="mb-4 text-left text-xl px-3">
             {title || 'Rules'}
           </DialogTitle>
-          <div className="text-left w-[70vw] max-h-[70vh] overflow-y-auto px-3">
+          <div className="text-left w-[85vw] max-h-[60vh] overflow-y-auto px-3">
             {children || (
               <>
                 <h2 className="font-bold text-lg mb-4">
