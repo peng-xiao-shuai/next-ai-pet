@@ -25,6 +25,7 @@ import { useShare } from '@/hooks/use-share';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
+import { useTour } from '@reactour/tour';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
@@ -32,6 +33,7 @@ export const ClientSendMsg: FC<{
   detailCurrent: MutableRefObject<Indexes<any>>;
 }> = ({ sendMsg, _P, detailCurrent }) => {
   const { t } = useTranslation();
+  const { setIsOpen, setCurrentStep } = useTour();
   const { detail, setDetail, list, readyState, scrollDom } =
     useContext(ChatContext);
   const [message, setMessage] = useState('');
@@ -73,6 +75,13 @@ export const ClientSendMsg: FC<{
   };
 
   useBusWatch(_P + 'sendMsgSuc', sendMsgSuc);
+  /**
+   * 开屏结束后
+   */
+  useBusWatch('IntroductionAnimation', () => {
+    setCurrentStep(0);
+    setIsOpen(true);
+  });
 
   useEffect(() => {
     if (detail.isInitialized) {
@@ -102,7 +111,7 @@ export const ClientSendMsg: FC<{
           }}
           onAnimationComplete={(e) => {
             if ((e as any).scale) {
-              // setShowPetGIF(false);
+              setShowPetGIF(false);
             }
           }}
         >
@@ -115,8 +124,11 @@ export const ClientSendMsg: FC<{
         </m.div>
       )}
 
-      <div className="input-container relative mx-3 leading-none text-white">
-        {detail.isInitialized && (
+      <div
+        className="input-container relative mx-3 leading-none text-white"
+        id="input-step"
+      >
+        {/* {detail.isInitialized && !showPetGIF && (
           <>
             <ClientTips
               visible={detail.isInitialized}
@@ -125,7 +137,7 @@ export const ClientSendMsg: FC<{
               localeKey={LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS}
             ></ClientTips>
           </>
-        )}
+        )} */}
 
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 left-3 rtl:left-[unset] rtl:right-3">
           <Image
@@ -137,10 +149,9 @@ export const ClientSendMsg: FC<{
           ></Image>
         </div>
 
-        <textarea
+        <input
           value={message}
           ref={InputRef}
-          rows={1}
           cursor-spacing={20}
           className={`bg-white/55 border border-white text-[#222222] placeholder:text-black/50 textarea-dom pr-[72px] pl-12 w-full rounded-xl resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]`}
           placeholder={

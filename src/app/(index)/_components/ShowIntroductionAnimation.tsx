@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { ChatContext } from './Client';
 import { FC, useContext, useEffect, useState } from 'react';
 import { m } from 'framer-motion';
+import emitter from '@/utils/bus';
 
 export const ShowIntroductionAnimation: FC<{
   _P: string;
@@ -48,6 +49,10 @@ export const ShowIntroductionAnimation: FC<{
               const timer = setTimeout(() => {
                 setVisible(false);
                 clearTimeout(timer);
+                /**
+                 * 开屏结束
+                 */
+                emitter.emit('IntroductionAnimation');
               }, 200);
             }
           }}
