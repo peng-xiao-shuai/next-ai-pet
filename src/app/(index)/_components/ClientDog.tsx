@@ -1,6 +1,6 @@
 import AppConfigEnv from '@/utils/get-config';
 import { fetchRequest } from '@/utils/request';
-import NextImage from 'next/image';
+import NextImage, { StaticImageData } from 'next/image';
 import {
   Dispatch,
   FC,
@@ -21,34 +21,47 @@ import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { STEP_SELECTOR } from '@/utils/stpes';
 import withDragDetection from '@/components/mouse-hoc';
+import leisure from '@@/images/leisure.gif';
 
 const Gifs: Record<
   Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>,
   {
     src: string;
     name: string;
-    data: HTMLImageElement | null;
+    data: (() => void) | StaticImageData;
   }
 > = {
   [VideoName.LEISURE]: {
-    src: '/images/leisure.gif',
+    src: 'leisure',
     name: 'Leisure',
-    data: null,
+    data: leisure,
   },
   [VideoName.HUG]: {
-    src: '/images/hug.gif',
+    src: 'hug',
     name: 'Hug',
-    data: null,
+    data: function () {
+      import('@@/images/hug.gif').then((res) => {
+        this.data = res.default;
+      });
+    },
   },
   [VideoName.KISS]: {
-    src: '/images/kiss.gif',
+    src: 'kiss',
     name: 'Kiss',
-    data: null,
+    data: function () {
+      import('@@/images/kiss.gif').then((res) => {
+        this.data = res.default;
+      });
+    },
   },
   [VideoName.TOUCH]: {
-    src: '/images/touch.gif',
+    src: 'touch',
     name: 'Touch',
-    data: null,
+    data: function () {
+      import('@@/images/touch.gif').then((res) => {
+        this.data = res.default;
+      });
+    },
   },
 };
 
@@ -63,60 +76,14 @@ export const ClientDog: FC<{
   name: Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>;
   onEnd: () => void;
 }> = ({ bgImgHeight, name, onEnd, className }) => {
-  const [gif, setGif] = useState(Gifs[VideoName.LEISURE].src);
+  const [gif, setGif] = useState<
+    Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>
+  >(VideoName.LEISURE);
   const top = useMemo(() => bgImgHeight, [bgImgHeight]);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
   const [foodPng, setFoodPng] = useState('/icons/empty-dog-bowl.png');
   const timeCount = useRef(30);
-  const EnhancedComponent = useMemo(
-    () =>
-      withDragDetection(() => (
-        <NextImage
-          className="relative z-40"
-          draggable="false"
-          priority
-          unoptimized
-          src={gif}
-          alt="dog"
-          width={200}
-          height={200}
-          onClick={handleImageClick}
-          onDoubleClick={handleDoubleClick}
-        ></NextImage>
-      )),
-    [gif]
-  );
-
-  const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
-    const { offsetX, offsetY } = e.nativeEvent;
-
-    if (
-      // @ts-ignore
-      e.target.src.indexOf(Gifs[VideoName.LEISURE].src) != -1
-    ) {
-      /**
-       * 摸头
-       */
-      if (offsetY <= 110 && offsetX < 140) {
-        setTargetActive('Touch');
-      }
-      // else if (offsetY <= 110 && offsetX < 140) {
-      //   setTargetActive('Kiss on');
-      // } else if (offsetY > 110 && offsetX < 160) {
-      //   setTargetActive('Hug');
-      // }
-    }
-  };
-
-  const handleDoubleClick = (e: MouseEvent<HTMLImageElement>) => {
-    if (
-      // @ts-ignore
-      e.target.src.indexOf(Gifs[VideoName.LEISURE].src) != -1
-    ) {
-      setTargetActive('Kiss on');
-    }
-  };
 
   useBusWatch('foodStatus', () => {
     setFoodPng('/icons/dog-bowl.png');
@@ -135,12 +102,12 @@ export const ClientDog: FC<{
 
   useEffect(() => {
     if (![VideoName.NONE, VideoName.FEED, VideoName.FOOD].includes(name)) {
-      setGif(Gifs[name].src);
+      setGif(name);
       // setVisible(true);
 
       const timer = setTimeout(
         () => {
-          setGif(Gifs[VideoName.LEISURE].src);
+          setGif(VideoName.LEISURE);
           onEnd();
           setTargetActive('');
           clearTimeout(timer);
@@ -167,6 +134,17 @@ export const ClientDog: FC<{
       }, 1000);
     }
 
+    Object.keys(Gifs).forEach((key) => {
+      const _key = key as Exclude<
+        VideoName,
+        VideoName.NONE | VideoName.FOOD | VideoName.FEED
+      >;
+
+      if (typeof Gifs[_key].data === 'function') {
+        (Gifs[_key].data as () => void)();
+      }
+    });
+
     return () => {
       clearInterval(timer);
     };
@@ -187,11 +165,7 @@ export const ClientDog: FC<{
           setTargetActive={setTargetActive}
         ></Active>
 
-        <EnhancedComponent
-          dragUpCB={() => {
-            setTargetActive('Hug');
-          }}
-        ></EnhancedComponent>
+        <DogActive gif={gif} setTargetActive={setTargetActive}></DogActive>
       </div>
 
       <div
@@ -355,5 +329,92 @@ export const Active: FC<{
         </div>
       ))}
     </div>
+  );
+};
+
+export const DogActive: FC<{
+  gif: Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>;
+  setTargetActive: Dispatch<SetStateAction<Tools['name'] | ''>>;
+}> = ({ gif, setTargetActive }) => {
+  const [lastTap, setLastTap] = useState(0);
+  const doubleTapDelay = 500; // 双击间隔时间，单位为毫秒
+
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+
+  const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
+    const { offsetX, offsetY } = e.nativeEvent;
+
+    if (
+      // @ts-ignore
+      e.target.src.indexOf(Gifs[VideoName.LEISURE].src) != -1
+    ) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+
+      if (tapLength < doubleTapDelay && tapLength > 0) {
+        setTargetActive('Kiss on');
+      } else {
+        /**
+         * 摸头
+         */
+        if (offsetY <= 110 && offsetX < 140) {
+          setTargetActive('Touch');
+        }
+      }
+
+      setLastTap(currentTime);
+    }
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    setIsDragging(true);
+    setStartY(event.touches[0]?.clientY);
+  };
+
+  const handleMouseUp = (event: TouchEvent) => {
+    if (isDragging) {
+      const currentY = event.changedTouches[0].clientY;
+
+      const deltaY = startY - currentY;
+
+      if (deltaY > 0) {
+        console.log('向上拖拽');
+        setTargetActive('Hug');
+        // 在此处处理向上拖拽的逻辑
+      } else {
+        console.log('未向上拖拽');
+        // 你可以根据需要处理其他方向的拖拽逻辑
+      }
+      setIsDragging(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('touchend', handleMouseUp);
+    } else {
+      document.removeEventListener('touchend', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('touchend', handleMouseUp);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDragging]);
+
+  return (
+    <NextImage
+      className="relative z-40"
+      draggable="false"
+      priority
+      unoptimized
+      src={Gifs[gif].data as StaticImageData}
+      alt="dog"
+      width={200}
+      height={200}
+      onClick={handleImageClick}
+      onTouchStart={handleTouchStart}
+    ></NextImage>
   );
 };
