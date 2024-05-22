@@ -542,6 +542,11 @@ export const Client: FC<{
     }, 500);
   };
 
+  const touchmoveBlur = () => {
+    // @ts-ignore
+    document.activeElement?.blur?.();
+  }
+
   /**
    * 开启动画, 目前是购买狗粮和喂养狗粮调用
    * @param {string} source 来源
@@ -623,6 +628,12 @@ export const Client: FC<{
         setIsKeyboardUp(false)
       }
     };
+
+    document.addEventListener('touchmove', touchmoveBlur)
+
+    return () => {
+      document.removeEventListener('touchmove', touchmoveBlur)
+    }
   }, [])
 
   return (
@@ -667,8 +678,8 @@ export const Client: FC<{
         className="fixed z-[0] top-0"
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
-          setBgImgHeight(_target.height / 1.75);
-          setScrollHeight(window.innerHeight - _target.height / 1.75 + 'px');
+          setBgImgHeight(_target.height / 1.85);
+          setScrollHeight(window.innerHeight - _target.height / 1.85 + 'px');
         }}
       />
 
