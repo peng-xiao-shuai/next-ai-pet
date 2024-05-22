@@ -545,6 +545,7 @@ export const Client: FC<{
   const touchmoveBlur = () => {
     // @ts-ignore
     document.activeElement?.blur?.();
+    window.scrollTo(0,0)
   }
 
   /**
@@ -629,10 +630,10 @@ export const Client: FC<{
       }
     };
 
-    document.addEventListener('touchmove', touchmoveBlur)
+    document.addEventListener('touchend', touchmoveBlur)
 
     return () => {
-      document.removeEventListener('touchmove', touchmoveBlur)
+      document.removeEventListener('touchend', touchmoveBlur)
     }
   }, [])
 
