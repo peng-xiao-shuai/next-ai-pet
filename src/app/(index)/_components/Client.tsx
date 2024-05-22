@@ -618,17 +618,15 @@ export const Client: FC<{
   }, [isOpen]);
 
   useEffect(() => {
-    localStorage.setItem('initHeight', window.innerHeight.toString())
-    window.onresize = () => {
-      /**
-       * 大与 10 避免误差
-       */
-      if (Number(localStorage.getItem('initHeight')) - window.innerHeight > 10) {
+    localStorage.setItem('initHeight', window.Telegram?.WebApp.viewportHeight)
+
+    window.Telegram?.WebApp.onEvent('viewportChanged', (e: any) => {
+      if (Number(localStorage.getItem('initHeight')) - window.Telegram?.WebApp.viewportHeight > 10) {
         setIsKeyboardUp(true)
       } else {
         setIsKeyboardUp(false)
       }
-    };
+    })
 
     document.addEventListener('touchend', touchmoveBlur)
 
