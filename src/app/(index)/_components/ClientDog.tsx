@@ -83,7 +83,7 @@ export const ClientDog: FC<{
           height={200}
           onClick={handleImageClick}
           onDoubleClick={handleDoubleClick}
-        ></NextImage>
+        />
       )),
     [gif]
   );
