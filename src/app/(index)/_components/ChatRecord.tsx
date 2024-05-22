@@ -274,7 +274,9 @@ export const ClientChatRecord = () => {
       id="scroll-dom"
       ref={scrollDom}
       dir="ltr"
-      className={cn(`relative z-10 p-5 flex-1 overflow-y-auto chat-record`)}
+      className={cn(
+        `relative z-10 p-5 pb-0 flex-1 overflow-y-auto chat-record`
+      )}
       onScroll={onScroll}
       style={{
         maskImage: 'linear-gradient(transparent, #000 20%)',
