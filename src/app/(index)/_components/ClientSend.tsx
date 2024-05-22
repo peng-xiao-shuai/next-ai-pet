@@ -144,7 +144,7 @@ export const ClientSendMsg: FC<{
         </m.div>
       )}
 
-      <div className="input-container relative mx-3 h-12 bg-white/55 border border-white rounded-xl flex items-center">
+      <div className="input-container relative text-white mx-3 h-12 bg-white/55 border border-white rounded-xl flex items-center">
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 left-3 rtl:left-[unset] rtl:right-3">
           <Image
             src="/icons/share-gold.png"
