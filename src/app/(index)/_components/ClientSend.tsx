@@ -26,6 +26,7 @@ import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 import { useTour } from '@reactour/tour';
+import { STEP_SELECTOR } from '@/utils/stpes';
 
 export const ClientSendMsg: FC<{
   sendMsg: (val: string) => void;
@@ -93,7 +94,7 @@ export const ClientSendMsg: FC<{
   return (
     <div
       className="relative z-40 py-3 group-[.ios]:pb-[calc(15px+constant(safe-area-inset-bottom))]"
-      id="input-step"
+      id={STEP_SELECTOR.INPUT}
     >
       {/* <ClientTools></ClientTools> */}
 

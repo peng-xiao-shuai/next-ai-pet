@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { fetchRequest } from '@/utils/request';
 import { ControlSound } from './ControlSound';
 import { cn } from '@/lib/utils';
+import { STEP_SELECTOR } from '@/utils/stpes';
 
 const numberBox =
   'inline-flex items-center text-xs min-w-20 box-border pr-1 rounded-full bg-gradient-to-t from-[#F1D8B1] to-[#FCF9F3] border border-[#CF9A68]';
@@ -175,7 +176,7 @@ export const Navbar: FC<{
             </div>
           </div>
 
-          <div className="relative flex items-center">
+          <div className="relative flex items-center" id={STEP_SELECTOR.SHARE}>
             {/* <SetLang></SetLang> */}
             <Image
               src="/icons/share-gold.png"

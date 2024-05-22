@@ -9,6 +9,7 @@ import { fetchRequest } from '@/utils/request';
 import { StepType, TourProvider, useTour } from '@reactour/tour';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
+import { _steps } from '@/utils/stpes';
 
 export default function Home() {
   const { userState } = useUserStore();
@@ -17,43 +18,12 @@ export default function Home() {
   const [isPet, setIsPet] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const { t } = useTranslation();
-  const [steps] = useState<StepType[]>([
-    {
-      selector: '#input-step',
-      content: t(LOCALE_KEYS.SEND_MESSAGES_TO_EARN_$PETS),
-      padding: { popover: [0, 0] },
-      styles: {
-        popover: (base) => ({
-          ...base,
-          width: '180px',
-          left: 'unset',
-          right: '20px',
-        }),
-      },
-    },
-    {
-      selector: '#first-step',
-      content: t(LOCALE_KEYS.PLEASE_CHOOSE_AN_ACTION_TO_TOUCH_YOUR_PET),
-      padding: { popover: [40, 0] },
-      styles: {
-        popover: (base) => ({
-          ...base,
-          width: '250px',
-        }),
-      },
-    },
-    {
-      selector: '#dog-bowl',
-      content: t(LOCALE_KEYS.CLICK_TO_FEED_YOUR_PET_FOOD),
-      position: 'right',
-      styles: {
-        popover: (base) => ({
-          ...base,
-          width: '200px',
-        }),
-      },
-    },
-  ]);
+  const [steps] = useState<StepType[]>(
+    _steps.map((item) => ({
+      ...item,
+      content: t(item.content as LOCALE_KEYS, item._contentArg || []),
+    }))
+  );
 
   useEffect(() => {
     if (friendId) {

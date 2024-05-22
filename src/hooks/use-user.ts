@@ -6,6 +6,7 @@ const state = {
   head: '',
   nickName: '',
   adultSwitch: '',
+  createTime: '',
   premiumStatus: 'NONE',
   interests: [],
   createdTime: '',
