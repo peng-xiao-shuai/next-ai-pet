@@ -132,3 +132,30 @@ body[data-guide='SEND_MESSAGE'] #input-step,
 body[data-guide='HIGHLIGHT_SHARE'] #share-step {
   z-index: 9999999;
 }
+
+#scroll-dom::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0);
+  border-left: 1px solid rgba(0, 0, 0, 0);
+}
+#scroll-dom::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 5px;
+}
+
+#scroll-dom::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  min-height: 28px;
+}
+#scroll-dom::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}

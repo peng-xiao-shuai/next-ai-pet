@@ -175,7 +175,7 @@ export const ClientDog: FC<{
   return (
     <>
       <div
-        className={`absolute left-2/4 -translate-x-2/4 -translate-y-full z-40 w-[200px] h-[200px] transition-all ${className}`}
+        className={`absolute left-2/4 -translate-x-2/4 -translate-y-full z-40 w-[200px] h-[200px] transition-opacity ${className}`}
         id={STEP_SELECTOR.FIRST}
         style={{
           top: top,
@@ -195,7 +195,7 @@ export const ClientDog: FC<{
       </div>
 
       <div
-        className={`absolute -translate-y-[9vh] translate-x-[16vw] z-50 transition-all ${className}`}
+        className={`absolute -translate-y-[9vh] translate-x-[16vw] z-50 transition-opacity ${className}`}
         id={STEP_SELECTOR.DOG_BOWL}
         style={{
           top: top,
