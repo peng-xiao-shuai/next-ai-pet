@@ -195,11 +195,11 @@ export const Navbar: FC<{
           </div>
         </div>
 
-        <div className="inline-flex gap-3 items-center text-[#874544] relative z-10">
+        <div className="inline-flex w-full gap-3 items-center text-[#874544] relative z-10 px-10">
           {counts.map((item, index) => (
             <div
               key={item.alt}
-              className={`${numberBox} ${index === 0 ? 'pl-0' : ''}`}
+              className={`${numberBox} ${index === 0 ? 'pl-0' : ''} flex-1`}
               onClick={() => {
                 setCountsExpansion((state) => {
                   const CopyState = [...state];

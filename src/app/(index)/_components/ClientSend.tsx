@@ -55,7 +55,6 @@ export const ClientSendMsg: FC<{
         isInitialized: false,
       }));
       setMessage('');
-      setShowPetGIF(true);
     }
 
     sendMsg(message);
@@ -76,6 +75,22 @@ export const ClientSendMsg: FC<{
   };
 
   useBusWatch(_P + 'sendMsgSuc', sendMsgSuc);
+  useBusWatch(_P + 'onSocketMessage', (e) => {
+    let item: any;
+    if (e.id) {
+      item = e;
+    } else {
+      const { data = '{}' } = e;
+      item = JSON.parse(data);
+      if (item.type === 'HEARTBEAT') return;
+    }
+    console.log(item.friendPointChange);
+    
+    if (item.friendPointChange) {
+      setShowPetGIF(true);
+    }
+  });
+
   /**
    * 开屏结束后
    */
