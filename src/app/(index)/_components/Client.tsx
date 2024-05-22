@@ -90,6 +90,7 @@ type ChatContextState = {
   checkEntering: () => void;
   showAnimationFun: (source: VideoName.FOOD | VideoName.FEED) => void;
   scrollToBottom: (duration?: number) => void;
+  isKeyboardUp: boolean
 };
 
 export const ChatContext = createContext<Partial<ChatContextState>>({});
@@ -138,6 +139,7 @@ export const Client: FC<{
   const [scrollHeight, setScrollHeight] = useState('30vh');
   const [curSceneStartT, setCurSceneStartT] = useState(0);
   const [detail, setDetail] = useState<Indexes>({});
+  const [isKeyboardUp, setIsKeyboardUp] = useState(false);
   const detailCurrent = useRef<Indexes>({});
   const { t } = useTranslation();
   const [videoData, setVideoData] = useState({
@@ -609,6 +611,20 @@ export const Client: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
+  useEffect(() => {
+    localStorage.setItem('initHeight', window.innerHeight.toString())
+    window.onresize = () => {
+      /**
+       * 大与 10 避免误差
+       */
+      if (Number(localStorage.getItem('initHeight')) - window.innerHeight > 10) {
+        setIsKeyboardUp(true)
+      } else {
+        setIsKeyboardUp(false)
+      }
+    };
+  }, [])
+
   return (
     <ChatContext.Provider
       value={{
@@ -632,6 +648,7 @@ export const Client: FC<{
         checkEntering,
         showAnimationFun,
         scrollToBottom,
+        isKeyboardUp
       }}
     >
       <Image
@@ -657,11 +674,13 @@ export const Client: FC<{
 
       <div className="h-full overflow-y-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <Navbar></Navbar>
+        <Navbar className={isKeyboardUp ? 'opacity-0 pointer-events-none' : 'opacity-100'}
+        ></Navbar>
 
-        <ClientTaskAndShop></ClientTaskAndShop>
+        <ClientTaskAndShop className={isKeyboardUp ? 'opacity-0 pointer-events-none' : 'opacity-100'}></ClientTaskAndShop>
 
         <ClientDog
+         className={isKeyboardUp ? '!opacity-0 pointer-events-none' : 'opacity-100'}
           bgImgHeight={bgImgHeight}
           // @ts-ignore
           // TODO

@@ -20,13 +20,14 @@ import { cn } from '@/lib/utils';
 import { STEP_SELECTOR } from '@/utils/stpes';
 
 const numberBox =
-  'inline-flex items-center text-xs min-w-20 box-border pr-1 rounded-full bg-gradient-to-t from-[#F1D8B1] to-[#FCF9F3] border border-[#CF9A68]';
+  'inline-flex items-center text-xs min-w-20 box-border px-1 rounded-full bg-gradient-to-t from-[#F1D8B1] to-[#FCF9F3] border border-[#CF9A68]';
 
 export const Navbar: FC<{
   children?: React.ReactNode;
   title?: string;
+  className?: string;
   back?: () => void;
-}> = ({ children, title, back }) => {
+}> = ({ children, title, className, back }) => {
   const { detail, setDetail } = useContext(ChatContext);
   const { userState, setData } = useUserStore();
   const [changeNickNameDialogVisible, setChangeNickNameDialogVisible] =
@@ -93,7 +94,7 @@ export const Navbar: FC<{
   return (
     <>
       <div
-        className={`px-4 w-full my-[10px] relative z-10 leading-none flex flex-wrap justify-center`}
+        className={`px-4 w-full my-[10px] relative z-10 leading-none flex flex-wrap justify-center transition-all ${className}`}
       >
         <div
           className={`flex justify-between items-center gap-2 mb-[10px] w-full`}
@@ -198,7 +199,7 @@ export const Navbar: FC<{
           {counts.map((item, index) => (
             <div
               key={item.alt}
-              className={numberBox}
+              className={`${numberBox} ${index === 0 ? 'pl-0' : ''}`}
               onClick={() => {
                 setCountsExpansion((state) => {
                   const CopyState = [...state];

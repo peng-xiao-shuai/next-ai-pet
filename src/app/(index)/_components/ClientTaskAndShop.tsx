@@ -1,17 +1,21 @@
 import { Button } from '@/components/Button';
 import Image from 'next/image';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { ClientTaskDrawer } from './ClientTaskDrawer';
 import { ClientFoodDrawer } from './ClientFoodDrawer';
 
-export const ClientTaskAndShop = () => {
+export const ClientTaskAndShop: FC<{
+  className: string;
+}> = ({ className }) => {
   const [foodDrawerVisible, setFoodDrawerVisible] = useState(false);
   const [taskDrawerVisible, setTaskDrawerVisible] = useState(false);
 
   return (
     <>
-      <div className="absolute right-4 translate-y-2">
+      <div
+        className={`absolute right-4 translate-y-2 transition-all ${className}`}
+      >
         <Image
           src="/icons/shop.png"
           alt="shop"

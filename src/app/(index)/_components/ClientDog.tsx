@@ -59,9 +59,10 @@ type Tools = {
 
 export const ClientDog: FC<{
   bgImgHeight: number;
+  className: string;
   name: Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>;
   onEnd: () => void;
-}> = ({ bgImgHeight, name, onEnd }) => {
+}> = ({ bgImgHeight, name, onEnd, className }) => {
   const [gif, setGif] = useState(Gifs[VideoName.LEISURE].src);
   const top = useMemo(() => bgImgHeight, [bgImgHeight]);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
@@ -173,7 +174,7 @@ export const ClientDog: FC<{
   return (
     <>
       <div
-        className="absolute left-2/4 -translate-x-2/4 -translate-y-full z-40 w-[200px] h-[200px]"
+        className={`absolute left-2/4 -translate-x-2/4 -translate-y-full z-40 w-[200px] h-[200px] transition-all ${className}`}
         id={STEP_SELECTOR.FIRST}
         style={{
           top: top,
@@ -193,7 +194,7 @@ export const ClientDog: FC<{
       </div>
 
       <div
-        className="absolute -translate-y-20 translate-x-16 z-50"
+        className={`absolute -translate-y-[9vh] translate-x-[16vw] z-50 transition-all ${className}`}
         id={STEP_SELECTOR.DOG_BOWL}
         style={{
           top: top,

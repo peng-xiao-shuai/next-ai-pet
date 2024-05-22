@@ -37,7 +37,9 @@ export const ControlSound = () => {
   useEffect(() => {
     bodyClick();
 
-    document.body.addEventListener('click', bodyClick);
+    if (process.env.NODE_ENV != 'development') {
+      document.body.addEventListener('click', bodyClick);
+    }
 
     // 在组件卸载时暂停音乐
     return () => {
