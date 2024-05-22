@@ -17,14 +17,15 @@ const withDragDetection = <P extends object>(
     const [isDragging, setIsDragging] = useState(false);
     const [startY, setStartY] = useState(0);
 
-    const handleMouseDown = (event: React.MouseEvent) => {
+    const handleTouchStart = (event: React.TouchEvent) => {
       setIsDragging(true);
-      setStartY(event.clientY);
+      setStartY(event.touches[0]?.clientY);
     };
 
-    const handleMouseUp = (event: MouseEvent) => {
+    const handleMouseUp = (event: TouchEvent) => {
       if (isDragging) {
-        const currentY = event.clientY;
+        const currentY = event.changedTouches[0].clientY;
+        
         const deltaY = startY - currentY;
 
         if (deltaY > 0) {
@@ -41,19 +42,19 @@ const withDragDetection = <P extends object>(
 
     useEffect(() => {
       if (isDragging) {
-        document.addEventListener('mouseup', handleMouseUp);
+        document.addEventListener('touchend', handleMouseUp);
       } else {
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('touchend', handleMouseUp);
       }
 
       return () => {
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('touchend', handleMouseUp);
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDragging]);
 
     return (
-      <div onMouseDown={handleMouseDown}>
+      <div onTouchStart={handleTouchStart}>
         <WrappedComponent {...(props as P)} />
       </div>
     );
