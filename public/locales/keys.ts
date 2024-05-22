@@ -34,4 +34,5 @@ export enum LOCALE_KEYS {
   CAPACITY_DESCRIPTION = 'Capacity_description',
   PURCHASE_SUCCEEDS = 'purchase succeeds',
   THANK_YOU_FOR_FEEDING = 'Thank_you_for_feeding',
+  SHARE_TEXT = 'share_text',
 }

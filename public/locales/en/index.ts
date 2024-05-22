@@ -41,6 +41,8 @@ const lang = {
     'Feeding more dog food can increase the $AIPets earned during chatting and interacting. The more you feed the dog, the more $AIPets you earn from the same chatting and interacting behaviors!',
   [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
     'You have buyed ${0} food,and it will reach to your account 1 minute later ! Go to feed your pet then!',
+  [LOCALE_KEYS.SHARE_TEXT]:
+    'If you invite a new user you will get +${0}$Pets and 1 food.',
 } as const;
 
 export default lang;

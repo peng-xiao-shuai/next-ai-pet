@@ -40,5 +40,6 @@ const lang = {
     '多餵狗糧，可以提升聊天、互動時候獲得的$AIPets，餵得越多，同樣的聊天、互動行為賺到的$AIPets越多！',
   [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
     '您已購買成功，糧食+${0}，预计1分钟后到账；快去餵你的寵物吧！',
+  [LOCALE_KEYS.SHARE_TEXT]: '邀請1人+${0}$Pets與1份糧食',
 } as const;
 export default lang;
