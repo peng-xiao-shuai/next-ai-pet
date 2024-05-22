@@ -152,19 +152,20 @@ export const ClientDog: FC<{
 
   useEffect(() => {
     timeCount.current = Number(localStorage.getItem('foodTimeCount') || '0');
-    console.log(timeCount.current, localStorage.getItem('foodTimeCount'));
 
     let timer: NodeJS.Timeout;
-    if (timeCount.current > 0) setFoodPng('/icons/dog-bowl.png');
-    timer = setInterval(() => {
-      timeCount.current -= 1;
-      localStorage.setItem('foodTimeCount', String(timeCount.current));
+    if (timeCount.current > 0) {
+      setFoodPng('/icons/dog-bowl.png');
+      timer = setInterval(() => {
+        timeCount.current -= 1;
+        localStorage.setItem('foodTimeCount', String(timeCount.current));
 
-      if (timeCount.current <= 0) {
-        setFoodPng('/icons/empty-dog-bowl.png');
-        clearInterval(timer);
-      }
-    }, 1000);
+        if (timeCount.current <= 0) {
+          setFoodPng('/icons/empty-dog-bowl.png');
+          clearInterval(timer);
+        }
+      }, 1000);
+    }
 
     return () => {
       clearInterval(timer);
