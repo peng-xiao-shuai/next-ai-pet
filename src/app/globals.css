@@ -47,31 +47,23 @@ div[role='dialog'] {
   border-radius: 20px;
 }
 
-body[data-scroll-locked].ios {
+/* body[data-scroll-locked].ios {
   position: fixed !important;
-}
-body.ios {
+} */
+/* body.ios {
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
   position: fixed !important;
-}
+} */
 
-body.ios main {
+/* body.ios main {
   height: 100% !important;
-}
+} */
 
-body,
-html {
-  /* -webkit-overflow-scrolling: auto;
-  overflow: hidden; */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-  overscroll-behavior-y: none;
-}
-body::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
+body.ios .send-input {
+  line-height: 1 !important;
 }
 
 div[role='dialog'] > button[type='button'] {

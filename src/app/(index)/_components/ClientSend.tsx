@@ -108,7 +108,7 @@ export const ClientSendMsg: FC<{
 
   return (
     <div
-      className="relative z-40 py-3 group-[.ios]:pb-[calc(15px+constant(safe-area-inset-bottom))]"
+      className="relative z-40 py-3"
       id={STEP_SELECTOR.INPUT}
     >
       {/* <ClientTools></ClientTools> */}
@@ -144,7 +144,7 @@ export const ClientSendMsg: FC<{
         </m.div>
       )}
 
-      <div className="input-container relative mx-3 leading-none text-white">
+      <div className="input-container relative text-white mx-3 h-12 bg-white/55 border border-white rounded-xl flex items-center">
         <div className="btn-wrapper absolute top-2/4 -translate-y-2/4 left-3 rtl:left-[unset] rtl:right-3">
           <Image
             src="/icons/share-gold.png"
@@ -159,7 +159,7 @@ export const ClientSendMsg: FC<{
           value={message}
           ref={InputRef}
           cursor-spacing={20}
-          className={`bg-white/55 border border-white text-[#222222] placeholder:text-black/50 textarea-dom pr-[72px] pl-12 w-full rounded-xl resize-none !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]`}
+          className={`send-input block bg-transparent text-[#222222] placeholder:text-black/50 textarea-dom pr-[72px] pl-12 w-full rounded-xl !outline-none leading-[theme(height.12)] rtl:pr-12 rtl:pl-[72px]`}
           placeholder={
             isDefineName
               ? `${t(LOCALE_KEYS.PLEASE_DIRECTLY_TYPE_THE_NAME_OF_YOUR_PET)}`
