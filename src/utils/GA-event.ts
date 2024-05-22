@@ -124,7 +124,10 @@ export enum CustomEvents {
 const COOKIE_NAME = 'event';
 
 // 设置事件的 Cookie
-const setEventCookie = (val: string) => {
+export const setEventCookie = (
+  val: string,
+  cookieName: string = COOKIE_NAME
+) => {
   const now = new Date();
   const endOfDayUTC = new Date(
     Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)
@@ -132,12 +135,15 @@ const setEventCookie = (val: string) => {
   const msUntilEndOfDayUTC = endOfDayUTC.getTime() - now.getTime();
   const expires = msUntilEndOfDayUTC / 1000 / 60 / 60 / 24; // 将毫秒转换为天数
 
-  Cookies.set(COOKIE_NAME, val, { expires });
+  Cookies.set(cookieName, val, { expires });
 };
 
 // 检查事件的 Cookie 是否存在
-const checkEventCookie = (name: CustomEvents) => {
-  const val = Cookies.get(COOKIE_NAME);
+export const checkEventCookie = (
+  name: CustomEvents | string,
+  cookieName: string = COOKIE_NAME
+) => {
+  const val = Cookies.get(cookieName);
   console.log(val, val !== undefined, val?.split(',').includes(name));
 
   return val !== undefined && val.split(',').includes(name);
@@ -151,7 +157,6 @@ const triggerEvent = (
   const eventName = `CUSTOM_${eventAction}`;
 
   if (!isSetCookie) {
-    console.log('触发 ==========》');
     sendGAEvent('event', eventName, {
       value: eventValue || window.Telegram?.WebApp.initDataUnsafe.user?.id,
     });
@@ -159,8 +164,6 @@ const triggerEvent = (
   }
 
   if (!checkEventCookie(eventAction)) {
-    console.log('Triggering event and setting cookie.');
-
     // 这里可以集成实际的事件跟踪逻辑，例如 Google Analytics 的 gtag
     sendGAEvent('event', eventName, {
       value: eventValue || window.Telegram?.WebApp.initDataUnsafe.user?.id,
