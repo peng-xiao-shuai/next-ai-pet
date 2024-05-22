@@ -24,7 +24,7 @@
   }
 
   img {
-    @apply object-cover;
+    @apply object-cover select-none;
   }
 
   .loading {

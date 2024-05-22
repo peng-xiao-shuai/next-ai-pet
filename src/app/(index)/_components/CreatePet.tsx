@@ -26,8 +26,12 @@ export const ClientCreatePet: FC<{
   const { t } = useTranslation();
 
   const onAllLoaded = () => {
-    setIsLoader(true);
     setProgressNum(100);
+
+    const timer2 = setTimeout(() => {
+      setIsLoader(true);
+      clearTimeout(timer2);
+    }, 500);
 
     const timer = setTimeout(() => {
       setIsGift(false);

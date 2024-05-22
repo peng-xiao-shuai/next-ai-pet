@@ -123,7 +123,9 @@ export const ClientTaskDrawer: FC<{
             return CopyList;
           });
         });
-        window.Telegram.WebApp.openTelegramLink('https://t.me/TAppPark');
+        window.Telegram.WebApp.openTelegramLink(
+          'https://t.me/+KuMRCj9WUVthY2Fh'
+        );
 
         // window.Telegram.WebApp.close();
         break;
