@@ -19,6 +19,8 @@ import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 import { VideoName } from './ShowAnimation';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
+import { STEP_SELECTOR } from '@/utils/stpes';
+import withDragDetection from '@/components/mouse-hoc';
 
 const Gifs: Record<
   Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>,
@@ -66,22 +68,52 @@ export const ClientDog: FC<{
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
   const [foodPng, setFoodPng] = useState('/icons/empty-dog-bowl.png');
   const timeCount = useRef(30);
+  const EnhancedComponent = useMemo(
+    () =>
+      withDragDetection(() => (
+        <NextImage
+          className="relative z-40"
+          draggable="false"
+          priority
+          unoptimized
+          src={gif}
+          alt="dog"
+          width={200}
+          height={200}
+          onClick={handleImageClick}
+          onDoubleClick={handleDoubleClick}
+        ></NextImage>
+      )),
+    [gif]
+  );
 
   const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
     const { offsetX, offsetY } = e.nativeEvent;
+
     if (
       // @ts-ignore
-      e.target.src.indexOf(encodeURIComponent(Gifs[VideoName.LEISURE].src)) !=
-      -1
+      e.target.src.indexOf(Gifs[VideoName.LEISURE].src) != -1
     ) {
-      // 摸头
-      if (offsetY <= 55 && offsetX < 140) {
+      /**
+       * 摸头
+       */
+      if (offsetY <= 110 && offsetX < 140) {
         setTargetActive('Touch');
-      } else if (offsetY <= 110 && offsetX < 140) {
-        setTargetActive('Kiss on');
-      } else if (offsetY > 110 && offsetX < 160) {
-        setTargetActive('Hug');
       }
+      // else if (offsetY <= 110 && offsetX < 140) {
+      //   setTargetActive('Kiss on');
+      // } else if (offsetY > 110 && offsetX < 160) {
+      //   setTargetActive('Hug');
+      // }
+    }
+  };
+
+  const handleDoubleClick = (e: MouseEvent<HTMLImageElement>) => {
+    if (
+      // @ts-ignore
+      e.target.src.indexOf(Gifs[VideoName.LEISURE].src) != -1
+    ) {
+      setTargetActive('Kiss on');
     }
   };
 
@@ -105,12 +137,15 @@ export const ClientDog: FC<{
       setGif(Gifs[name].src);
       // setVisible(true);
 
-      const timer = setTimeout(() => {
-        setGif(Gifs[VideoName.LEISURE].src);
-        onEnd();
-        setTargetActive('');
-        clearTimeout(timer);
-      }, 2500);
+      const timer = setTimeout(
+        () => {
+          setGif(Gifs[VideoName.LEISURE].src);
+          onEnd();
+          setTargetActive('');
+          clearTimeout(timer);
+        },
+        name === VideoName.KISS ? 3800 : name === VideoName.TOUCH ? 2700 : 2500
+      );
     }
   }, [name, onEnd]);
 
@@ -139,7 +174,7 @@ export const ClientDog: FC<{
     <>
       <div
         className="absolute left-2/4 -translate-x-2/4 -translate-y-full z-40 w-[200px] h-[200px]"
-        id="first-step"
+        id={STEP_SELECTOR.FIRST}
         style={{
           top: top,
           opacity: top ? 1 : 0,
@@ -150,21 +185,16 @@ export const ClientDog: FC<{
           setTargetActive={setTargetActive}
         ></Active>
 
-        <NextImage
-          className="relative z-40"
-          priority
-          unoptimized
-          src={gif}
-          alt="dog"
-          width={200}
-          height={200}
-          onClick={handleImageClick}
-        ></NextImage>
+        <EnhancedComponent
+          dragUpCB={() => {
+            setTargetActive('Hug');
+          }}
+        ></EnhancedComponent>
       </div>
 
       <div
         className="absolute -translate-y-20 translate-x-16 z-50"
-        id="dog-bowl"
+        id={STEP_SELECTOR.DOG_BOWL}
         style={{
           top: top,
         }}
