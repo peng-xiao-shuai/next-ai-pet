@@ -43,5 +43,7 @@ const lang = {
   [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
     'Вы купили еду ${0}, и она поступит на ваш счет через 1 минуту! Тогда идите кормить своего питомца!',
   [LOCALE_KEYS.SHARE_TEXT]: 'Пригласить 1 друга +${0}$Pets и 1 порция еды',
+  [LOCALE_KEYS.CARD_TEXT]:
+    'Your dog will go out and take photo as collection for you, some of them will have special value! ',
 } as const;
 export default lang;

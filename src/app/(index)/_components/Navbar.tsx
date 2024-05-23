@@ -18,6 +18,7 @@ import { fetchRequest } from '@/utils/request';
 import { ControlSound } from './ControlSound';
 import { cn } from '@/lib/utils';
 import { STEP_SELECTOR } from '@/utils/stpes';
+import { useRouter } from 'next/navigation';
 
 const numberBox =
   'inline-flex items-center text-xs min-w-20 box-border px-1 rounded-full bg-gradient-to-t from-[#F1D8B1] to-[#FCF9F3] border border-[#CF9A68]';
@@ -29,6 +30,7 @@ export const Navbar: FC<{
   back?: () => void;
 }> = ({ children, title, className, back }) => {
   const { detail, setDetail } = useContext(ChatContext);
+  const router = useRouter();
   const { userState, setData } = useUserStore();
   const [changeNickNameDialogVisible, setChangeNickNameDialogVisible] =
     useState(false);
@@ -51,10 +53,11 @@ export const Navbar: FC<{
         alt: 'invite',
         val: userState.invites,
         fun: () => {
-          toast('coming soon');
+          router.push('/invite');
         },
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       userState.invites,
       userState.point,
@@ -94,7 +97,7 @@ export const Navbar: FC<{
   return (
     <>
       <div
-        className={`px-4 w-full my-[10px] relative z-10 leading-none flex flex-wrap justify-center transition-all ${className}`}
+        className={`px-4 w-full my-[10px] leading-none flex flex-wrap justify-center transition-all ${className}`}
       >
         <div
           className={`flex justify-between items-center gap-2 mb-[10px] w-full`}
@@ -243,7 +246,7 @@ export const Navbar: FC<{
           value={name}
           ref={textAreaRef}
           onChange={({ target }) => {
-            setName(target.value);
+            setName(target.value.trim());
           }}
         ></textarea>
       </CenterPopup>

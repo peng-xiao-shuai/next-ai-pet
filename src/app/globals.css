@@ -121,7 +121,8 @@ div[role='dialog']:focus-visible {
 body[data-guide='HIGHLIGHT_ACTION_BTN'] #first-step,
 body[data-guide='HIGHLIGHT_FEED_FOOD'] #dog-bowl,
 body[data-guide='SEND_MESSAGE'] #input-step,
-body[data-guide='HIGHLIGHT_SHARE'] #share-step {
+body[data-guide='HIGHLIGHT_SHARE'] #share-step,
+body[data-guide='HIGHLIGHT_PHOTO_ALBUM'] #photo-album-step {
   z-index: 9999999;
 }
 

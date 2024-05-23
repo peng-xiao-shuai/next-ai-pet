@@ -41,5 +41,7 @@ const lang = {
   [LOCALE_KEYS.PURCHASE_SUCCEEDS]:
     '您已購買成功，糧食+${0}，预计1分钟后到账；快去餵你的寵物吧！',
   [LOCALE_KEYS.SHARE_TEXT]: '邀請1人+${0}$Pets與1份糧食',
+  [LOCALE_KEYS.CARD_TEXT]:
+    'Your dog will go out and take photo as collection for you, some of them will have special value! ',
 } as const;
 export default lang;

@@ -34,7 +34,7 @@ export const ClientSendMsg: FC<{
   detailCurrent: MutableRefObject<Indexes<any>>;
 }> = ({ sendMsg, _P, detailCurrent }) => {
   const { t } = useTranslation();
-  const { setIsOpen, setCurrentStep } = useTour();
+  const { setIsOpen, setCurrentStep, steps } = useTour();
   const { detail, setDetail, list, readyState, scrollDom } =
     useContext(ChatContext);
   const [message, setMessage] = useState('');
@@ -71,6 +71,39 @@ export const ClientSendMsg: FC<{
       }));
     }
 
+    /**
+     * 新用户引导分享
+     */
+    if (
+      !localStorage.getItem('newShareVisible') &&
+      localStorage.getItem('foodVisible')
+    ) {
+      setCurrentStep(
+        steps.findIndex((item) =>
+          item.selector.toString().includes(STEP_SELECTOR.SHARE)
+        )
+      );
+      document.body.setAttribute('data-guide', 'HIGHLIGHT_SHARE');
+      setIsOpen(true);
+      localStorage.setItem('newShareVisible', 'true');
+
+      /**
+       * 集卡引导
+       */
+      if (!localStorage.getItem('photoVisible')) {
+        setTimeout(() => {
+          setCurrentStep(
+            steps.findIndex((item) =>
+              item.selector.toString().includes(STEP_SELECTOR.PHOTO_ALBUM)
+            )
+          );
+          document.body.setAttribute('data-guide', 'HIGHLIGHT_PHOTO_ALBUM');
+          setIsOpen(true);
+          localStorage.setItem('photoVisible', 'true');
+        }, 3000);
+      }
+    }
+
     setMessage('');
   };
 
@@ -85,7 +118,7 @@ export const ClientSendMsg: FC<{
       if (item.type === 'HEARTBEAT') return;
     }
     console.log(item.friendPointChange);
-    
+
     if (item.friendPointChange) {
       setShowPetGIF(true);
     }
@@ -107,10 +140,7 @@ export const ClientSendMsg: FC<{
   }, [detail.isInitialized]);
 
   return (
-    <div
-      className="relative z-40 py-3"
-      id={STEP_SELECTOR.INPUT}
-    >
+    <div className="relative z-40 py-3" id={STEP_SELECTOR.INPUT}>
       {/* <ClientTools></ClientTools> */}
 
       {showPetGIF && (
@@ -120,7 +150,7 @@ export const ClientSendMsg: FC<{
             y: '-50%',
           }}
           animate={{
-            left: 75,
+            left: 68,
             top: 95,
             scale: 0.15,
           }}
@@ -140,6 +170,7 @@ export const ClientSendMsg: FC<{
             width={420}
             height={420}
             alt="gold coin"
+            unoptimized
           ></Image>
         </m.div>
       )}

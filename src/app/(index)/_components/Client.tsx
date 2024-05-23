@@ -669,19 +669,20 @@ export const Client: FC<{
       }}
     >
       <Image
-        width={576}
-        height={1267}
-        sizes="100vw"
-        style={{
-          width: '100%',
-          height: 'auto',
-          maskImage: 'linear-gradient(#000 80%, transparent)',
-          WebkitMaskImage: 'linear-gradient(#000 80%, transparent)',
-        }}
+        // width={576}
+        // height={1267}
+        // sizes="100vw"
+        // style={{
+        //   width: '100%',
+        //   height: 'auto',
+        //   maskImage: 'linear-gradient(#000 80%, transparent)',
+        //   WebkitMaskImage: 'linear-gradient(#000 80%, transparent)',
+        // }}
+        fill
         src="/images/bg.png"
         alt="bg"
         priority
-        className="fixed z-[0] top-0"
+        className={`fixed z-[0] top-0 object-center`}
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
           setBgImgHeight(_target.height / 1.85);
@@ -689,16 +690,13 @@ export const Client: FC<{
         }}
       />
 
-      <div className="h-full overflow-y-hidden relative">
+      <div className={`h-full overflow-y-hidden relative ${className}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <Navbar></Navbar>
 
         <ClientTaskAndShop></ClientTaskAndShop>
 
         <ClientDog
-          className={
-            isKeyboardUp ? '!opacity-0 pointer-events-none' : 'opacity-100'
-          }
           bgImgHeight={bgImgHeight}
           name={videoPlayerName}
           onEnd={() => {
@@ -707,7 +705,9 @@ export const Client: FC<{
         ></ClientDog>
 
         <div
-          className={`overflow-hidden absolute w-full bottom-0 flex flex-col`}
+          className={`overflow-hidden absolute w-full bottom-0 flex flex-col ${
+            isKeyboardUp ? 'z-[9999]' : 'z-[9999]'
+          }`}
           style={{
             height: scrollHeight,
           }}
