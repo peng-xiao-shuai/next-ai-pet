@@ -150,7 +150,7 @@ export const ClientSendMsg: FC<{
             y: '-50%',
           }}
           animate={{
-            left: 75,
+            left: 68,
             top: 95,
             scale: 0.15,
           }}
