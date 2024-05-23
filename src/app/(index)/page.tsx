@@ -85,10 +85,12 @@ export default function Home() {
             }),
           }}
         >
-          <Client
-            friendId={friendId}
-            className={`duration-200 transition-all`}
-          ></Client>
+          <div className="w-full h-full bg-[#d4a252]">
+            <Client
+              friendId={friendId}
+              className={`duration-200 transition-all`}
+            ></Client>
+          </div>
         </TourProvider>
       )}
     </>
