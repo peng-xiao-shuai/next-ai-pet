@@ -72,7 +72,7 @@ type Tools = {
 
 export const ClientDog: FC<{
   bgImgHeight: number;
-  className: string;
+  className?: string;
   name: Exclude<VideoName, VideoName.NONE>;
   onEnd: () => void;
 }> = ({ bgImgHeight, name, onEnd, className }) => {
