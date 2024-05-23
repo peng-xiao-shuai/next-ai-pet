@@ -20,8 +20,9 @@ import { VideoName } from './ShowAnimation';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { STEP_SELECTOR } from '@/utils/stpes';
-import withDragDetection from '@/components/mouse-hoc';
 import leisure from '@@/images/leisure.gif';
+import photoAlbum from '@@/images/photo-album.png';
+import { ClientCardDrawer } from './ClientCardDrawer';
 
 const Gifs: Record<
   Exclude<VideoName, VideoName.NONE>,
@@ -81,6 +82,7 @@ export const ClientDog: FC<{
   );
   const top = useMemo(() => bgImgHeight, [bgImgHeight]);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
+  const [cardDrawerVisible, setCardDrawerVisible] = useState(false);
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
   const [foodPng, setFoodPng] = useState('/icons/empty-dog-bowl.png');
   const timeCount = useRef(30);
@@ -183,10 +185,17 @@ export const ClientDog: FC<{
         ></NextImage>
       </div>
 
+      <Card top={top} setCardDrawerVisible={setCardDrawerVisible}></Card>
+
       <ClientFeedDrawer
         drawerVisible={feedDrawerVisible}
         setDrawerVisible={setFeedDrawerVisible}
       ></ClientFeedDrawer>
+
+      <ClientCardDrawer
+        drawerVisible={cardDrawerVisible}
+        setDrawerVisible={setCardDrawerVisible}
+      ></ClientCardDrawer>
     </>
   );
 };
@@ -413,5 +422,36 @@ export const DogActive: FC<{
       onClick={handleImageClick}
       onTouchStart={handleTouchStart}
     ></NextImage>
+  );
+};
+
+export const Card: FC<{
+  top: number;
+  className?: string;
+  setCardDrawerVisible: Dispatch<SetStateAction<boolean>>;
+}> = ({ top, setCardDrawerVisible, className }) => {
+  const [] = useState();
+  return (
+    <div
+      className={`absolute w-[87px] h-[101px] -translate-y-72 left-[60%] -translate-x-2/4 z-50 transition-opacity ${className}`}
+      id={STEP_SELECTOR.PHOTO_ALBUM}
+      style={{
+        top: top,
+      }}
+      onClick={() => {
+        setCardDrawerVisible(true);
+      }}
+    >
+      <div className="w-full h-full absolute z-20">
+        <NextImage src={photoAlbum} fill alt="photo album"></NextImage>
+      </div>
+      <div className="absolute z-10 w-[calc(100%-12px)] h-[calc(100%-12px)] box-border left-2/4 top-2/4 -translate-y-2/4 -translate-x-2/4">
+        <NextImage src="/images/scenery.jpg" fill alt="scenery"></NextImage>
+      </div>
+
+      <div className="absolute bottom-3 left-2/4 -translate-x-2/4 z-30 text-xs px-1 rounded-full bg-gradient-to-t from-[#F3CF86] to-[#FFF5E0] text-[#BD7D1D]">
+        Collection
+      </div>
+    </div>
   );
 };

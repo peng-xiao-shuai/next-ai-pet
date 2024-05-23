@@ -43,6 +43,8 @@ const lang = {
     'You have buyed ${0} food,and it will reach to your account 1 minute later ! Go to feed your pet then!',
   [LOCALE_KEYS.SHARE_TEXT]:
     'If you invite a new user you will get +${0}$Pets and 1 food.',
+  [LOCALE_KEYS.CARD_TEXT]:
+    'Your dog will go out and take photo as collection for you, some of them will have special value! ',
 } as const;
 
 export default lang;

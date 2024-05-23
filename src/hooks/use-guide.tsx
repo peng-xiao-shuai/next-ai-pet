@@ -6,7 +6,7 @@ import { useUserStore } from './use-user';
 import { STEP_SELECTOR, _Steps } from '@/utils/stpes';
 
 export const useGuide = ({ list }: { list: any[] }) => {
-  const { setIsOpen, setCurrentStep, steps } = useTour();
+  const { setIsOpen, setCurrentStep, steps, isOpen } = useTour();
   const { userState } = useUserStore();
 
   useEffect(() => {
@@ -25,6 +25,15 @@ export const useGuide = ({ list }: { list: any[] }) => {
     ].indexOf(specialEventTrigger);
 
     if (index > -1) {
+      /**
+       * 弹出过引导了不在弹出
+       */
+      if (
+        localStorage.getItem('foodVisible') &&
+        specialEventTrigger === 'HIGHLIGHT_FEED_FOOD'
+      ) {
+        return;
+      }
       document.body.setAttribute('data-guide', specialEventTrigger);
 
       setCurrentStep(
@@ -33,12 +42,16 @@ export const useGuide = ({ list }: { list: any[] }) => {
         )
       );
       setIsOpen(true);
+
+      if (specialEventTrigger === 'HIGHLIGHT_FEED_FOOD') {
+        localStorage.setItem('foodVisible', 'true');
+      }
     } else {
       /**
        * 判断新老用户
        */
       if (
-        Math.abs(Number(new Date()) - Number(new Date(userState.createTime))) /
+        Math.abs(Number(new Date()) - Number(new Date(userState.createdTime))) /
           (1000 * 60 * 60 * 24) >
         1
       ) {
@@ -48,6 +61,7 @@ export const useGuide = ({ list }: { list: any[] }) => {
               item.selector.toString().includes(STEP_SELECTOR.SHARE)
             )
           );
+          document.body.setAttribute('data-guide', 'HIGHLIGHT_SHARE');
           setIsOpen(true);
           // 设置 cookie 以记录事件已被触发
           setEventCookie('true', 'shareVisible');
@@ -56,5 +70,27 @@ export const useGuide = ({ list }: { list: any[] }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list]);
+  }, [list, userState.createdTime]);
+
+  /**
+   * 若是老用户则功能上线后首次进来会弹出功能引导
+   */
+  useEffect(() => {
+    if (
+      Math.abs(Number(new Date()) - Number(new Date(userState.createdTime))) /
+        (1000 * 60 * 60 * 24) >
+        1 &&
+      !localStorage.getItem('photoVisible')
+    ) {
+      setCurrentStep(
+        steps.findIndex((item) =>
+          item.selector.toString().includes(STEP_SELECTOR.PHOTO_ALBUM)
+        )
+      );
+      document.body.setAttribute('data-guide', 'HIGHLIGHT_PHOTO_ALBUM');
+      setIsOpen(true);
+      localStorage.setItem('photoVisible', 'true');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userState.createdTime]);
 };

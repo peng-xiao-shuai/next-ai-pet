@@ -97,7 +97,7 @@ export const Navbar: FC<{
   return (
     <>
       <div
-        className={`px-4 w-full my-[10px] relative z-10 leading-none flex flex-wrap justify-center transition-all ${className}`}
+        className={`px-4 w-full my-[10px] leading-none flex flex-wrap justify-center transition-all ${className}`}
       >
         <div
           className={`flex justify-between items-center gap-2 mb-[10px] w-full`}

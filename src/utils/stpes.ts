@@ -6,6 +6,7 @@ export enum STEP_SELECTOR {
   FIRST = 'first-step',
   DOG_BOWL = 'dog-bowl',
   SHARE = 'share-step',
+  PHOTO_ALBUM = 'photo-album-step',
 }
 
 export type _Steps = StepType & {
@@ -62,6 +63,18 @@ export const _steps: _Steps[] = [
       }),
     },
     _contentArg: [1000],
-    specialEventTrigger: ['HIGHLIGHT_SHARE']
+    specialEventTrigger: ['HIGHLIGHT_SHARE'],
+  },
+  {
+    selector: '#' + STEP_SELECTOR.PHOTO_ALBUM,
+    content: LOCALE_KEYS.CARD_TEXT,
+    position: 'bottom',
+    styles: {
+      popover: (base) => ({
+        ...base,
+        width: '320px',
+      }),
+    },
+    specialEventTrigger: ['HIGHLIGHT_PHOTO_ALBUM'],
   },
 ];
