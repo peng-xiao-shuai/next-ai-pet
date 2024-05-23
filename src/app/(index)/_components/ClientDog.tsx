@@ -24,7 +24,7 @@ import withDragDetection from '@/components/mouse-hoc';
 import leisure from '@@/images/leisure.gif';
 
 const Gifs: Record<
-  Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>,
+  Exclude<VideoName, VideoName.NONE>,
   {
     src: string;
     name: string;
@@ -73,12 +73,12 @@ type Tools = {
 export const ClientDog: FC<{
   bgImgHeight: number;
   className: string;
-  name: Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>;
+  name: Exclude<VideoName, VideoName.NONE>;
   onEnd: () => void;
 }> = ({ bgImgHeight, name, onEnd, className }) => {
-  const [gif, setGif] = useState<
-    Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>
-  >(VideoName.LEISURE);
+  const [gif, setGif] = useState<Exclude<VideoName, VideoName.NONE>>(
+    VideoName.LEISURE
+  );
   const top = useMemo(() => bgImgHeight, [bgImgHeight]);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
@@ -101,7 +101,7 @@ export const ClientDog: FC<{
   });
 
   useEffect(() => {
-    if (![VideoName.NONE, VideoName.FEED, VideoName.FOOD].includes(name)) {
+    if (![VideoName.NONE].includes(name)) {
       setGif(name);
       // setVisible(true);
 
@@ -135,10 +135,7 @@ export const ClientDog: FC<{
     }
 
     Object.keys(Gifs).forEach((key) => {
-      const _key = key as Exclude<
-        VideoName,
-        VideoName.NONE | VideoName.FOOD | VideoName.FEED
-      >;
+      const _key = key as Exclude<VideoName, VideoName.NONE>;
 
       if (typeof Gifs[_key].data === 'function') {
         (Gifs[_key].data as () => void)();
@@ -333,7 +330,7 @@ export const Active: FC<{
 };
 
 export const DogActive: FC<{
-  gif: Exclude<VideoName, VideoName.NONE | VideoName.FOOD | VideoName.FEED>;
+  gif: Exclude<VideoName, VideoName.NONE>;
   setTargetActive: Dispatch<SetStateAction<Tools['name'] | ''>>;
 }> = ({ gif, setTargetActive }) => {
   const [lastTap, setLastTap] = useState(0);

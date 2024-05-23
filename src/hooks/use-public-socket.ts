@@ -9,33 +9,33 @@ import { VideoName } from '@/app/(index)/_components/ShowAnimation';
 
 const _P = 'notification-';
 
-export const usePublicSocket = (
-  showAnimationFun: (source: VideoName.FEED | VideoName.FOOD) => void
-) => {
-  const PublicSocket = useRef(new WebSocket(_P));
-  const { userState, setData } = useUserStore();
+export const usePublicSocket = () =>
+  // showAnimationFun: (source: VideoName.FEED | VideoName.FOOD) => void
+  {
+    const PublicSocket = useRef(new WebSocket(_P));
+    const { userState, setData } = useUserStore();
 
-  useBusWatch(_P + 'onSocketMessage', (e) => {
-    if (e.data === 'PONG') {
-      return;
-    }
-    setData();
+    useBusWatch(_P + 'onSocketMessage', (e) => {
+      if (e.data === 'PONG') {
+        return;
+      }
+      setData();
 
-    const data = JSON.parse(e.data);
+      const data = JSON.parse(e.data);
 
-    if (data.type === 'RECHARGE_SUCCESS') {
-      // 开启动画
-      showAnimationFun?.(VideoName.FOOD);
-    }
-  });
+      if (data.type === 'RECHARGE_SUCCESS') {
+        // 开启动画
+        // showAnimationFun?.(VideoName.FOOD);
+      }
+    });
 
-  useEffect(() => {
-    if (userState.id) {
-      PublicSocket.current?.connect(
-        'wss://doujiwrzdg1dh.cloudfront.net/restApi/ws/notification/' +
-          userState.id
-      );
-    }
-  }, [userState.id]);
-  return PublicSocket;
-};
+    useEffect(() => {
+      if (userState.id) {
+        PublicSocket.current?.connect(
+          'wss://doujiwrzdg1dh.cloudfront.net/restApi/ws/notification/' +
+            userState.id
+        );
+      }
+    }, [userState.id]);
+    return PublicSocket;
+  };

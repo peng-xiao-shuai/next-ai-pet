@@ -6,7 +6,7 @@ import { ClientTaskDrawer } from './ClientTaskDrawer';
 import { ClientFoodDrawer } from './ClientFoodDrawer';
 
 export const ClientTaskAndShop: FC<{
-  className: string;
+  className?: string;
 }> = ({ className }) => {
   const [foodDrawerVisible, setFoodDrawerVisible] = useState(false);
   const [taskDrawerVisible, setTaskDrawerVisible] = useState(false);

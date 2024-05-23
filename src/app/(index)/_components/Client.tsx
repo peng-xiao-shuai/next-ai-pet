@@ -88,9 +88,9 @@ type ChatContextState = {
   newestId: string | '';
   readyState: 0 | 1 | 2 | 3;
   checkEntering: () => void;
-  showAnimationFun: (source: VideoName.FOOD | VideoName.FEED) => void;
+  // showAnimationFun: (source: VideoName.FOOD | VideoName.FEED) => void;
   scrollToBottom: (duration?: number) => void;
-  isKeyboardUp: boolean
+  isKeyboardUp: boolean;
 };
 
 export const ChatContext = createContext<Partial<ChatContextState>>({});
@@ -132,7 +132,9 @@ export const Client: FC<{
   const scrollDom = useRef<HTMLDivElement | null>(null);
   const recordListLength = useRef(0);
   const [list, setList] = useState<any[]>([]);
-  const [videoPlayerName, setVideoPlayerName] = useState(VideoName.NONE);
+  const [videoPlayerName, setVideoPlayerName] = useState<
+    Exclude<VideoName, VideoName.NONE>
+  >(VideoName.LEISURE);
   const [loading, setLoading] = useState<boolean>(false);
   const [queryingPast, setQueryingPast] = useState(false);
   const [bgImgHeight, setBgImgHeight] = useState(0);
@@ -545,18 +547,19 @@ export const Client: FC<{
   const touchmoveBlur = () => {
     // @ts-ignore
     document.activeElement?.blur?.();
-    window.scrollTo(0,0)
-  }
-
-  /**
-   * 开启动画, 目前是购买狗粮和喂养狗粮调用
-   * @param {string} source 来源
-   */
-  const showAnimationFun = (source: VideoName.FEED | VideoName.FOOD) => {
-    setVideoPlayerName(source);
+    window.scrollTo(0, 0);
   };
 
-  usePublicSocket(showAnimationFun);
+  // /**
+  //  * 开启动画, 目前是购买狗粮和喂养狗粮调用
+  //  * @param {string} source 来源
+  //  */
+  // const showAnimationFun = (source: VideoName.FEED | VideoName.FOOD) => {
+  //   setVideoPlayerName(source);
+  // };
+
+  // usePublicSocket(showAnimationFun);
+  usePublicSocket();
   useGuide({
     list,
   });
@@ -618,22 +621,26 @@ export const Client: FC<{
   }, [isOpen]);
 
   useEffect(() => {
-    localStorage.setItem('initHeight', window.Telegram?.WebApp.viewportHeight)
+    localStorage.setItem('initHeight', window.Telegram?.WebApp.viewportHeight);
 
     window.Telegram?.WebApp.onEvent('viewportChanged', (e: any) => {
-      if (Number(localStorage.getItem('initHeight')) - window.Telegram?.WebApp.viewportHeight > 10) {
-        setIsKeyboardUp(true)
+      if (
+        Number(localStorage.getItem('initHeight')) -
+          window.Telegram?.WebApp.viewportHeight >
+        10
+      ) {
+        setIsKeyboardUp(true);
       } else {
-        setIsKeyboardUp(false)
+        setIsKeyboardUp(false);
       }
-    })
+    });
 
-    document.addEventListener('touchend', touchmoveBlur)
+    document.addEventListener('touchend', touchmoveBlur);
 
     return () => {
-      document.removeEventListener('touchend', touchmoveBlur)
-    }
-  }, [])
+      document.removeEventListener('touchend', touchmoveBlur);
+    };
+  }, []);
 
   return (
     <ChatContext.Provider
@@ -656,9 +663,9 @@ export const Client: FC<{
         newestId,
         readyState,
         checkEntering,
-        showAnimationFun,
+        // showAnimationFun,
         scrollToBottom,
-        isKeyboardUp
+        isKeyboardUp,
       }}
     >
       <Image
@@ -684,19 +691,18 @@ export const Client: FC<{
 
       <div className="h-full overflow-y-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <Navbar className={isKeyboardUp ? 'opacity-0 pointer-events-none' : 'opacity-100'}
-        ></Navbar>
+        <Navbar></Navbar>
 
-        <ClientTaskAndShop className={isKeyboardUp ? 'opacity-0 pointer-events-none' : 'opacity-100'}></ClientTaskAndShop>
+        <ClientTaskAndShop></ClientTaskAndShop>
 
         <ClientDog
-         className={isKeyboardUp ? '!opacity-0 pointer-events-none' : 'opacity-100'}
+          className={
+            isKeyboardUp ? '!opacity-0 pointer-events-none' : 'opacity-100'
+          }
           bgImgHeight={bgImgHeight}
-          // @ts-ignore
-          // TODO
           name={videoPlayerName}
           onEnd={() => {
-            setVideoPlayerName(VideoName.NONE);
+            setVideoPlayerName(VideoName.LEISURE);
           }}
         ></ClientDog>
 

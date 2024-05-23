@@ -8,8 +8,8 @@ export enum VideoName {
   KISS = 'kiss',
   TOUCH = 'touch',
   HUG = 'hug',
-  FOOD = 'food',
-  FEED = 'feed',
+  // FOOD = 'food',
+  // FEED = 'feed',
   NONE = 'none',
   LEISURE = 'leisure',
 }
@@ -27,14 +27,14 @@ const FrameProps = {
     baseUrl: '/images/hug.gif',
     // totalFrames: 51,
   },
-  [VideoName.FOOD]: {
-    baseUrl: '/images/food.gif',
-    // totalFrames: 52,
-  },
-  [VideoName.FEED]: {
-    baseUrl: '/images/feed.gif',
-    // totalFrames: 53,
-  },
+  // [VideoName.FOOD]: {
+  //   baseUrl: '/images/food.gif',
+  //   // totalFrames: 52,
+  // },
+  // [VideoName.FEED]: {
+  //   baseUrl: '/images/feed.gif',
+  //   // totalFrames: 53,
+  // },
 };
 
 // const videoCache: Record<
