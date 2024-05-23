@@ -174,7 +174,7 @@ export const ClientSendMsg: FC<{
             /**
              * FIX Ios 软键盘消失页面不会掉下来
              */
-            if (/iphone/gi.test(window.navigator.userAgent)) {
+            if (/iPad|iPhone|iPod/gi.test(window.navigator.userAgent)) {
               window.scrollTo(0, 0);
             }
             //   window.scrollTo(0, 100);
@@ -511,12 +511,7 @@ export const GuideStep: FC<{
       <ClientTips
         visible={true}
         localeKey={tool.content}
-        className={`${
-          typeof window != 'undefined' &&
-          /iphone/gi.test(window.navigator.userAgent)
-            ? '-translate-y-[130px]'
-            : '-translate-y-[130px]'
-        } !fixed -translate-x-[46%] z-50 w-[280px] bottom-0`}
+        className={`-translate-y-[130px] !fixed -translate-x-[46%] z-50 w-[280px] bottom-0`}
         cornerClassName="bottom-0 translate-y-2/4 left-[38%]"
       ></ClientTips>
     </>

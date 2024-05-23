@@ -44,7 +44,7 @@ export const CenterPopup: FC<Partial<CenterPopupProps>> = ({
   const [loading, setLoading] = useState(false);
   const [iosClassName, setIosClassName] = useState('')
   useEffect(() => {
-    if (!/iphone/gi.test(window.navigator.userAgent)) {
+    if (!/iPad|iPhone|iPod/gi.test(window.navigator.userAgent)) {
       setIosClassName('!left-4 top-[unset] !translate-y-0 !translate-x-0 data-[state=open]:!slide-in-from-left-0 data-[state=open]:!slide-in-from-bottom-[100%] data-[state=closed]:!slide-out-to-left-0 data-[state=closed]:!slide-out-to-bottom-[100%] data-[state=open]:!zoom-in-100 data-[state=closed]:!zoom-out-100 !duration-300')
     }
   }, [])
