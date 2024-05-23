@@ -80,7 +80,7 @@ export default function InvitePage() {
         ></Image>
       </div>
 
-      <div className="p-5">
+      <div className="p-5 bg-white">
         <div className="border-b border-[#EEEEEE] text-lg pb-5">
           <div className="text-black mb-3">邀请记录</div>
           <div className="text-[#999999]">

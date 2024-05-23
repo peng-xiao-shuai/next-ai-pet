@@ -706,7 +706,7 @@ export const Client: FC<{
 
         <div
           className={`overflow-hidden absolute w-full bottom-0 flex flex-col ${
-            isKeyboardUp ? 'z-[9999]' : 'z-[9999]'
+            isKeyboardUp ? 'z-[9999]' : ''
           }`}
           style={{
             height: scrollHeight,
