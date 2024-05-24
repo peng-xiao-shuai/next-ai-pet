@@ -20,7 +20,8 @@ import { VideoName } from './ShowAnimation';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { STEP_SELECTOR } from '@/utils/stpes';
-import leisure from '@@/images/leisure.gif';
+// import leisure from '@@/images/leisure.gif';
+import emptyFace from '@@/icons/empty-face.png';
 import photoAlbum from '@@/images/photo-album.png';
 import { ClientCardDrawer } from './ClientCardDrawer';
 
@@ -35,7 +36,18 @@ const Gifs: Record<
   [VideoName.LEISURE]: {
     src: 'leisure',
     name: 'Leisure',
-    data: leisure,
+    data: emptyFace,
+  },
+  [VideoName.EAT]: {
+    src: 'eat',
+    name: 'Eat',
+    data: function () {
+      import('@@/icons/happy-face.png').then((res) => {
+        console.log(res);
+
+        this.data = res.default;
+      });
+    },
   },
   [VideoName.HUG]: {
     src: 'hug',
@@ -71,10 +83,12 @@ type Tools = {
   name: 'Kiss on' | 'Touch' | 'Hug';
 } & Indexes<string>;
 
+const TIME_COUNT = 30;
+
 export const ClientDog: FC<{
   bgImgHeight: number;
   className?: string;
-  name: Exclude<VideoName, VideoName.NONE>;
+  name: VideoName;
   onEnd: () => void;
 }> = ({ bgImgHeight, name, onEnd, className }) => {
   const [gif, setGif] = useState<Exclude<VideoName, VideoName.NONE>>(
@@ -85,11 +99,13 @@ export const ClientDog: FC<{
   const [cardDrawerVisible, setCardDrawerVisible] = useState(false);
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
   const [foodPng, setFoodPng] = useState('/icons/empty-dog-bowl.png');
-  const timeCount = useRef(30);
+  const timeCount = useRef(TIME_COUNT);
 
   useBusWatch('foodStatus', () => {
     setFoodPng('/icons/dog-bowl.png');
-    timeCount.current = 30;
+    setGif(VideoName.EAT);
+
+    timeCount.current = TIME_COUNT;
 
     const timer = setInterval(() => {
       timeCount.current -= 1;
@@ -97,19 +113,28 @@ export const ClientDog: FC<{
 
       if (timeCount.current <= 0) {
         setFoodPng('/icons/empty-dog-bowl.png');
+        setGif(VideoName.LEISURE);
         clearInterval(timer);
       }
     }, 1000);
   });
 
   useEffect(() => {
+    console.log('name', name);
+
     if (![VideoName.NONE].includes(name)) {
-      setGif(name);
+      setGif(name as Exclude<VideoName, VideoName.NONE>);
       // setVisible(true);
 
       const timer = setTimeout(
         () => {
-          setGif(VideoName.LEISURE);
+          setGif((state) => {
+            if (state == VideoName.EAT) {
+              return VideoName.EAT;
+            } else {
+              return VideoName.LEISURE;
+            }
+          });
           onEnd();
           setTargetActive('');
           clearTimeout(timer);
@@ -117,7 +142,8 @@ export const ClientDog: FC<{
         name === VideoName.KISS ? 3800 : name === VideoName.TOUCH ? 2700 : 2500
       );
     }
-  }, [name, onEnd]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
 
   useEffect(() => {
     timeCount.current = Number(localStorage.getItem('foodTimeCount') || '0');
@@ -125,12 +151,16 @@ export const ClientDog: FC<{
     let timer: NodeJS.Timeout;
     if (timeCount.current > 0) {
       setFoodPng('/icons/dog-bowl.png');
+      setGif(VideoName.EAT);
+      console.log(VideoName.EAT);
+
       timer = setInterval(() => {
         timeCount.current -= 1;
         localStorage.setItem('foodTimeCount', String(timeCount.current));
 
         if (timeCount.current <= 0) {
           setFoodPng('/icons/empty-dog-bowl.png');
+          setGif(VideoName.LEISURE);
           clearInterval(timer);
         }
       }, 1000);
@@ -409,6 +439,10 @@ export const DogActive: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
 
+  useEffect(() => {
+    console.log(gif);
+  }, [gif]);
+
   return (
     <NextImage
       className="relative z-40"
@@ -449,7 +483,7 @@ export const Card: FC<{
         <NextImage src="/images/scenery.jpg" fill alt="scenery"></NextImage>
       </div>
 
-      <div className="absolute bottom-3 left-2/4 -translate-x-2/4 z-30 text-xs px-1 rounded-full bg-gradient-to-t from-[#F3CF86] to-[#FFF5E0] text-[#BD7D1D]">
+      <div className="absolute bottom-3 left-2/4 -translate-x-2/4 z-10000 text-xs px-1 rounded-full bg-gradient-to-t from-[#F3CF86] to-[#FFF5E0] text-[#BD7D1D]">
         Collection
       </div>
     </div>

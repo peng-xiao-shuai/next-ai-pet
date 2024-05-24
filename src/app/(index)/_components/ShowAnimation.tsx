@@ -8,6 +8,7 @@ export enum VideoName {
   KISS = 'kiss',
   TOUCH = 'touch',
   HUG = 'hug',
+  EAT = 'eat',
   // FOOD = 'food',
   // FEED = 'feed',
   NONE = 'none',

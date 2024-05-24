@@ -135,9 +135,9 @@ export const Client: FC<{
   const scrollDom = useRef<HTMLDivElement | null>(null);
   const recordListLength = useRef(0);
   const [list, setList] = useState<any[]>([]);
-  const [videoPlayerName, setVideoPlayerName] = useState<
-    Exclude<VideoName, VideoName.NONE>
-  >(VideoName.LEISURE);
+  const [videoPlayerName, setVideoPlayerName] = useState<VideoName>(
+    VideoName.LEISURE
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [queryingPast, setQueryingPast] = useState(false);
   const [bgImgHeight, setBgImgHeight] = useState(0);
@@ -706,7 +706,7 @@ export const Client: FC<{
           bgImgHeight={bgImgHeight}
           name={videoPlayerName}
           onEnd={() => {
-            setVideoPlayerName(VideoName.LEISURE);
+            setVideoPlayerName(VideoName.NONE);
           }}
         ></ClientDog>
 
