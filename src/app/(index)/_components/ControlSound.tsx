@@ -35,9 +35,8 @@ export const ControlSound = () => {
   };
 
   useEffect(() => {
-    bodyClick();
-
     if (process.env.NODE_ENV != 'development') {
+      bodyClick();
       document.body.addEventListener('click', bodyClick);
     }
 
