@@ -31,6 +31,9 @@ import { m, AnimatePresence } from 'framer-motion';
 import { ClientTaskAndShop } from './ClientTaskAndShop';
 import { useGuide } from '@/hooks/use-guide';
 import { useTour } from '@reactour/tour';
+import { ClientGetCardPopup } from './ClientGetCardPopup';
+import emitter from '@/utils/bus';
+import { Cards } from './ClientCardDrawer';
 
 const MAX_LEN = 80;
 
@@ -147,6 +150,8 @@ export const Client: FC<{
   const [isKeyboardUp, setIsKeyboardUp] = useState(false);
   const detailCurrent = useRef<Indexes>({});
   const [showPetGIF, setShowPetGIF] = useState(false);
+  const [visibleCardPopup, setVisibleCardPopup] = useState(false);
+  const [cardData, setCardData] = useState<Cards | null>(null);
   const { t } = useTranslation();
   const [videoData, setVideoData] = useState({
     videoUrl: '',
@@ -565,7 +570,30 @@ export const Client: FC<{
   // };
 
   // usePublicSocket(showAnimationFun);
-  usePublicSocket();
+  usePublicSocket({
+    onInit: () => {
+      /**
+       * 随机获取卡片
+       */
+      console.log(friendId, 'friendIdfriendIdfriendIdfriendIdfriendIdfriendId');
+
+      const num = Math.floor(Math.random() * (60 - 20 + 1)) + 20;
+      setTimeout(() => {
+        fetchRequest('/restApi/friend/randomCard/' + friendId);
+      }, num * 1000);
+    },
+    onMessage: (data) => {
+      if (data.type === 'DROP_CARD') {
+        emitter.emit('setCard', data.content);
+        setCardData(data.content);
+        setVisibleCardPopup(true);
+      }
+    },
+  });
+
+  /**
+   * 引导
+   */
   useGuide({
     list,
   });
@@ -733,6 +761,12 @@ export const Client: FC<{
             _P={_P}
             detailCurrent={detailCurrent}
           ></ClientSendMsg>
+
+          <ClientGetCardPopup
+            open={visibleCardPopup}
+            cardData={cardData as Cards}
+            onClose={setVisibleCardPopup}
+          ></ClientGetCardPopup>
 
           {showPetGIF && (
             <m.div

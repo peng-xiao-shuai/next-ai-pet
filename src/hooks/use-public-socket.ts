@@ -9,7 +9,13 @@ import { VideoName } from '@/app/(index)/_components/ShowAnimation';
 
 const _P = 'notification-';
 
-export const usePublicSocket = () =>
+export const usePublicSocket = ({
+  onInit,
+  onMessage,
+}: {
+  onInit: () => void;
+  onMessage: (data: any) => void;
+}) =>
   // showAnimationFun: (source: VideoName.FEED | VideoName.FOOD) => void
   {
     const PublicSocket = useRef(new WebSocket(_P));
@@ -27,6 +33,7 @@ export const usePublicSocket = () =>
         // 开启动画
         // showAnimationFun?.(VideoName.FOOD);
       }
+      onMessage(data);
     });
 
     useEffect(() => {
@@ -35,7 +42,10 @@ export const usePublicSocket = () =>
           'wss://doujiwrzdg1dh.cloudfront.net/restApi/ws/notification/' +
             userState.id
         );
+
+        onInit();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userState.id]);
     return PublicSocket;
   };
