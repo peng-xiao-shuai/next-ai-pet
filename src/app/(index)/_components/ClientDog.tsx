@@ -1,6 +1,7 @@
 import AppConfigEnv from '@/utils/get-config';
 import { fetchRequest } from '@/utils/request';
 import NextImage, { StaticImageData } from 'next/image';
+import { m, AnimatePresence } from 'framer-motion';
 import {
   Dispatch,
   FC,
@@ -24,6 +25,7 @@ import { STEP_SELECTOR } from '@/utils/stpes';
 import emptyFace from '@@/icons/empty-face.png';
 import photoAlbum from '@@/images/photo-album.png';
 import { ClientCardDrawer } from './ClientCardDrawer';
+import { useUserStore } from '@/hooks/use-user';
 
 const Gifs: Record<
   Exclude<VideoName, VideoName.NONE>,
@@ -99,6 +101,7 @@ export const ClientDog: FC<{
   const [cardDrawerVisible, setCardDrawerVisible] = useState(false);
   const [targetActive, setTargetActive] = useState<Tools['name'] | ''>('');
   const [foodPng, setFoodPng] = useState('/icons/empty-dog-bowl.png');
+  const [handVisible, setHandVisible] = useState(false);
   const timeCount = useRef(TIME_COUNT);
 
   useBusWatch('foodStatus', () => {
@@ -213,7 +216,55 @@ export const ClientDog: FC<{
           height={84}
           alt="dog bowl"
         ></NextImage>
+
+        <AnimatePresence>
+          {handVisible && (
+            <m.div
+              initial={{ x: -5, y: -5 }}
+              animate={{
+                x: 5,
+                y: 5,
+              }}
+              transition={{
+                repeatType: 'reverse',
+                duration: 0.6,
+                repeat: Infinity,
+              }}
+            >
+              <NextImage
+                src="/icons/indicate.png"
+                width={51}
+                height={50}
+                alt="indicate"
+                className="absolute right-0 bottom-0 translate-x-2/4 translate-y-2/4"
+              ></NextImage>
+            </m.div>
+          )}
+        </AnimatePresence>
       </div>
+
+      <DogBubble
+        isEmpty={[
+          '/icons/empty-dog-bowl.png',
+          '/icons/dog-highlight.png',
+        ].includes(foodPng)}
+        top={top}
+        trigger={(bol) => {
+          if (bol) {
+            setFoodPng('/icons/dog-highlight.png');
+            setHandVisible(true);
+          } else {
+            setFoodPng((state) => {
+              if (state === '/icons/dog-bowl.png') {
+                return '/icons/dog-bowl.png';
+              } else {
+                return state;
+              }
+            });
+            setHandVisible(false);
+          }
+        }}
+      ></DogBubble>
 
       <Card top={top} setCardDrawerVisible={setCardDrawerVisible}></Card>
 
@@ -486,6 +537,48 @@ export const Card: FC<{
       <div className="absolute bottom-3 left-2/4 -translate-x-2/4 z-10000 text-xs px-1 rounded-full bg-gradient-to-t from-[#F3CF86] to-[#FFF5E0] text-[#BD7D1D]">
         Collection
       </div>
+    </div>
+  );
+};
+
+/**
+ * 每隔30s弹出气泡
+ */
+export const DogBubble: FC<{
+  isEmpty: boolean;
+  top: number;
+  trigger: (bol: boolean) => void;
+}> = ({ isEmpty, trigger, top }) => {
+  const [visible, setVisible] = useState(false);
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const { userState } = useUserStore();
+  useEffect(() => {
+    if (isEmpty) {
+      timer.current && clearTimeout(timer.current);
+
+      timer.current = setTimeout(() => {
+        setVisible(true);
+        trigger(true);
+      }, userState.dogHungryReminderInterval * 1000);
+    } else {
+      setVisible(false);
+      trigger(false);
+      timer.current && clearTimeout(timer.current);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEmpty, userState.dogHungryReminderInterval]);
+  return (
+    <div
+      className={`${
+        visible ? '' : 'opacity-0'
+      } transition-all duration-500 absolute w-[150px] h-[118px] -translate-y-56 left-[34%] translate-x-2/4 z-40 bg-[url('/images/bubble.png')] text-[15px] bg-[size:100%_100%] flex text-center leading-4 tracking-tight text-[#874544] px-4 pt-7`}
+      id={STEP_SELECTOR.PHOTO_ALBUM}
+      style={{
+        top: top,
+      }}
+    >
+      Dear Master, l am hungry, can you feed me?
     </div>
   );
 };

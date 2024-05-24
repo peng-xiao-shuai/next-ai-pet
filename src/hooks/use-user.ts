@@ -28,6 +28,7 @@ const state = {
   currentFriendCount: 0,
   invites: 0,
   googleOpenid: '',
+  dogHungryReminderInterval: 30,
 };
 
 export interface UserStore {
