@@ -27,6 +27,7 @@ import { ShowIntroductionAnimation } from './ShowIntroductionAnimation';
 import Image from 'next/image';
 import { ClientDog } from './ClientDog';
 import { cn } from '@/lib/utils';
+import { m, AnimatePresence } from 'framer-motion';
 import { ClientTaskAndShop } from './ClientTaskAndShop';
 import { useGuide } from '@/hooks/use-guide';
 import { useTour } from '@reactour/tour';
@@ -143,6 +144,7 @@ export const Client: FC<{
   const [detail, setDetail] = useState<Indexes>({});
   const [isKeyboardUp, setIsKeyboardUp] = useState(false);
   const detailCurrent = useRef<Indexes>({});
+  const [showPetGIF, setShowPetGIF] = useState(false);
   const { t } = useTranslation();
   const [videoData, setVideoData] = useState({
     videoUrl: '',
@@ -387,6 +389,8 @@ export const Client: FC<{
     setList((state) => state.concat(item));
 
     if (friendPointChange) {
+      setShowPetGIF(true);
+
       setDataLocal({
         point: Number(userState.point) + Number(friendPointChange),
       });
@@ -727,6 +731,38 @@ export const Client: FC<{
             _P={_P}
             detailCurrent={detailCurrent}
           ></ClientSendMsg>
+
+          {showPetGIF && (
+            <m.div
+              style={{
+                x: '-50%',
+                y: '-50%',
+              }}
+              animate={{
+                left: 68,
+                top: 95,
+                scale: 0.15,
+              }}
+              className="fixed left-2/4 top-2/4 z-[99]"
+              transition={{
+                delay: 2,
+                duration: 0.8,
+              }}
+              onAnimationComplete={(e) => {
+                if ((e as any).scale) {
+                  setShowPetGIF(false);
+                }
+              }}
+            >
+              <Image
+                src="/images/gold-coin.gif"
+                width={420}
+                height={420}
+                alt="gold coin"
+                unoptimized
+              ></Image>
+            </m.div>
+          )}
         </div>
       </div>
 
