@@ -2,12 +2,22 @@
 
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { FC, SyntheticEvent, useContext, useRef, useState } from 'react';
+import {
+  FC,
+  SyntheticEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useRouter } from 'next/navigation';
 import { debounce } from '@/utils/debounce-throttle';
 import { filterFormatDate, filterImage } from '@/utils/business';
 import { ChatContext } from './Client';
 import { m } from 'framer-motion';
+import { toast } from 'sonner';
+import emitter from '@/utils/bus';
+import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6';
 
 type Record<T = any> = FC<
   {
@@ -123,6 +133,172 @@ export const TextRecord: TextRecord = {
       </div>
     );
   },
+};
+
+// 音频
+export const AudioRecord: Record<{}> = ({ item }) => {
+  const { state, setList } = useContext(ChatContext);
+  const filterDuration = (num: number) => {
+    if (!num) return '0:00';
+    const h = parseInt(String(num / 60), 10);
+    const s = `${Math.round(num % 60)}`.padStart(2, '0');
+    return `${h}:${s}`;
+  };
+
+  const playVoice = () => {
+    debounce(() => {
+      const { id, playing, voiceUrl } = item;
+      if (!voiceUrl) {
+        toast('Play failure');
+        return;
+      }
+
+      if (state?.currentAudioItem?.id !== id) {
+        destroyAudio();
+        state!.currentAudioItem = item;
+        // setLoading?.(true);
+        // emitter.emit('setGlobalLoading', true);
+
+        state!.audioContext!.src = voiceUrl;
+        state!.audioContext!.load();
+      }
+      if (playing) {
+        state!.audioContext!.pause();
+        // setTimeout(() => {
+        //   state!.audioContext!.playing = false;
+        // }, 50);
+        // setLoading?.(false);
+        // emitter.emit('setGlobalLoading', false);
+      } else if (state?.audioContext?.readyState >= 3) {
+        state?.audioContext?.play();
+      } else {
+        state?.audioContext?.addEventListener(
+          'canplay',
+          () => {
+            // setLoading?.(false);
+            // emitter.emit('setGlobalLoading', false);
+            state?.audioContext?.play();
+          },
+          { once: true }
+        );
+      }
+
+      setList?.((l) => {
+        const CopyList = [...l];
+        const index = l.findIndex((i) => i.id === state!.currentAudioItem.id);
+        if (index >= 0) {
+          CopyList[index] = state!.currentAudioItem;
+        }
+
+        return CopyList;
+      });
+    });
+  };
+
+  const destroyAudio = (type: string | Event = '') => {
+    // setLoading(false);
+    (state!.currentAudioItem as Indexes).playing = false;
+    (state!.currentAudioItem as Indexes).voiveProgress = 0;
+    state!.currentAudioItem = {};
+    if (state!.audioContext && type === 'clear') {
+      state!.audioContext.pause();
+      state!.audioContext.removeEventListener('error', onAudioError);
+      state!.audioContext.removeEventListener('ended', destroyAudio);
+      state!.audioContext.removeEventListener('timeupdate', onAudioUpdate);
+    }
+  };
+
+  const onAudioUpdate = () => {
+    // setLoading(false);
+    (state!.currentAudioItem as Indexes).playing =
+      !state!.audioContext?.paused &&
+      !state!.audioContext?.ended &&
+      state!.audioContext?.readyState &&
+      state!.audioContext?.readyState > 2;
+    const total = (state!.currentAudioItem as Indexes).voiceDuration;
+    const now = state!.audioContext?.currentTime!;
+    const progress = Math.ceil((now / total) * 9);
+    (state!.currentAudioItem as Indexes).voiveProgress = progress;
+
+    setList?.((l) => {
+      const CopyList = [...l];
+      const index = l.findIndex((i) => i.id === state!.currentAudioItem.id);
+
+      if (index >= 0) {
+        CopyList[index] = state!.currentAudioItem;
+      }
+
+      return CopyList;
+    });
+  };
+
+  const onAudioError = () => {
+    destroyAudio();
+    toast.warning('LoadFail');
+  };
+
+  useEffect(() => {
+    if (!state?.audioContext) {
+      console.log(state!.audioContext);
+
+      state!.audioContext = new Audio();
+
+      state!.audioContext.addEventListener('error', onAudioError);
+      state!.audioContext.addEventListener('ended', destroyAudio);
+      state!.audioContext.addEventListener('timeupdate', onAudioUpdate);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="flex items-center relative" dir="ltr">
+      <div
+        className={cn(
+          'item__container--voice bg-[rgba(37,32,51,0.56)] text-white pr-12 flex items-center max-w-60 h-14 rounded-2xl'
+        )}
+        onClick={() => {
+          playVoice();
+        }}
+      >
+        <div className="icons ml-3 relative w-7 h-7">
+          <FaCirclePause
+            className={cn(
+              'absolute transition-all left-0 top-0 w-full h-full text-[rgba(188,117,0,0.72)]',
+              item.playing ? 'z-10 opacity-100' : 'z-0 opacity-0'
+            )}
+          />
+
+          <FaCirclePlay
+            className={cn(
+              'absolute transition-all left-0 top-0 w-full h-full',
+              !item.playing ? 'z-10 opacity-100' : 'z-0 opacity-0'
+            )}
+          />
+        </div>
+        <div className="progress flex items-center my-0 mx-2">
+          {new Array(9).fill(1).map((each, index) => (
+            <div
+              className={cn(
+                'progress__line h-4 w-[3px] mr-1 rounded transition-all',
+                'first-of-type:h-2 [&:nth-of-type(9)]:h-2 [&:nth-of-type(5)]:h-2 [&:nth-of-type(3)]:h-[26px] [&:nth-of-type(7)]:h-[26px]'
+              )}
+              style={{
+                background:
+                  Number(item.voiveProgress) > index
+                    ? 'rgba(188,117,0,0.72)'
+                    : 'white',
+              }}
+              key={index}
+            ></div>
+          ))}
+        </div>
+        <div className="time">{filterDuration(item.voiceDuration)}</div>
+      </div>
+      <div className="absolute text-xs right-2 bottom-2 text-white regular">
+        {filterFormatDate(item.timestamp, 'hh:mm')}
+      </div>
+    </div>
+  );
 };
 
 export const ImageVideoRecorder: Record = ({ item }) => {
@@ -312,6 +488,9 @@ export const ClientChatRecord = () => {
             {['VIDEO', 'IMG'].includes(item.type) && (
               <ImageVideoRecorder item={item}></ImageVideoRecorder>
             )}
+
+            {/* 语音 */}
+            {item.type === 'VOICE' && <AudioRecord item={item}></AudioRecord>}
 
             {/* 排队 */}
             {(item.type === 'ENTERING' || item.type === 'QUEUE_UP') && (

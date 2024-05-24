@@ -63,6 +63,7 @@ type ChatContextState = {
      */
     readyVoice: null | string | Blob;
     listLoading: boolean;
+    audioContext: HTMLAudioElement | null | Indexes;
   };
   detail: any;
   setDetail: Dispatch<SetStateAction<Indexes<any>>>;
@@ -118,6 +119,7 @@ const state: ChatContextState['state'] = {
   hasGuide: false,
   readyVoice: null,
   listLoading: false,
+  audioContext: null,
 };
 
 const _P = 'Chat-';
