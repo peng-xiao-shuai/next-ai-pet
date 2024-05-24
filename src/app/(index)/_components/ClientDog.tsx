@@ -168,7 +168,7 @@ export const ClientDog: FC<{
       </div>
 
       <div
-        className={`absolute -translate-y-[9vh] translate-x-[16vw] z-50 transition-opacity ${className}`}
+        className={`absolute left-[40%] -translate-y-[9vh] -translate-x-full z-50 transition-opacity ${className}`}
         id={STEP_SELECTOR.DOG_BOWL}
         style={{
           top: top,
@@ -433,7 +433,7 @@ export const Card: FC<{
   const [] = useState();
   return (
     <div
-      className={`absolute w-[87px] h-[101px] -translate-y-72 left-[60%] -translate-x-2/4 z-50 transition-opacity ${className}`}
+      className={`absolute w-[87px] h-[101px] -translate-y-72 left-[60%] -translate-x-2/4 z-0 transition-opacity ${className}`}
       id={STEP_SELECTOR.PHOTO_ALBUM}
       style={{
         top: top,
