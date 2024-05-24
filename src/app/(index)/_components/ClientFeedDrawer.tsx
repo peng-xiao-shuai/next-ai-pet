@@ -21,6 +21,7 @@ import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 import emitter from '@/utils/bus';
+import { FaAngleRight } from 'react-icons/fa6';
 
 export const ClientFeedDrawer: FC<{
   drawerVisible: boolean;
@@ -106,6 +107,7 @@ export const ClientFeedDrawer: FC<{
           >
             <input
               className={cn('bg-transparent w-full ')}
+              placeholder="Type the number"
               value={feedValue}
               onChange={({ target }) => {
                 setFeedValue(target.value.replace(/[^0-9]/g, ''));
@@ -130,19 +132,44 @@ export const ClientFeedDrawer: FC<{
 
       <div className="flex items-center justify-between text-[#7F6957] h-12">
         <div className="h-full">
-          <div className="flex items-center">
-            <div className="bg-[#FBEDCE] min-w-16 h-7 px-2 rounded-full flex items-center justify-center gap-1 border-2 border-[#F7D59A]">
+          <div className="flex items-center mb-2">
+            <div className="bg-[#FBEDCE] min-w-14 h-7 px-2 rounded-full flex items-center justify-center gap-1 border-2 border-[#F7D59A]">
               <Image
                 src="/icons/feed.png"
                 width={16}
                 height={16}
                 alt="feed"
               ></Image>
-              <span className="text-xs">{userState.walletAble}</span>
+              <span className="text-sm text-[#8B5E34]">
+                {userState.walletAble}
+              </span>
+            </div>
+            <div className="text-sm ml-1">
+              {t(LOCALE_KEYS.YOU_HAVE_THE_FOOD_)}
             </div>
             <Rules className="!size-6 text-[#737373]"></Rules>
           </div>
-          <div className="text-sm">{t(LOCALE_KEYS.YOU_HAVE_THE_FOOD_)}</div>
+
+          <div className="flex items-center *:leading-none text-[#8B5E34]">
+            <div
+              className="flex items-center pr-1 border-r border-[#C1AA90] cursor-pointer"
+              onClick={() => {
+                emitter.emit('setTaskDrawerVisible', true);
+              }}
+            >
+              <span>Earn food</span>
+              <FaAngleRight />
+            </div>
+            <div
+              className="flex items-center pl-1 cursor-pointer"
+              onClick={() => {
+                emitter.emit('setFoodDrawerVisible', true);
+              }}
+            >
+              <span>Buy food</span>
+              <FaAngleRight />
+            </div>
+          </div>
         </div>
 
         <Button

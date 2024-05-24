@@ -71,6 +71,7 @@ export const ClientCreatePet: FC<{
   }, [progressNum]);
 
   useEffect(() => {
+    localStorage.clear();
     fetchRequest(`/restApi/friend/generate`, {
       styleId: 1,
     }).then(({ result }) => {

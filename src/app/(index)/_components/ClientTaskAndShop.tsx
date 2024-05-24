@@ -4,12 +4,19 @@ import { FC, useState } from 'react';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { ClientTaskDrawer } from './ClientTaskDrawer';
 import { ClientFoodDrawer } from './ClientFoodDrawer';
+import { useBusWatch } from '@/hooks/use-bus-watch';
 
 export const ClientTaskAndShop: FC<{
   className?: string;
 }> = ({ className }) => {
   const [foodDrawerVisible, setFoodDrawerVisible] = useState(false);
   const [taskDrawerVisible, setTaskDrawerVisible] = useState(false);
+  useBusWatch('setFoodDrawerVisible', (bol: boolean) => {
+    setFoodDrawerVisible(bol);
+  });
+  useBusWatch('setTaskDrawerVisible', (bol: boolean) => {
+    setTaskDrawerVisible(bol);
+  });
 
   return (
     <>
