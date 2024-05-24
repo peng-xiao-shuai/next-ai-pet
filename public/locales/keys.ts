@@ -36,4 +36,13 @@ export enum LOCALE_KEYS {
   THANK_YOU_FOR_FEEDING = 'Thank_you_for_feeding',
   SHARE_TEXT = 'share_text',
   CARD_TEXT = 'card_text',
+
+  INVITATION_RECORD = 'invitation_record',
+  TOTAL_INVITATION = 'total_invitation',
+  EARN_AIPET = 'earn_aipet',
+  CARDS = 'cards',
+  CONGRATULATIONS = 'congratulations',
+  GET_A_COLLECTION_CARD = 'get_a_collection_card',
+  GET_A_RARE_CARD = 'get_a_rare_card',
+  GET_A_GOLDEN_CARD = 'get_a_golden_card',
 }

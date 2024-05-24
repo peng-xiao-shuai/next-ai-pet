@@ -43,5 +43,13 @@ const lang = {
   [LOCALE_KEYS.SHARE_TEXT]: '邀請1人+${0}$Pets與1份糧食',
   [LOCALE_KEYS.CARD_TEXT]:
     'Your dog will go out and take photo as collection for you, some of them will have special value! ',
+  [LOCALE_KEYS.INVITATION_RECORD]: '邀请记录',
+  [LOCALE_KEYS.TOTAL_INVITATION]: '邀请人数',
+  [LOCALE_KEYS.EARN_AIPET]: '赚取金额',
+  [LOCALE_KEYS.CARDS]: '图集',
+  [LOCALE_KEYS.CONGRATULATIONS]: '恭喜获得',
+  [LOCALE_KEYS.GET_A_COLLECTION_CARD]: '绿色卡片一张',
+  [LOCALE_KEYS.GET_A_RARE_CARD]: '紫色卡片一张',
+  [LOCALE_KEYS.GET_A_GOLDEN_CARD]: '金色卡片一张',
 } as const;
 export default lang;

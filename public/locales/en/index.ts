@@ -45,6 +45,15 @@ const lang = {
     'If you invite a new user you will get +${0}$Pets and 1 food.',
   [LOCALE_KEYS.CARD_TEXT]:
     'Your dog will go out and take photo as collection for you, some of them will have special value! ',
+
+  [LOCALE_KEYS.INVITATION_RECORD]: 'Invitation Record',
+  [LOCALE_KEYS.TOTAL_INVITATION]: 'Total Invitation ',
+  [LOCALE_KEYS.EARN_AIPET]: 'Earn $AIPET',
+  [LOCALE_KEYS.CARDS]: 'Cards',
+  [LOCALE_KEYS.CONGRATULATIONS]: 'Congratulations!',
+  [LOCALE_KEYS.GET_A_COLLECTION_CARD]: 'Get a Collection Card',
+  [LOCALE_KEYS.GET_A_RARE_CARD]: 'Get a Rare Card',
+  [LOCALE_KEYS.GET_A_GOLDEN_CARD]: 'Get a Golden Card',
 } as const;
 
 export default lang;

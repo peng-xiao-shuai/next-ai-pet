@@ -45,5 +45,14 @@ const lang = {
   [LOCALE_KEYS.SHARE_TEXT]: 'Пригласить 1 друга +${0}$Pets и 1 порция еды',
   [LOCALE_KEYS.CARD_TEXT]:
     'Your dog will go out and take photo as collection for you, some of them will have special value! ',
+
+  [LOCALE_KEYS.INVITATION_RECORD]: 'Invitation Record',
+  [LOCALE_KEYS.TOTAL_INVITATION]: 'Total Invitation ',
+  [LOCALE_KEYS.EARN_AIPET]: 'Earn $AIPET',
+  [LOCALE_KEYS.CARDS]: 'Cards',
+  [LOCALE_KEYS.CONGRATULATIONS]: 'Congratulations!',
+  [LOCALE_KEYS.GET_A_COLLECTION_CARD]: 'Get a Collection Card',
+  [LOCALE_KEYS.GET_A_RARE_CARD]: 'Get a Rare Card',
+  [LOCALE_KEYS.GET_A_GOLDEN_CARD]: 'Get a Golden Card',
 } as const;
 export default lang;
