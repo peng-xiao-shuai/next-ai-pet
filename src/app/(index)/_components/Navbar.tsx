@@ -41,7 +41,7 @@ export const Navbar: FC<{
       {
         iconUrl: '/icons/gold-coin.png',
         alt: 'gold coin',
-        val: userState.upgradeRequiredPoint - userState.point,
+        val: userState.point,
       },
       {
         iconUrl: '/icons/feed.png',
