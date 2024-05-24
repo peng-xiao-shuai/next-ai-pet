@@ -101,12 +101,15 @@ export const ClientFeedDrawer: FC<{
         <div className="relative flex-1">
           <div
             className={cn(
-              'bg-[#FFFCF7] text-black rounded-2xl h-12 flex items-center px-2 w-full border-2 border-[#D3B996] duration-300 transition-all',
+              'bg-[#FFFCF7] rounded-2xl h-12 flex items-center px-2 w-full border-2 border-[#D3B996] duration-300 transition-all',
               errorMsg ? 'border-[#FF2F53] mb-[6px]' : ''
             )}
           >
             <input
-              className={cn('bg-transparent w-full ')}
+              className={cn(
+                'bg-transparent w-full',
+                Boolean(errorMsg) ? 'text-[#FF2F53]' : 'text-black '
+              )}
               placeholder="Type the number"
               value={feedValue}
               onChange={({ target }) => {

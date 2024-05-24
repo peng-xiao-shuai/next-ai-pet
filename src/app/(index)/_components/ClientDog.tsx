@@ -527,14 +527,19 @@ export const Card: FC<{
         setCardDrawerVisible(true);
       }}
     >
-      <div className="w-full h-full absolute z-20">
+      <div className="w-full h-full absolute">
         <NextImage src={photoAlbum} fill alt="photo album"></NextImage>
       </div>
       <div className="absolute z-10 w-[calc(100%-12px)] h-[calc(100%-12px)] box-border left-2/4 top-2/4 -translate-y-2/4 -translate-x-2/4">
-        <NextImage src="/images/scenery.jpg" fill alt="scenery"></NextImage>
+        <NextImage
+          src="/images/scenery.jpg"
+          fill
+          sizes="100%"
+          alt="scenery"
+        ></NextImage>
       </div>
 
-      <div className="absolute bottom-3 left-2/4 -translate-x-2/4 z-10000 text-xs px-1 rounded-full bg-gradient-to-t from-[#F3CF86] to-[#FFF5E0] text-[#BD7D1D]">
+      <div className="absolute z-10 bottom-3 left-2/4 -translate-x-2/4 text-xs px-1 rounded-full bg-gradient-to-t from-[#F3CF86] to-[#FFF5E0] text-[#BD7D1D]">
         Collection
       </div>
     </div>
