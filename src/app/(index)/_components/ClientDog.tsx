@@ -17,7 +17,6 @@ import { ChatContext } from './Client';
 import { LOCALE_KEYS } from '@@/locales';
 import { filterImage } from '@/utils/business';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
-import { VideoName } from './ShowAnimation';
 import { ClientFeedDrawer } from './ClientFeedDrawer';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import { STEP_SELECTOR } from '@/utils/stpes';
@@ -28,20 +27,29 @@ import { ClientCardDrawer } from './ClientCardDrawer';
 import { useUserStore } from '@/hooks/use-user';
 import { useTour } from '@reactour/tour';
 
+export enum DogGifName {
+  KISS = 'kiss',
+  TOUCH = 'touch',
+  HUG = 'hug',
+  EAT = 'eat',
+  NONE = 'none',
+  LEISURE = 'leisure',
+}
+
 const Gifs: Record<
-  Exclude<VideoName, VideoName.NONE>,
+  Exclude<DogGifName, DogGifName.NONE>,
   {
     src: string;
     name: string;
     data: (() => void) | StaticImageData;
   }
 > = {
-  [VideoName.LEISURE]: {
+  [DogGifName.LEISURE]: {
     src: 'leisure',
     name: 'Leisure',
     data: emptyFace,
   },
-  [VideoName.EAT]: {
+  [DogGifName.EAT]: {
     src: 'eat',
     name: 'Eat',
     data: function () {
@@ -52,7 +60,7 @@ const Gifs: Record<
       });
     },
   },
-  [VideoName.HUG]: {
+  [DogGifName.HUG]: {
     src: 'hug',
     name: 'Hug',
     data: function () {
@@ -61,7 +69,7 @@ const Gifs: Record<
       });
     },
   },
-  [VideoName.KISS]: {
+  [DogGifName.KISS]: {
     src: 'kiss',
     name: 'Kiss',
     data: function () {
@@ -70,7 +78,7 @@ const Gifs: Record<
       });
     },
   },
-  [VideoName.TOUCH]: {
+  [DogGifName.TOUCH]: {
     src: 'touch',
     name: 'Touch',
     data: function () {
@@ -91,11 +99,11 @@ const TIME_COUNT = 60;
 export const ClientDog: FC<{
   bgImgHeight: number;
   className?: string;
-  name: VideoName;
+  name: DogGifName;
   onEnd: () => void;
 }> = ({ bgImgHeight, name, onEnd, className }) => {
-  const [gif, setGif] = useState<Exclude<VideoName, VideoName.NONE>>(
-    VideoName.LEISURE
+  const [gif, setGif] = useState<Exclude<DogGifName, DogGifName.NONE>>(
+    DogGifName.LEISURE
   );
   const top = useMemo(() => bgImgHeight, [bgImgHeight]);
   const [feedDrawerVisible, setFeedDrawerVisible] = useState(false);
@@ -107,47 +115,56 @@ export const ClientDog: FC<{
 
   useBusWatch('foodStatus', () => {
     setFoodPng('/icons/dog-bowl.png');
-    setGif(VideoName.EAT);
+    setGif(DogGifName.EAT);
 
     timeCount.current = TIME_COUNT;
 
     const timer = setInterval(() => {
       timeCount.current -= 1;
       localStorage.setItem('foodTimeCount', String(timeCount.current));
+      console.log(timeCount.current <= 0);
 
       if (timeCount.current <= 0) {
         setFoodPng('/icons/empty-dog-bowl.png');
-        setGif(VideoName.LEISURE);
+        setGif(DogGifName.LEISURE);
         clearInterval(timer);
       }
     }, 1000);
   });
 
   useEffect(() => {
-    console.log('name', name);
-
-    if (![VideoName.NONE].includes(name)) {
-      setGif(name as Exclude<VideoName, VideoName.NONE>);
+    console.log('name', name, ![DogGifName.NONE].includes(name));
+    let timer: NodeJS.Timeout;
+    if (![DogGifName.NONE].includes(name)) {
+      setGif(name as Exclude<DogGifName, DogGifName.NONE>);
       // setVisible(true);
 
-      const timer = setTimeout(
+      timer = setTimeout(
         () => {
           setGif((state) => {
             if (foodPng == '/icons/dog-bowl.png') {
-              return VideoName.EAT;
+              return DogGifName.EAT;
             } else {
-              return VideoName.LEISURE;
+              return DogGifName.LEISURE;
             }
           });
           onEnd();
           setTargetActive('');
           clearTimeout(timer);
         },
-        name === VideoName.KISS ? 3800 : name === VideoName.TOUCH ? 2700 : 2500
+        name === DogGifName.KISS
+          ? 3800
+          : name === DogGifName.TOUCH
+          ? 2700
+          : 2500
       );
     }
+
+    return () => {
+      timer && clearTimeout(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name]);
+  }, [name, foodPng]);
 
   useEffect(() => {
     timeCount.current = Number(localStorage.getItem('foodTimeCount') || '0');
@@ -155,7 +172,7 @@ export const ClientDog: FC<{
     let timer: NodeJS.Timeout;
     if (timeCount.current > 0) {
       setFoodPng('/icons/dog-bowl.png');
-      setGif(VideoName.EAT);
+      setGif(DogGifName.EAT);
 
       timer = setInterval(() => {
         timeCount.current -= 1;
@@ -163,14 +180,14 @@ export const ClientDog: FC<{
 
         if (timeCount.current <= 0) {
           setFoodPng('/icons/empty-dog-bowl.png');
-          setGif(VideoName.LEISURE);
+          setGif(DogGifName.LEISURE);
           clearInterval(timer);
         }
       }, 1000);
     }
 
     Object.keys(Gifs).forEach((key) => {
-      const _key = key as Exclude<VideoName, VideoName.NONE>;
+      const _key = key as Exclude<DogGifName, DogGifName.NONE>;
 
       if (typeof Gifs[_key].data === 'function') {
         (Gifs[_key].data as () => void)();
@@ -181,6 +198,10 @@ export const ClientDog: FC<{
       clearInterval(timer);
     };
   }, []);
+
+  // useEffect(() => {
+  //   console.log(gif, 'gif.....');
+  // }, [gif]);
 
   return (
     <>
@@ -420,7 +441,7 @@ export const Active: FC<{
 };
 
 export const DogActive: FC<{
-  gif: Exclude<VideoName, VideoName.NONE>;
+  gif: Exclude<DogGifName, DogGifName.NONE>;
   setTargetActive: Dispatch<SetStateAction<Tools['name'] | ''>>;
 }> = ({ gif, setTargetActive }) => {
   const [lastTap, setLastTap] = useState(0);
@@ -432,7 +453,7 @@ export const DogActive: FC<{
   const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
     const { offsetX, offsetY } = e.nativeEvent;
 
-    if (![VideoName.KISS, VideoName.TOUCH, VideoName.HUG].includes(gif)) {
+    if (![DogGifName.KISS, DogGifName.TOUCH, DogGifName.HUG].includes(gif)) {
       const currentTime = new Date().getTime();
       const tapLength = currentTime - lastTap;
 
@@ -464,7 +485,7 @@ export const DogActive: FC<{
 
       if (
         deltaY > 0 &&
-        ![VideoName.KISS, VideoName.TOUCH, VideoName.HUG].includes(gif)
+        ![DogGifName.KISS, DogGifName.TOUCH, DogGifName.HUG].includes(gif)
       ) {
         console.log('向上拖拽');
         setTargetActive('Hug');

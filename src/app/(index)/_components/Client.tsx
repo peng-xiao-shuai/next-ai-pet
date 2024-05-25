@@ -21,11 +21,11 @@ import { Navbar } from './Navbar';
 import { useUserStore } from '@/hooks/use-user';
 import AppConfigEnv from '@/utils/get-config';
 import { usePublicSocket } from '@/hooks/use-public-socket';
-import { VideoName } from './ShowAnimation';
+import { VideoName, VideoPlayer } from './ShowAnimation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { ShowIntroductionAnimation } from './ShowIntroductionAnimation';
 import Image from 'next/image';
-import { ClientDog } from './ClientDog';
+import { ClientDog, DogGifName } from './ClientDog';
 import { cn } from '@/lib/utils';
 import { m, AnimatePresence } from 'framer-motion';
 import { ClientTaskAndShop } from './ClientTaskAndShop';
@@ -93,7 +93,7 @@ type ChatContextState = {
   newestId: string | '';
   readyState: 0 | 1 | 2 | 3;
   checkEntering: () => void;
-  // showAnimationFun: (source: VideoName.FOOD | VideoName.FEED) => void;
+  showAnimationFun: (source: VideoName.FOOD | VideoName.FEED) => void;
   scrollToBottom: (duration?: number) => void;
   isKeyboardUp: boolean;
 };
@@ -138,9 +138,8 @@ export const Client: FC<{
   const scrollDom = useRef<HTMLDivElement | null>(null);
   const recordListLength = useRef(0);
   const [list, setList] = useState<any[]>([]);
-  const [videoPlayerName, setVideoPlayerName] = useState<VideoName>(
-    VideoName.LEISURE
-  );
+  const [dogGif, setDogGif] = useState<DogGifName>(DogGifName.LEISURE);
+  const [videoPlayName, setVideoPlayName] = useState<VideoName>(VideoName.NONE);
   const [loading, setLoading] = useState<boolean>(false);
   const [queryingPast, setQueryingPast] = useState(false);
   const [bgImgHeight, setBgImgHeight] = useState(0);
@@ -332,13 +331,13 @@ export const Client: FC<{
       if (item.source === 'MEMBER') {
         switch (item.action) {
           case 'Kiss on':
-            setVideoPlayerName(VideoName.KISS);
+            setDogGif(DogGifName.KISS);
             break;
           case 'Touch':
-            setVideoPlayerName(VideoName.TOUCH);
+            setDogGif(DogGifName.TOUCH);
             break;
           case 'Hug':
-            setVideoPlayerName(VideoName.HUG);
+            setDogGif(DogGifName.HUG);
             break;
         }
       }
@@ -561,15 +560,14 @@ export const Client: FC<{
     window.scrollTo(0, 0);
   };
 
-  // /**
-  //  * 开启动画, 目前是购买狗粮和喂养狗粮调用
-  //  * @param {string} source 来源
-  //  */
-  // const showAnimationFun = (source: VideoName.FEED | VideoName.FOOD) => {
-  //   setVideoPlayerName(source);
-  // };
+  /**
+   * 开启动画, 目前是购买狗粮和喂养狗粮调用
+   * @param {string} source 来源
+   */
+  const showAnimationFun = (source: VideoName.FEED | VideoName.FOOD) => {
+    setVideoPlayName(source);
+  };
 
-  // usePublicSocket(showAnimationFun);
   usePublicSocket({
     onInit: () => {
       /**
@@ -588,6 +586,10 @@ export const Client: FC<{
         setCardData(data.content);
         setVisibleCardPopup(true);
       }
+      //  else if (data.type === 'RECHARGE_SUCCESS') {
+      //   // 开启充值动画;
+      //   showAnimationFun?.(VideoName.FOOD);
+      // }
     },
   });
 
@@ -697,7 +699,7 @@ export const Client: FC<{
         newestId,
         readyState,
         checkEntering,
-        // showAnimationFun,
+        showAnimationFun,
         scrollToBottom,
         isKeyboardUp,
       }}
@@ -732,9 +734,9 @@ export const Client: FC<{
 
         <ClientDog
           bgImgHeight={bgImgHeight}
-          name={videoPlayerName}
+          name={dogGif}
           onEnd={() => {
-            setVideoPlayerName(VideoName.NONE);
+            setDogGif(DogGifName.NONE);
           }}
         ></ClientDog>
 
@@ -801,6 +803,13 @@ export const Client: FC<{
           )}
         </div>
       </div>
+
+      <VideoPlayer
+        onEnd={() => {
+          setVideoPlayName(VideoName.NONE);
+        }}
+        name={videoPlayName}
+      ></VideoPlayer>
 
       <ShowIntroductionAnimation _P={_P}></ShowIntroductionAnimation>
     </ChatContext.Provider>

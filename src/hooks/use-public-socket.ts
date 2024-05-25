@@ -29,10 +29,6 @@ export const usePublicSocket = ({
 
       const data = JSON.parse(e.data);
 
-      if (data.type === 'RECHARGE_SUCCESS') {
-        // 开启动画
-        // showAnimationFun?.(VideoName.FOOD);
-      }
       onMessage(data);
     });
 

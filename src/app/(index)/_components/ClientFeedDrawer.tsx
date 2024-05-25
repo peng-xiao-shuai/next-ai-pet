@@ -27,8 +27,7 @@ export const ClientFeedDrawer: FC<{
   drawerVisible: boolean;
   setDrawerVisible: Dispatch<SetStateAction<boolean>>;
 }> = ({ drawerVisible, setDrawerVisible }) => {
-  // const { state, showAnimationFun } = useContext(ChatContext);
-  const { state } = useContext(ChatContext);
+  const { state, showAnimationFun } = useContext(ChatContext);
   const [feedValue, setFeedValue] = useState<number | string>(5);
   const { userState, setDataLocal } = useUserStore();
   const { t } = useTranslation();
@@ -207,7 +206,7 @@ export const ClientFeedDrawer: FC<{
               ]);
 
               // 开启动画
-              // showAnimationFun?.(VideoName.FEED);
+              showAnimationFun?.(VideoName.FEED);
 
               toast(
                 t(LOCALE_KEYS.THANK_YOU_FOR_FEEDING, [result.chatCapacity]),
