@@ -724,8 +724,8 @@ export const Client: FC<{
         className={`fixed z-[0] top-0 object-top`}
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
-          setBgImgHeight(_target.height / 1.5);
-          setScrollHeight(window.innerHeight - _target.height / 1.5 + 'px');
+          setBgImgHeight(400);
+          setScrollHeight(window.innerHeight - 400 + 'px');
         }}
       />
 
