@@ -77,9 +77,13 @@ export const ClientTaskDrawer: FC<{
           })
         : '',
     }));
-    const inviteData = data.find((item: Task) => item.code === 'INVITE_MEMBER');
-    data.splice(data.indexOf(inviteData), 1);
-    data.unshift(inviteData);
+    if (data.map((item: Task) => item.isCompleted).length - 1 == data.length) {
+      const inviteData = data.find(
+        (item: Task) => item.code === 'INVITE_MEMBER'
+      );
+      data.splice(data.indexOf(inviteData), 1);
+      data.unshift(inviteData);
+    }
     setTaskList(data);
     setLoading(false);
   };

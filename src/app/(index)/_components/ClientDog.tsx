@@ -397,7 +397,7 @@ export const Active: FC<{
   }, []);
 
   return (
-    <div className="absolute px-4 -left-10 -top-5 z-50 w-[84px]">
+    <div className="absolute px-4 -left-10 -top-3 z-50 w-[84px]">
       {tools?.map((tool: any, index: number) => (
         <div
           key={index}
