@@ -582,9 +582,12 @@ export const Client: FC<{
     },
     onMessage: (data) => {
       if (data.type === 'DROP_CARD') {
-        emitter.emit('setCard', data.content);
-        setCardData(data.content);
-        setVisibleCardPopup(true);
+        const timer = setTimeout(() => {
+          emitter.emit('setCard', data.content);
+          setCardData(data.content);
+          setVisibleCardPopup(true);
+          clearTimeout(timer);
+        }, 2500);
       }
       //  else if (data.type === 'RECHARGE_SUCCESS') {
       //   // 开启充值动画;
@@ -718,11 +721,11 @@ export const Client: FC<{
         src="/images/bg.png"
         alt="bg"
         priority
-        className={`fixed z-[0] top-0 object-center`}
+        className={`fixed z-[0] top-0 object-top`}
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
-          setBgImgHeight(_target.height / 1.85);
-          setScrollHeight(window.innerHeight - _target.height / 1.85 + 'px');
+          setBgImgHeight(_target.height / 1.5);
+          setScrollHeight(window.innerHeight - _target.height / 1.5 + 'px');
         }}
       />
 
