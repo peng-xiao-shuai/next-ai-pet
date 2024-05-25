@@ -20,6 +20,7 @@ import { filterImage } from '@/utils/business';
 import { LOCALE_KEYS } from '@@/locales';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useBusWatch } from '@/hooks/use-bus-watch';
+import { toast } from 'sonner';
 // import { LOCALE_KEYS } from '@@/locales';
 // import { useTranslation } from '@/hooks/useTranslation';
 // import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
@@ -108,6 +109,8 @@ export type Cards = {
   resourceType: CardType;
 };
 
+let isToast = false;
+
 export const ClientCardDrawer: FC<{
   drawerVisible: boolean;
   setDrawerVisible: Dispatch<SetStateAction<boolean>>;
@@ -138,6 +141,16 @@ export const ClientCardDrawer: FC<{
       ...(cacheCard[type].pageNo > 1 ? cacheCard[type].data : []),
       ...(result.rows as Cards[]),
     ];
+
+    if (!cacheCard[type].data.length && isToast) {
+      isToast = false;
+      toast(
+        'Your dog will go out and take photo as collection for you, some of them will have special value! Please wait for your dog to take photo back for you ',
+        {
+          duration: 2000,
+        }
+      );
+    }
     setCards(cacheCard[type].data);
 
     /**
@@ -154,6 +167,7 @@ export const ClientCardDrawer: FC<{
   });
 
   useEffect(() => {
+    isToast = drawerVisible;
     if (drawerVisible) {
       // Object.keys(cacheCard).forEach((item) => {
       //   const key = item as CardType;
