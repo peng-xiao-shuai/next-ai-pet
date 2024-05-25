@@ -598,7 +598,6 @@ export const DogBubble: FC<{
       className={`${
         visible ? '' : 'opacity-0'
       } pointer-events-none transition-all duration-500 absolute w-[150px] h-[118px] -translate-y-56 left-[34%] translate-x-2/4 z-40 bg-[url('/images/bubble.png')] text-[15px] bg-[size:100%_100%] flex text-center leading-4 tracking-tight text-[#874544] px-4 pt-7`}
-      id={STEP_SELECTOR.PHOTO_ALBUM}
       style={{
         top: top,
       }}

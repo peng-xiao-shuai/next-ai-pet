@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { m } from 'framer-motion';
 import { useBusWatch } from '@/hooks/use-bus-watch';
 import Image, { StaticImageData } from 'next/image';
+import FoodPng from '@@/images/food.gif';
+import FeedPng from '@@/images/feed.gif';
 
 export enum VideoName {
   FOOD = 'food',
@@ -28,18 +30,10 @@ const FrameProps: {
   //   // totalFrames: 51,
   // },
   [VideoName.FOOD]: {
-    data: function () {
-      import('@@/images/food.gif').then((res) => {
-        this.data = res.default;
-      });
-    },
+    data: FoodPng,
   },
   [VideoName.FEED]: {
-    data: function () {
-      import('@@/images/feed.gif').then((res) => {
-        this.data = res.default;
-      });
-    },
+    data: FeedPng,
   },
 };
 
