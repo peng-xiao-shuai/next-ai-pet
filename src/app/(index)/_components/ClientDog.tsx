@@ -26,6 +26,7 @@ import emptyFace from '@@/icons/empty-face.png';
 import photoAlbum from '@@/images/photo-album.png';
 import { ClientCardDrawer } from './ClientCardDrawer';
 import { useUserStore } from '@/hooks/use-user';
+import { useTour } from '@reactour/tour';
 
 const Gifs: Record<
   Exclude<VideoName, VideoName.NONE>,
@@ -85,7 +86,7 @@ type Tools = {
   name: 'Kiss on' | 'Touch' | 'Hug';
 } & Indexes<string>;
 
-const TIME_COUNT = 30;
+const TIME_COUNT = 60;
 
 export const ClientDog: FC<{
   bgImgHeight: number;
@@ -132,7 +133,7 @@ export const ClientDog: FC<{
       const timer = setTimeout(
         () => {
           setGif((state) => {
-            if (state == VideoName.EAT) {
+            if (foodPng == '/icons/dog-bowl.png') {
               return VideoName.EAT;
             } else {
               return VideoName.LEISURE;
@@ -155,7 +156,6 @@ export const ClientDog: FC<{
     if (timeCount.current > 0) {
       setFoodPng('/icons/dog-bowl.png');
       setGif(VideoName.EAT);
-      console.log(VideoName.EAT);
 
       timer = setInterval(() => {
         timeCount.current -= 1;
@@ -307,8 +307,8 @@ export const Active: FC<{
                   url: filterImage(item.expression2),
                   name: item.action,
                   style: [
-                    { transform: 'translate(55%, 0%)', marginBottom: '6px' },
-                    { transform: 'translate(-45%, 0%)', marginBottom: '18px' },
+                    { transform: 'translate(55%, 0%)', marginBottom: '4px' },
+                    { transform: 'translate(-45%, 0%)', marginBottom: '12px' },
                     { transform: 'translate(20%, 0%)' },
                   ][index],
                 } as never)
@@ -397,7 +397,7 @@ export const Active: FC<{
   }, []);
 
   return (
-    <div className="absolute px-4 -left-10 -top-7 z-50 w-[84px]">
+    <div className="absolute px-4 -left-10 -top-5 z-50 w-[84px]">
       {tools?.map((tool: any, index: number) => (
         <div
           key={index}
@@ -432,10 +432,7 @@ export const DogActive: FC<{
   const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
     const { offsetX, offsetY } = e.nativeEvent;
 
-    if (
-      // @ts-ignore
-      e.target.src.indexOf(Gifs[VideoName.LEISURE].src) != -1
-    ) {
+    if (![VideoName.KISS, VideoName.TOUCH, VideoName.HUG].includes(gif)) {
       const currentTime = new Date().getTime();
       const tapLength = currentTime - lastTap;
 
@@ -465,7 +462,10 @@ export const DogActive: FC<{
 
       const deltaY = startY - currentY;
 
-      if (deltaY > 0) {
+      if (
+        deltaY > 0 &&
+        ![VideoName.KISS, VideoName.TOUCH, VideoName.HUG].includes(gif)
+      ) {
         console.log('向上拖拽');
         setTargetActive('Hug');
         // 在此处处理向上拖拽的逻辑
@@ -489,10 +489,6 @@ export const DogActive: FC<{
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
-
-  useEffect(() => {
-    console.log(gif);
-  }, [gif]);
 
   return (
     <NextImage
@@ -554,6 +550,7 @@ export const DogBubble: FC<{
   top: number;
   trigger: (bol: boolean) => void;
 }> = ({ isEmpty, trigger, top }) => {
+  const { isOpen } = useTour();
   const [visible, setVisible] = useState(false);
   const timer = useRef<NodeJS.Timeout | null>(null);
   const { userState } = useUserStore();
@@ -562,8 +559,10 @@ export const DogBubble: FC<{
       timer.current && clearTimeout(timer.current);
 
       timer.current = setTimeout(() => {
-        setVisible(true);
-        trigger(true);
+        if (!isOpen) {
+          trigger(true);
+          setVisible(true);
+        }
       }, userState.dogHungryReminderInterval * 1000);
     } else {
       setVisible(false);

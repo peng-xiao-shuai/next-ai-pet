@@ -575,11 +575,11 @@ export const Client: FC<{
       /**
        * 随机获取卡片
        */
-      console.log(friendId, 'friendIdfriendIdfriendIdfriendIdfriendIdfriendId');
-
       const num = Math.floor(Math.random() * (60 - 20 + 1)) + 20;
       setTimeout(() => {
-        fetchRequest('/restApi/friend/randomCard/' + friendId);
+        if (state.friendId) {
+          fetchRequest('/restApi/friend/randomCard/' + state.friendId);
+        }
       }, num * 1000);
     },
     onMessage: (data) => {

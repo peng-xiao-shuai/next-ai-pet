@@ -10,7 +10,7 @@ export const Loading = () => {
   });
   return (
     <Dialog open={visible}>
-      <DialogContent>
+      <DialogContent className="border-none">
         <div className="bg-black/40 size-24 !rounded-s flex justify-center items-center">
           <span className="loading loading-spinner size-10 text-white"></span>
         </div>
