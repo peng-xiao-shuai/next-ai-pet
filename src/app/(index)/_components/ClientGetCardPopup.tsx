@@ -21,7 +21,7 @@ export const ClientGetCardPopup: FC<CenterPopupProps> = ({
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
-        className={`!block !w-full border-none text-white shadow-none data-[state=open]:!zoom-in-100`}
+        className={`!block !w-full border-none text-white shadow-none data-[state=open]:!zoom-in-100 !pointer-events-none`}
       >
         <Image
           src="/images/card-bg.png"

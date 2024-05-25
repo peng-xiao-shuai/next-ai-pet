@@ -2,7 +2,7 @@ import FrameAnimation from '@/components/FrameAnimation';
 import React, { useEffect, useRef, useState } from 'react';
 import { m } from 'framer-motion';
 import { useBusWatch } from '@/hooks/use-bus-watch';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 export enum VideoName {
   FOOD = 'food',
@@ -10,7 +10,11 @@ export enum VideoName {
   NONE = 'none',
 }
 
-const FrameProps = {
+const FrameProps: {
+  [k in Exclude<VideoName, VideoName.NONE>]: {
+    data: (() => void) | StaticImageData;
+  };
+} = {
   // [VideoName.KISS]: {
   //   baseUrl: '/images/kiss.gif',
   //   // totalFrames: 75,
@@ -24,12 +28,18 @@ const FrameProps = {
   //   // totalFrames: 51,
   // },
   [VideoName.FOOD]: {
-    baseUrl: '/images/food.gif',
-    // totalFrames: 52,
+    data: function () {
+      import('@@/images/food.gif').then((res) => {
+        this.data = res.default;
+      });
+    },
   },
   [VideoName.FEED]: {
-    baseUrl: '/images/feed.gif',
-    // totalFrames: 53,
+    data: function () {
+      import('@@/images/feed.gif').then((res) => {
+        this.data = res.default;
+      });
+    },
   },
 };
 
@@ -78,6 +88,16 @@ export const VideoPlayer: React.FC<{
     }
   }, [name]);
 
+  useEffect(() => {
+    Object.keys(FrameProps).forEach((key) => {
+      const _key = key as Exclude<VideoName, VideoName.NONE>;
+
+      if (typeof FrameProps[_key].data === 'function') {
+        (FrameProps[_key].data as () => void)();
+      }
+    });
+  }, []);
+
   // useBusWatch('fetchIdle', () => {
   //   const timer = setTimeout(() => {
   //     Object.keys(videoCache).forEach((key, index) => {
@@ -125,7 +145,7 @@ export const VideoPlayer: React.FC<{
                 },
               }
         }
-        transition={{ type: 'spring', duration: 0.5 }}
+        transition={{ type: 'spring', duration: 1 }}
         onAnimationComplete={(definition: any) => {
           if (definition.opacity != 1) {
             onEnd();
@@ -148,7 +168,7 @@ export const VideoPlayer: React.FC<{
             onAllLoaded={onAllLoaded}
           ></FrameAnimation> */}
           <Image
-            src={FrameProps[name].baseUrl}
+            src={FrameProps[name].data as StaticImageData}
             width={200}
             height={200}
             alt={name}
