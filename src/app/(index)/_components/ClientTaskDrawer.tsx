@@ -77,7 +77,11 @@ export const ClientTaskDrawer: FC<{
           })
         : '',
     }));
-    if (data.map((item: Task) => item.isCompleted).length - 1 == data.length) {
+
+    if (
+      data.filter((item: Task) => item.isCompleted).length ==
+      data.length - 1
+    ) {
       const inviteData = data.find(
         (item: Task) => item.code === 'INVITE_MEMBER'
       );
