@@ -178,7 +178,7 @@ export const ClientCardDrawer: FC<{
       //     hasMore: true,
       //   };
       // });
-      getCards(CardType.IMAGE_COLLECTION);
+      getCards(cardType);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawerVisible]);
