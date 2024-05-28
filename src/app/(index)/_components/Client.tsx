@@ -720,11 +720,18 @@ export const Client: FC<{
         src="/images/bg.png"
         alt="bg"
         priority
-        className={`fixed z-[0] top-0 object-top object-fill`}
+        className={`fixed z-[0] top-0 object-top ${
+          bgImgHeight == 380 ? '' : 'object-fill'
+        }`}
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
-          setBgImgHeight(_target.height / 2);
-          setScrollHeight(window.innerHeight - _target.height / 2 + 'px');
+          if (_target.height < 760) {
+            setBgImgHeight(380);
+            setScrollHeight(window.innerHeight - 380 + 'px');
+          } else {
+            setBgImgHeight(_target.height / 2);
+            setScrollHeight(window.innerHeight - _target.height / 2 + 'px');
+          }
         }}
       />
 
