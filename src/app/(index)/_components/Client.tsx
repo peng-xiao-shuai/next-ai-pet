@@ -710,22 +710,21 @@ export const Client: FC<{
       <Image
         // width={576}
         // height={1267}
-        // sizes="100vw"
-        // style={{
-        //   width: '100%',
-        //   height: 'auto',
-        //   maskImage: 'linear-gradient(#000 80%, transparent)',
-        //   WebkitMaskImage: 'linear-gradient(#000 80%, transparent)',
-        // }}
+        style={{
+          width: '100%',
+          height: '100%',
+          maskImage: 'linear-gradient(#000 80%, transparent)',
+          WebkitMaskImage: 'linear-gradient(#000 80%, transparent)',
+        }}
         fill
         src="/images/bg.png"
         alt="bg"
         priority
-        className={`fixed z-[0] top-0 object-top`}
+        className={`fixed z-[0] top-0 object-top object-fill`}
         onLoad={({ target }) => {
           const _target = target as HTMLImageElement;
-          setBgImgHeight(400);
-          setScrollHeight(window.innerHeight - 400 + 'px');
+          setBgImgHeight(_target.height / 2);
+          setScrollHeight(window.innerHeight - _target.height / 2 + 'px');
         }}
       />
 
