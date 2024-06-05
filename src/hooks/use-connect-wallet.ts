@@ -64,6 +64,10 @@ export const useConnectWallet = ({
   useInterval(recreateProofPayload, TonProofDemoApi.refreshIntervalMs);
 
   useEffect(() => {
+    setIsCheck(Boolean(address))
+  }, [address])
+
+  useEffect(() => {
     const unChange = tonConnectUI.onStatusChange((w) => {
       debounce(async () => {
         console.log('w ==>', w);
