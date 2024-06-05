@@ -20,6 +20,7 @@ export const TGInitScript = () => {
   const TGWebAppReady = () => {
     const WebApp = window.Telegram.WebApp;
     WebApp.expand();
+    WebApp.enableClosingConfirmation()
 
     const params: Indexes<string> = JSON.parse(
       WebApp.initDataUnsafe.start_param
@@ -217,7 +218,7 @@ export const TGInitScript = () => {
       <Script
         defer
         data-domain="aipets.io"
-        src="http://log.href.style/js/script.js"
+        src="https://log.href.style/js/script.js"
       ></Script>
 
       <Script
