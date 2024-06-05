@@ -11,7 +11,8 @@ import VC from 'vconsole';
 import { CustomEvents, handleTriggerEvent } from '@/utils/GA-event';
 
 export const TGInitScript = () => {
-  const setData = useUserStore.getState().setDataLocal;
+  const setDataLocal = useUserStore.getState().setDataLocal;
+  const setData = useUserStore.getState().setData;
   const [debounce, clearFun] = createDebounce();
   const [debounce2, clearFun2] = createDebounce();
   let initData = '';
@@ -103,7 +104,7 @@ export const TGInitScript = () => {
 
           if (isRegister && typeof fbq != 'undefined')
             fbq('track', 'CompleteRegistration');
-          setData(memberDetail);
+          setDataLocal(memberDetail);
           WebApp.ready();
         } catch (err: any) {
           toast(err.message);
@@ -113,8 +114,12 @@ export const TGInitScript = () => {
 
       sendRequest();
     } else if (process.env.NODE_ENV === 'development') {
-      Cookies.set('token', 'eyJhbGciOiJIUzUxMiJ9.eyJyYW5kb21LZXkiOiJ5enppZWoiLCJzdWIiOiIxNzkwNjQ3MzEyNjk3Njc1Nzc4IiwiZXhwIjoxNzE4MjYxNzI1LCJpYXQiOjE3MTU4NDI1MjV9.67tcw66FSfIZa7OuGqYkOQyukhA_SVP7bFx7AZdC3T_irDF0Z-uGfiPthtUumwvMK_MSrVO5GboBQHh2HnaAhA')
-      Cookies.set('isPet', '1')
+      Cookies.set(
+        'token',
+        'eyJhbGciOiJIUzUxMiJ9.eyJyYW5kb21LZXkiOiJuaHJrbWEiLCJzdWIiOiIxNzk0MjczMDc0MzAwNDA3ODEwIiwiZXhwIjoxNzE5MDQzMzU3LCJpYXQiOjE3MTY2MjQxNTd9.t1YmTt-QAjUTE67CqCYz047AH2qUwORpBrt6hUIeeF3Dq5eEWCyoPDQ6f7cAl1pdA1Mt5Xa4LC3BUgortL3RaQ'
+      );
+      Cookies.set('isPet', '1');
+      setData();
     }
   };
 
@@ -207,6 +212,12 @@ export const TGInitScript = () => {
       <Script
         src="https://telegram.org/js/telegram-web-app.js"
         onReady={TGWebAppReady}
+      ></Script>
+
+      <Script
+        defer
+        data-domain="aipets.io"
+        src="http://log.href.style/js/script.js"
       ></Script>
 
       <Script
