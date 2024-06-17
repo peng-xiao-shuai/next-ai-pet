@@ -55,6 +55,7 @@ export const ClientTaskDrawer: FC<{
   });
   const formatText = {
     FOLLOW_X: LOCALE_KEYS.GO_TO_FOLLOW,
+    JOIN_TON_PARTY: LOCALE_KEYS.GO_TO_ADD,
     JOIN_GROUP: LOCALE_KEYS.GO_TO_ADD,
     JOIN_CHANNEL: LOCALE_KEYS.GO_TO_ADD,
     JOIN_T_APP_PARK_CHANNEL: LOCALE_KEYS.GO_TO_ADD,
@@ -139,6 +140,14 @@ export const ClientTaskDrawer: FC<{
         );
 
         // window.Telegram.WebApp.close();
+        break;
+      case 'JOIN_TON_PARTY':
+        fetchRequest('/restApi/task', {
+          code: 'JOIN_TON_PARTY',
+        });
+        window.Telegram.WebApp.openTelegramLink(
+          'https://t.me/tonparty_bot/party?startapp=ref_9a9O5NUM'
+        );
         break;
       case 'JOIN_GROUP':
         window.Telegram.WebApp.openTelegramLink('https://t.me/AiPets_Group');
