@@ -220,7 +220,7 @@ export const ClientFoodDrawer: FC<{
                   color: item === feedValue ? '#7F6957' : '#8E8D92',
                 }}
               >
-                {item.price}Ton
+                {item.price} Star
               </span>
             </div>
           ))}
