@@ -47,7 +47,7 @@ export const ClientFoodDrawer: FC<{
   const { handleOpen, isCheck, tonConnectUI, state } = useConnectWallet({
     bindSuccessCB: () => {
       if (drawerVisible && !isCheck && !address) {
-        tonSendTransaction();
+        // tonSendTransaction();
       }
     },
   });
@@ -96,27 +96,51 @@ export const ClientFoodDrawer: FC<{
    * 实际发起支付
    */
   const tonSendTransaction = async () => {
+    if (Number(window.Telegram.WebApp.version) <= 7.4) {
+      toast.warning('Please upgrade yours Telegram');
+      return;
+    }
+
+    const { result } = await fetchRequest(
+      '/restApi/recharge/createOrderFromStar',
+      {
+        packageId: feedValue!.id,
+      }
+    );
+
+    window.Telegram.WebApp.openInvoice(result, (status: string) => {
+      if (status == 'paid') {
+        // window.Telegram.WebApp.close();
+      } else if (status == 'failed') {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+        toast.warning('Payment has been failed.');
+      } else {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('warning');
+        toast.warning('You have cancelled this order.');
+      }
+    });
+
     setLoading(true);
 
     try {
-      const { result } = await fetchRequest('/restApi/recharge/createOrder', {
-        packageId: feedValue!.id,
-      });
-      const { boc } = await tonConnectUI.sendTransaction({
-        validUntil: Math.floor(Date.now() / 1000) + 600,
-        messages: [
-          {
-            address: 'UQCQDthXIzPPvPOBckZMr4d1ObrMp2nimwcaAKMFhn4RF7PE',
-            amount: toNano(result.price / 100).toString(),
-            payload: beginCell()
-              .storeUint(0, 32)
-              .storeStringTail(result.id)
-              .endCell()
-              .toBoc()
-              .toString('base64'),
-          },
-        ],
-      });
+      // const { result } = await fetchRequest('/restApi/recharge/createOrder', {
+      //   packageId: feedValue!.id,
+      // });
+      // const { boc } = await tonConnectUI.sendTransaction({
+      //   validUntil: Math.floor(Date.now() / 1000) + 600,
+      //   messages: [
+      //     {
+      //       address: 'UQCQDthXIzPPvPOBckZMr4d1ObrMp2nimwcaAKMFhn4RF7PE',
+      //       amount: toNano(result.price / 100).toString(),
+      //       payload: beginCell()
+      //         .storeUint(0, 32)
+      //         .storeStringTail(result.id)
+      //         .endCell()
+      //         .toBoc()
+      //         .toString('base64'),
+      //     },
+      //   ],
+      // });
 
       handleTriggerEvent([
         {
@@ -205,11 +229,11 @@ export const ClientFoodDrawer: FC<{
 
       <Button
         click={() => {
-          if (!address && !isCheck) {
-            handleOpen();
-          } else {
-            tonSendTransaction();
-          }
+          // if (!address && !isCheck) {
+          //   handleOpen();
+          // } else {
+          tonSendTransaction();
+          // }
         }}
         disabled={loading}
         className={cn(
