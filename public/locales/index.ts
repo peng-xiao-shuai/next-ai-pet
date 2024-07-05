@@ -8,8 +8,11 @@ const resources = {
 };
 
 export type Resources = {
-  [key in keyof typeof resources]: (typeof resources)[key] &
-    Indexes<(typeof resources)[key]>;
+  [key in keyof typeof resources]: (typeof resources)[key] & {
+    [P in keyof typeof En]: P extends keyof (typeof resources)[key]
+      ? (typeof resources)[key][P]
+      : '';
+  };
 };
 
 export * from './keys';
