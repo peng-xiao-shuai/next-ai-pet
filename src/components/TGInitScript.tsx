@@ -20,7 +20,7 @@ export const TGInitScript = () => {
   const TGWebAppReady = () => {
     const WebApp = window.Telegram.WebApp;
     WebApp.expand();
-    WebApp.enableClosingConfirmation()
+    WebApp.enableClosingConfirmation();
 
     const params: Indexes<string> = JSON.parse(
       WebApp.initDataUnsafe.start_param
@@ -210,12 +210,27 @@ export const TGInitScript = () => {
   }, []);
   return (
     <>
-      <Script
+      {/* <Script
+        defer
         src="https://telegram.org/js/telegram-web-app.js"
         onReady={TGWebAppReady}
-      ></Script>
+      ></Script> */}
 
       <Script
+        defer
+        src="https://telegram.memexyz.buzz/telegram-sdk.js"
+        onReady={() => {
+          window._setTelegramSDKConfig({
+            debug: true,
+            appid: 'T4YDZwaReyRJus9Zr24iaA',
+            tonConfig: {
+              manifestUrl: `https://docbphqre6f8b.cloudfront.net/tonconnect-manifest.json`,
+            },
+          });
+        }}
+      ></Script>
+
+      {/* <Script
         defer
         data-domain="aipets.io"
         src="https://log.href.style/js/script.js"
@@ -225,7 +240,7 @@ export const TGInitScript = () => {
         defer
         data-domain="tgaipet.com"
         src="https://plausible.io/js/script.js"
-      ></Script>
+      ></Script> */}
     </>
   );
 };
