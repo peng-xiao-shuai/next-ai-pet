@@ -101,7 +101,7 @@ import { useEffect, useState } from 'react';
 // }
 
 export default function HomePage() {
-  const [initData, setInitData] = useState();
+  const [initData, setInitData] = useState('');
   const click = () => {
     window.TG_SDK.openPayPopup({
       message: '支付',
@@ -117,9 +117,11 @@ export default function HomePage() {
   };
 
   const loginClick = () => {
+    setInitData('');
+
     window.TG_SDK.login({
       cb: (d: any) => {
-        console.log(d);
+        setInitData(JSON.stringify(d.data));
       },
     });
   };
