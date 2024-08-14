@@ -124,16 +124,22 @@ export default function HomePage() {
     });
   };
   return (
-    <>
-      <button className="w-full text-white text-2xl mb-4" onClick={click}>
-        pay
+    <div className="max-w-[80vw] mx-auto">
+      <button
+        className="btn py-2 border rounded-[0.5rem] border-white w-full text-white text-2xl mb-6"
+        onClick={click}
+      >
+        Pay
       </button>
 
-      <button className="w-full text-white text-2xl mb-4" onClick={loginClick}>
-        login
+      <button
+        className="btn py-2 border rounded-[0.5rem] border-white w-full text-white text-2xl"
+        onClick={loginClick}
+      >
+        Login
       </button>
 
       <div className="w-[80vw] mx-auto break-words text-white">{initData}</div>
-    </>
+    </div>
   );
 }

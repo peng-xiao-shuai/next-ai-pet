@@ -37,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className} bg-black`}>
         <main className="h-[100vh] w-full">
           {/* <TonProvider> */}
           <ClientLazyMotion>{children}</ClientLazyMotion>
@@ -53,7 +53,7 @@ export default function RootLayout({
         />
         <TGInitScript></TGInitScript>
 
-        <GoogleAnalytics gaId={AppConfigEnv.GOOGLE_GAID}></GoogleAnalytics>
+        {/* <GoogleAnalytics gaId={AppConfigEnv.GOOGLE_GAID}></GoogleAnalytics> */}
 
         <Loading></Loading>
       </body>
