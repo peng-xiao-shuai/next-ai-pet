@@ -158,7 +158,7 @@ export default function HomePage() {
               &emsp;&emsp;/**</br>
               &emsp;&emsp; * 有概率支付失败，随机数可能会重复</br>
               &emsp;&emsp; */</br>
-              &emsp;&emsp;order_id: Math.round(Math.random() * 10000),</br>
+              &emsp;&emsp;order_id: String(Math.round(Math.random() * 10000)),</br>
               &emsp;&emsp;start: () => {</br>
               &emsp;&emsp;&emsp;console.log('开始支付');</br>
               &emsp;&emsp;},</br>
