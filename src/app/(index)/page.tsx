@@ -104,19 +104,21 @@ export default function HomePage() {
   const [initData, setInitData] = useState('');
   const click = () => {
     window.TG_SDK.openPayPopup({
-      message: '支付',
-      options: {
-        amount: '0.1',
-        /**
-         * 有概率支付失败，随机数可能会重复
-         */
-        order_id: String(Math.round(Math.random() * 10000)),
-        start: () => {
-          console.log('开始支付');
-        },
-        result: (status: any) => {
-          console.log('支付状态 status', status);
-        },
+      title: '首冲礼包',
+      message: '首冲礼包 ￥6 获得 xxx 钻石',
+      /**
+       * Stars 必须为整数
+       */
+      amount: '1',
+      /**
+       * 有概率支付失败，随机数可能会重复
+       */
+      order_id: String(Math.round(Math.random() * 10000)),
+      start: () => {
+        console.log('开始支付');
+      },
+      result: (status: any) => {
+        console.log('支付状态 status', status);
       },
     });
   };
@@ -152,19 +154,21 @@ export default function HomePage() {
             dangerouslySetInnerHTML={{
               __html: `
               window.TG_SDK.openPayPopup({</br>
-              &emsp;message: '支付',</br>
-              &emsp;options: {</br>
-              &emsp;&emsp;amount: '0.1',</br>
-              &emsp;&emsp;/**</br>
-              &emsp;&emsp; * 有概率支付失败，随机数可能会重复</br>
-              &emsp;&emsp; */</br>
-              &emsp;&emsp;order_id: String(Math.round(Math.random() * 10000)),</br>
-              &emsp;&emsp;start: () => {</br>
-              &emsp;&emsp;&emsp;console.log('开始支付');</br>
-              &emsp;&emsp;},</br>
-              &emsp;&emsp;result: (status: any) => {</br>
-              &emsp;&emsp;&emsp;console.log('支付状态 status', status);</br>
-              &emsp;&emsp;},</br>
+              &emsp;title: '首冲礼包',</br>
+              &emsp;message: '首冲礼包 ￥6 获得 xxx 钻石',</br>
+              &emsp;/**</br>
+              &emsp; * Stars 必须为整数</br>
+              &emsp; */</br>
+              &emsp;amount: '1',</br>
+              &emsp;/**</br>
+              &emsp; * 有概率支付失败，随机数可能会重复</br>
+              &emsp; */</br>
+              &emsp;order_id: String(Math.round(Math.random() * 10000)),</br>
+              &emsp;start: () => {</br>
+              &emsp;&emsp;console.log('开始支付');</br>
+              &emsp;},</br>
+              &emsp;result: (status: any) => {</br>
+              &emsp;&emsp;console.log('支付状态 status', status);</br>
               &emsp;},</br>
               })`,
             }}

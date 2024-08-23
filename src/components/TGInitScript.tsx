@@ -222,7 +222,7 @@ export const TGInitScript = () => {
         onReady={() => {
           window._setTelegramSDKConfig({
             debug: true,
-            appid: 'T4YDZwaReyRJus9Zr24iaA',
+            appid: '5EDhUSpJU9aV9NVZRx9UXg',
             tonConfig: {
               manifestUrl: `https://docbphqre6f8b.cloudfront.net/tonconnect-manifest.json`,
             },
